@@ -1,6 +1,8 @@
 package main.java.com;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import main.java.com.GraphGenerator;
@@ -13,9 +15,14 @@ public class AlgorithmsTesting {
 
 	private final static long[] graphSize = {10, 100, 1000, 10000, 100000};
 	private final static long noOfGraphs = 1000;
+
+	static{
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    System.setProperty("current.date", dateFormat.format(new Date()));
+	}
 	
 	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
-
+	
 	private static List<Test> listOfTests = new ArrayList<Test>();
 	
 	public static void main(String[] args) {
@@ -29,6 +36,13 @@ public class AlgorithmsTesting {
 
 		}
 		logger.info("This is info: END" );
+		
+		try {
+			String name = null;
+			System.out.println(name.toString());
+		} catch (Exception e){
+			logger.error("Something went wrong ", e);
+		}
 		
 	}
 	
