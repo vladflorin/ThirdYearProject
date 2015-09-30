@@ -1,17 +1,28 @@
 package main.java.com;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.graphstream.graph.Graph;
 
 public class Test {
 
-	public Test() {
+	private Graph initialGraph;
+	private List<Algorithm> algorithmList;
+	
+	public Test(long graphSize) {
 		super();
+		initialGraph = GraphGenerator.generate(graphSize);
+		algorithmList = new ArrayList<Algorithm>();
 	}
 
-	private Graph initialGraph;
-	private Graph resultGraph;
-	private int chromaticNumber;
-	private long time;
+	public List<Algorithm> getAlgorithmList() {
+		return algorithmList;
+	}
+
+	public void setAlgorithmList(List<Algorithm> algorithmList) {
+		this.algorithmList = algorithmList;
+	}
 
 	public Graph getInitialGraph() {
 		return initialGraph;
@@ -19,30 +30,6 @@ public class Test {
 	
 	public void setInitialGraph(Graph initialGraph) {
 		this.initialGraph = initialGraph;
-	}
-	
-	public Graph getResultGraph() {
-		return resultGraph;
-	}
-	
-	public void setResultGraph(Graph resultGraph) {
-		this.resultGraph = resultGraph;
-	}
-	
-	public int getChromaticNumber() {
-		return chromaticNumber;
-	}
-	
-	public void setChromaticNumber(int chromaticNumber) {
-		this.chromaticNumber = chromaticNumber;
-	}
-	
-	public long getTime() {
-		return time;
-	}
-	
-	public void setTime(long time) {
-		this.time = time;
 	}
 	
 }

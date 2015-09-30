@@ -1,5 +1,7 @@
 package main.java.com;
 
+import main.java.utils.Constants;
+
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
@@ -7,7 +9,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 public class GraphGenerator {
 
-	private final static int avgDegree = 4;
+	private final static int avgDegree = Constants.AVG_DEGREE;
 
 	// Generate a random graph
 	public static Graph generate(long size) {
