@@ -20,7 +20,7 @@ public class GraphGenerator {
 		for(int i=0; i<size; i++) {
 		    gen.nextEvents();
 		}
-		gen.end();			
+		gen.end();
 		return graph;
 	}
 	
