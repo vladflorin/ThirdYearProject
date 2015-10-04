@@ -14,8 +14,6 @@ public class GreedyColouringAlgorithmTest {
 	public void testGreedyAlgorithmRandomGraph() throws InterruptedException {
 		Graph randomGraph = GraphGenerator.generate((long) (Math.random() * 10));
 		
-		randomGraph.display();
-
 		System.out.println("Graph size: " + randomGraph.getNodeCount());
 		
 		GreedyColouringAlgorithm greedyColouring = new GreedyColouringAlgorithm();
@@ -23,10 +21,7 @@ public class GreedyColouringAlgorithmTest {
 		greedyColouring.compute();
 		
 		System.out.println("k: " + greedyColouring.getK());
-		
-		randomGraph.display();
-		
-		Thread.sleep(20000); 
+		System.out.println("time: " + greedyColouring.getTime());
 		
 		assertNotNull(randomGraph);
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import main.java.algorithms.GreedyColouringAlgorithm;
 import main.java.com.GraphGenerator;
 import main.java.com.Test;
 import main.java.utils.Constants;
@@ -37,10 +38,18 @@ public class AlgorithmsTesting {
 			
 			logger.info("START: Testing currentGraphSize = " + currentGraphSize);
 			
-			List<Test> listOfTests = initialiseListOfTests(currentGraphSize);
+			List<Test> listOfTests = new ArrayList<Test>();
 
-			for (int index = 0; index < listOfTests.size(); index++) {
-				Test currentTest = listOfTests.get(index);
+			for (int index = 0; index < Constants.NUMBER_OF_GRAPHS; index++) {
+				Test currentTest = new Test(currentGraphSize - GraphGenerator.getAvgDegree());
+				listOfTests.add(currentTest);
+				
+				logger.info(index);
+				// Greedy Algorithm Testing
+				currentTest.getAlgorithmList().add(greedyColouring(currentTest));
+				
+				// TODO: Do the magic generate report
+				currentTest = cleanMemory(currentTest);			
 			}
 			
 			logger.info("END: Testing currentGraphSize = " + currentGraphSize);
@@ -49,18 +58,15 @@ public class AlgorithmsTesting {
 		logger.info("END:  Testing");	
 	}
 	
-	private static List<Test> initialiseListOfTests(long graphSize) {
-		List<Test> listOfTests = new ArrayList<Test>();
-		try {
-			for (int index = 0; index < Constants.NUMBER_OF_GRAPHS; index++) {
-				Test newTest = new Test(graphSize - GraphGenerator.getAvgDegree());
-				listOfTests.add(newTest);
-			}
-			logger.info("Succesfully initialised listOfTests: numberOfGraphs: " + listOfTests.size() + ", graphSize: " + graphSize);
-		} catch (Exception e) {
-			logger.error("Something went wrong", e);
-		}
-		return listOfTests;
+	private static Algorithm greedyColouring(Test currentTest) {
+		Algorithm greedyAlgorithm = new Algorithm("Greedy Colouring Algorithm");
+		greedyAlgorithm.setColoredGraph(currentTest.getInitialGraph());
+		
+		GreedyColouringAlgorithm greedyColouring = new GreedyColouringAlgorithm();
+		greedyColouring.init(greedyAlgorithm.getColoredGraph());
+		greedyColouring.compute();
+
+		return greedyAlgorithm;
 	}
 	
 	private static void validateGraphSize(long graphSize) {
@@ -75,6 +81,14 @@ public class AlgorithmsTesting {
 			logger.error("graph size list in the Constants file is empty");
 			System.exit(1);
 		}
+	}
+	
+	private static Test cleanMemory(Test currentTest) {
+		currentTest.setInitialGraph(null);
+		for (int index = 0; index < currentTest.getAlgorithmList().size(); index++) {
+			currentTest.getAlgorithmList().get(index).setColoredGraph(null);
+		}
+		return currentTest;
 	}
 	
 }

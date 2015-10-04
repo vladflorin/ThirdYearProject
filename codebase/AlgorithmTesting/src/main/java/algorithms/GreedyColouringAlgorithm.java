@@ -12,6 +12,7 @@ public class GreedyColouringAlgorithm implements Algorithm{
 
 	Graph graph;
 	int k;
+	long time;
 	
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
@@ -24,18 +25,18 @@ public class GreedyColouringAlgorithm implements Algorithm{
 	}
 
 	public void compute() {
+		long startTime = System.currentTimeMillis();
+		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(index);
-			
-			System.out.println("Current node " + currentNode.getId() + " (" + currentNode.getAttribute("colour") + "): ");
-			
+			Node currentNode = graph.getNode(index);				
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			
-			System.out.println("Current node " + currentNode.getId() + " (" + currentNode.getAttribute("colour") + "): ");
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
-			
-			System.out.println();
+			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
 		}
+		
+		//graph.display();
+		
+		long stopTime = System.currentTimeMillis();
+		time = stopTime - startTime;
 	}
 	
 	public void initialiseGraph() {
@@ -85,4 +86,8 @@ public class GreedyColouringAlgorithm implements Algorithm{
 		return k;
 	}
 	
+	public long getTime() {
+		return time;
+	}
+
 }
