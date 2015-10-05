@@ -3,7 +3,11 @@ package main.java.com;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.utils.Constants;
+
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
 
 public class Test {
 
@@ -32,4 +36,10 @@ public class Test {
 		this.initialGraph = initialGraph;
 	}
 	
+	public void resetInitialGraph() {
+		for (Node node : initialGraph.getEachNode()) {
+			node.setAttribute("colour", -1);
+			node.addAttribute("ui.style", "fill-color: black;");
+		}
+	}
 }

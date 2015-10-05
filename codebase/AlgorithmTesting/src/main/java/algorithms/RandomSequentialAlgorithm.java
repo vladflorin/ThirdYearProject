@@ -1,6 +1,10 @@
 package main.java.algorithms;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 import main.java.utils.Constants;
 
@@ -8,11 +12,12 @@ import org.graphstream.algorithm.Algorithm;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-public class GreedyColouringAlgorithm implements Algorithm{
+public class RandomSequentialAlgorithm implements Algorithm{
 
 	Graph graph;
 	int k;
 	long time;
+	List<Integer> randomSeq;
 	
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
@@ -22,22 +27,34 @@ public class GreedyColouringAlgorithm implements Algorithm{
 		
 		// Initially the chromatic number of the graph should be -1 (no color)
 		k = 0;
+		
+		// Generate random sequence
+		randomSeq = generateRandomSequence(graph.getNodeCount());
 	}
 
 	public void compute() {
 		long startTime = System.currentTimeMillis();
 		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(index);				
+			Node currentNode = graph.getNode(randomSeq.get(index));				
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
 		}
-				
+
 		long stopTime = System.currentTimeMillis();
 		time = stopTime - startTime;
 	}
 	
-	public void initialiseGraph() {
+	public static List<Integer> generateRandomSequence(int size) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i < size; i++) {
+            list.add(new Integer(i));
+        }
+        Collections.shuffle(list);
+		return list;
+	}
+	
+	private void initialiseGraph() {
 		for (Node node : graph.getEachNode()) {
 			node.setAttribute("colour", -1);
 		}

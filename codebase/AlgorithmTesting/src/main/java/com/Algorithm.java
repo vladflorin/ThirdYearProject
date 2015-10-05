@@ -7,7 +7,7 @@ import org.graphstream.graph.Graph;
 public class Algorithm {
 
 	private String name;
-	private int time;
+	private long time;
 	private int k;
 	private Graph coloredGraph;
 	
@@ -16,11 +16,11 @@ public class Algorithm {
 		this.name = name;
 	}
 	
-	public int getTime() {
+	public long getTime() {
 		return time;
 	}
 	
-	public void setTime(int time) {
+	public void setTime(long time) {
 		this.time = time;
 	}
 	

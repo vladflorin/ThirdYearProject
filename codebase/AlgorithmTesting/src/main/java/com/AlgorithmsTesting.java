@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import main.java.algorithms.GreedyColouringAlgorithm;
+import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.com.GraphGenerator;
 import main.java.com.Test;
 import main.java.utils.Constants;
@@ -44,18 +45,37 @@ public class AlgorithmsTesting {
 				Test currentTest = new Test(currentGraphSize - GraphGenerator.getAvgDegree());
 				listOfTests.add(currentTest);
 				
-				logger.info(index);
+				logger.info("Current graph: " + index);
+				
 				// Greedy Algorithm Testing
-				currentTest.getAlgorithmList().add(greedyColouring(currentTest));
+				currentTest.getAlgorithmList().add(greedyColouring(currentTest));				
+				currentTest.resetInitialGraph();
+				
+				// Random Sequential Testing
+				currentTest.getAlgorithmList().add(randomSequential(currentTest));				
+				currentTest.resetInitialGraph();
 				
 				// TODO: Do the magic generate report
+				
+				// Clean memory
 				currentTest = cleanMemory(currentTest);			
 			}
+			
+			// Print
+			/*for (int index = 0; index < listOfTests.size(); index ++) {
+				System.out.println("TEST " + index);
+				Test currentTest = listOfTests.get(index);
+				List<Algorithm> list = currentTest.getAlgorithmList();
+				for (int i = 0; i < list.size(); i ++) {
+					Algorithm currentAlgo = list.get(i);
+					System.out.println(currentAlgo.getName() + ": k = " + currentAlgo.getK() + " , time = " + currentAlgo.getTime());
+				}
+			} */
 			
 			logger.info("END: Testing currentGraphSize = " + currentGraphSize);
 		}
 		
-		logger.info("END:  Testing");	
+		logger.info("END: Testing");	
 	}
 	
 	private static Algorithm greedyColouring(Test currentTest) {
@@ -66,7 +86,24 @@ public class AlgorithmsTesting {
 		greedyColouring.init(greedyAlgorithm.getColoredGraph());
 		greedyColouring.compute();
 
+		greedyAlgorithm.setK(greedyColouring.getK());
+		greedyAlgorithm.setTime(greedyColouring.getTime());
+		
 		return greedyAlgorithm;
+	}
+	
+	private static Algorithm randomSequential(Test currentTest) {
+		Algorithm randomSequentialAlgorithm = new Algorithm("Random Sequential Colouring Algorithm");
+		randomSequentialAlgorithm.setColoredGraph(currentTest.getInitialGraph());
+		
+		RandomSequentialAlgorithm randomSequentialColouring = new RandomSequentialAlgorithm();
+		randomSequentialColouring.init(randomSequentialAlgorithm.getColoredGraph());
+		randomSequentialColouring.compute();
+
+		randomSequentialAlgorithm.setK(randomSequentialColouring.getK());
+		randomSequentialAlgorithm.setTime(randomSequentialColouring.getTime());
+		
+		return randomSequentialAlgorithm;
 	}
 	
 	private static void validateGraphSize(long graphSize) {
@@ -84,10 +121,7 @@ public class AlgorithmsTesting {
 	}
 	
 	private static Test cleanMemory(Test currentTest) {
-		currentTest.setInitialGraph(null);
-		for (int index = 0; index < currentTest.getAlgorithmList().size(); index++) {
-			currentTest.getAlgorithmList().get(index).setColoredGraph(null);
-		}
+		currentTest.getInitialGraph().clear();
 		return currentTest;
 	}
 	
