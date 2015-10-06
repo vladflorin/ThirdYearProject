@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.algorithms.GreedyColouringAlgorithm;
+import main.java.algorithms.GreedyAlgorithm;
+import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.com.GraphGenerator;
 import main.java.com.Test;
@@ -51,8 +52,12 @@ public class AlgorithmsTesting {
 				currentTest.getAlgorithmList().add(greedyColouring(currentTest));				
 				currentTest.resetInitialGraph();
 				
-				// Random Sequential Testing
+				// Random Sequential Algorithm Testing
 				currentTest.getAlgorithmList().add(randomSequential(currentTest));				
+				currentTest.resetInitialGraph();
+				
+				// Largest First Algorithm Testing
+				currentTest.getAlgorithmList().add(largestFirst(currentTest));				
 				currentTest.resetInitialGraph();
 				
 				// TODO: Do the magic generate report
@@ -62,7 +67,7 @@ public class AlgorithmsTesting {
 			}
 			
 			// Print
-			/*for (int index = 0; index < listOfTests.size(); index ++) {
+			for (int index = 0; index < listOfTests.size(); index ++) {
 				System.out.println("TEST " + index);
 				Test currentTest = listOfTests.get(index);
 				List<Algorithm> list = currentTest.getAlgorithmList();
@@ -70,7 +75,7 @@ public class AlgorithmsTesting {
 					Algorithm currentAlgo = list.get(i);
 					System.out.println(currentAlgo.getName() + ": k = " + currentAlgo.getK() + " , time = " + currentAlgo.getTime());
 				}
-			} */
+			}
 			
 			logger.info("END: Testing currentGraphSize = " + currentGraphSize);
 		}
@@ -82,7 +87,7 @@ public class AlgorithmsTesting {
 		Algorithm greedyAlgorithm = new Algorithm("Greedy Colouring Algorithm");
 		greedyAlgorithm.setColoredGraph(currentTest.getInitialGraph());
 		
-		GreedyColouringAlgorithm greedyColouring = new GreedyColouringAlgorithm();
+		GreedyAlgorithm greedyColouring = new GreedyAlgorithm();
 		greedyColouring.init(greedyAlgorithm.getColoredGraph());
 		greedyColouring.compute();
 
@@ -104,6 +109,20 @@ public class AlgorithmsTesting {
 		randomSequentialAlgorithm.setTime(randomSequentialColouring.getTime());
 		
 		return randomSequentialAlgorithm;
+	}
+	
+	private static Algorithm largestFirst(Test currentTest) {
+		Algorithm largestFirstAlgorithm = new Algorithm("Largest First Colouring Algorithm");
+		largestFirstAlgorithm.setColoredGraph(currentTest.getInitialGraph());
+		
+		LargestFirstAlgorithm largestFirstColouring = new LargestFirstAlgorithm();
+		largestFirstColouring.init(largestFirstAlgorithm.getColoredGraph());
+		largestFirstColouring.compute();
+
+		largestFirstAlgorithm.setK(largestFirstColouring.getK());
+		largestFirstAlgorithm.setTime(largestFirstColouring.getTime());
+		
+		return largestFirstAlgorithm;
 	}
 	
 	private static void validateGraphSize(long graphSize) {

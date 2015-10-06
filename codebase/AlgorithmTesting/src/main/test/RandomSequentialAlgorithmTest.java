@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import main.java.algorithms.GreedyColouringAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.com.GraphGenerator;
 
@@ -29,7 +28,7 @@ public class RandomSequentialAlgorithmTest {
 	}
 	
 	@Test
-	public void testGreedyAlgorithmRandomGraph() throws InterruptedException {
+	public void testRandomSequentialAlgorithmRandomGraph() throws InterruptedException {
 		Graph randomGraph = GraphGenerator.generate((long) (Math.random() * 10));
 				
 		RandomSequentialAlgorithm randomSequential = new RandomSequentialAlgorithm();
@@ -43,7 +42,7 @@ public class RandomSequentialAlgorithmTest {
 	}
 	
 	@Test
-	public void testGreedyAlgorithmGivenGraph() throws InterruptedException {		
+	public void testRandomSequentialAlgorithmGivenGraph() throws InterruptedException {		
 		Graph graph = createGraph();
 		
 		System.out.println("Graph size: " + graph.getNodeCount());

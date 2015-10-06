@@ -1,7 +1,5 @@
 package main.java.com;
 
-import java.util.List;
-
 import org.graphstream.graph.Graph;
 
 public class Algorithm {
