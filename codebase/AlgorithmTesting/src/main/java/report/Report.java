@@ -1,10 +1,12 @@
-package main.java.com;
+package main.java.report;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -13,11 +15,14 @@ import net.sf.dynamicreports.report.exception.DRException;
 
 public class Report {
 
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmss"); 
 	private static String filePath = "/Users/vladflorin/Eclipse/Documents/reports/GraphColouring Report " + dateFormat.format(new Date())+ ".pdf";
+
+	private List<ReportItem> reportItemList;
 	
 	public Report() {
 		super();
+		reportItemList = new ArrayList<ReportItem>();
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, DRException {
@@ -38,4 +43,12 @@ public class Report {
 		}
 	}
 	
+	public List<ReportItem> getReportItemList() {
+		return reportItemList;
+	}
+
+	public void setReportItemList(List<ReportItem> reportItemList) {
+		this.reportItemList = reportItemList;
+	}
+
 }

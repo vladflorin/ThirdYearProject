@@ -45,6 +45,9 @@ public class RandomSequentialAlgorithmTest {
 	public void testRandomSequentialAlgorithmGivenGraph() throws InterruptedException {		
 		Graph graph = createGraph();
 		
+		graph.display();
+		Thread.sleep(10000);
+		
 		System.out.println("Graph size: " + graph.getNodeCount());
 		
 		RandomSequentialAlgorithm randomSequential = new RandomSequentialAlgorithm();
@@ -52,9 +55,10 @@ public class RandomSequentialAlgorithmTest {
 		randomSequential.compute();
 		
 		System.out.println("k: " + randomSequential.getK());
-		System.out.println("time: " + randomSequential.getTime());
-		
+		System.out.println("time: " + randomSequential.getTime());	
 
+		Thread.sleep(60000);
+		
 		assertNotNull(graph);
 	}
 	

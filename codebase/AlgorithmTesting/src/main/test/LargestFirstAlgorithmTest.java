@@ -62,6 +62,9 @@ public class LargestFirstAlgorithmTest {
 	public void testLargestFirstAlgorithmGivenGraph() throws InterruptedException {		
 		Graph graph = createGraph();
 
+		graph.display();
+		Thread.sleep(10000);
+		
 		System.out.println("Graph size: " + graph.getNodeCount());
 		
 		LargestFirstAlgorithm largestFirst = new LargestFirstAlgorithm();
@@ -69,8 +72,9 @@ public class LargestFirstAlgorithmTest {
 		largestFirst.compute();
 		
 		System.out.println("k: " + largestFirst.getK());
-		System.out.println("time: " + largestFirst.getTime());
-		
+		System.out.println("time: " + largestFirst.getTime());		
+
+		Thread.sleep(60000);
 
 		assertNotNull(graph);
 	}

@@ -10,6 +10,9 @@ import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.com.GraphGenerator;
 import main.java.com.Test;
+import main.java.report.Report;
+import main.java.report.ReportItem;
+import main.java.report.ReportTestItem;
 import main.java.utils.Constants;
 
 import org.apache.log4j.Logger;
@@ -22,9 +25,11 @@ public class AlgorithmsTesting {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    System.setProperty("current.date", dateFormat.format(new Date()));
 	}
-	
+
 	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
-		
+
+	private static String[] algorithmNames = {"Greedy Colouring Algorithm", "Random Sequential Colouring Algorithm", "Largest First Colouring Algorithm"};
+	
 	public static void main(String[] args) {
 		  
 		logger.info("START: Testing");
@@ -32,6 +37,8 @@ public class AlgorithmsTesting {
 		long[] graphSizeList = Constants.GRAPH_SIZE_LIST;
 		
 		validateGraphSizeList(graphSizeList);
+		
+		Report report = new Report();
 		
 		for (int count = 0; count < graphSizeList.length; count++) {
 			long currentGraphSize = graphSizeList[count];
@@ -43,10 +50,10 @@ public class AlgorithmsTesting {
 			List<Test> listOfTests = new ArrayList<Test>();
 
 			for (int index = 0; index < Constants.NUMBER_OF_GRAPHS; index++) {
+				logger.info("Current graph: " + index);
+
 				Test currentTest = new Test(currentGraphSize - GraphGenerator.getAvgDegree());
 				listOfTests.add(currentTest);
-				
-				logger.info("Current graph: " + index);
 				
 				// Greedy Algorithm Testing
 				currentTest.getAlgorithmList().add(greedyColouring(currentTest));				
@@ -60,13 +67,11 @@ public class AlgorithmsTesting {
 				currentTest.getAlgorithmList().add(largestFirst(currentTest));				
 				currentTest.resetInitialGraph();
 				
-				// TODO: Do the magic generate report
-				
 				// Clean memory
 				currentTest = cleanMemory(currentTest);			
 			}
 			
-			// Print
+			/*// Print
 			for (int index = 0; index < listOfTests.size(); index ++) {
 				System.out.println("TEST " + index);
 				Test currentTest = listOfTests.get(index);
@@ -74,6 +79,30 @@ public class AlgorithmsTesting {
 				for (int i = 0; i < list.size(); i ++) {
 					Algorithm currentAlgo = list.get(i);
 					System.out.println(currentAlgo.getName() + ": k = " + currentAlgo.getK() + " , time = " + currentAlgo.getTime());
+				}
+			} */
+			
+			ReportItem reportItem = null;
+			
+			try {
+				logger.info("START: Generate ReportItem element for graphSize = " + currentGraphSize);
+				reportItem = generateReportItem(listOfTests, currentGraphSize);
+				report.getReportItemList().add(reportItem);
+				logger.info("END: Generate ReportItem element for graphSize = " + currentGraphSize);
+			} catch (Exception e) {
+				logger.info("Something went wrong while generating the reportItem" , e);
+			}
+					
+			if (reportItem != null) {
+				System.out.println("Size of graph: " + reportItem.getSizeOfGraph());
+				System.out.println("Number of graphs: " + reportItem.getNoOfGraphs());
+				System.out.println("Number of algorithm: " + reportItem.getTestList().size());
+				List<ReportTestItem> list = reportItem.getTestList();
+				for (int index = 0; index < list.size(); index++) {
+					System.out.println(list.get(index).getAlgorithmName());
+					System.out.println("Time: " + list.get(index).getTime());
+					System.out.println("K   : " + list.get(index).getK());
+					System.out.println();
 				}
 			}
 			
@@ -144,4 +173,23 @@ public class AlgorithmsTesting {
 		return currentTest;
 	}
 	
+	private static ReportItem generateReportItem(List<Test> list, long currentGraphSize) {
+		ReportItem reportItem = new ReportItem();
+		
+		for (int algorithmIndex = 0; algorithmIndex < algorithmNames.length; algorithmIndex++) {
+			reportItem.setNoOfGraphs(Constants.NUMBER_OF_GRAPHS);
+			reportItem.setSizeOfGraph(currentGraphSize);
+			
+			ReportTestItem reportTestItem = new ReportTestItem(Constants.NUMBER_OF_GRAPHS);
+			reportTestItem.setAlgorithmName(algorithmNames[algorithmIndex]);
+			for (int index = 0; index < list.size(); index++) {
+				reportTestItem.getTime().add(index, list.get(index).getAlgorithmList().get(algorithmIndex).getTime());
+				reportTestItem.getK().add(index, list.get(index).getAlgorithmList().get(algorithmIndex).getK());
+			}
+			
+			reportItem.getTestList().add(reportTestItem);
+		}
+		
+		return reportItem;
+	}
 }

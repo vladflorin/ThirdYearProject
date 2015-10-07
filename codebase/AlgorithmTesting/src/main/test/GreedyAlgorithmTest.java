@@ -30,14 +30,16 @@ public class GreedyAlgorithmTest {
 	public void testGreedyAlgorithmGivenGraph() throws InterruptedException {		
 		Graph graph = createGraph();
 		
+		graph.display();
+		Thread.sleep(10000);
+
 		System.out.println("Graph size: " + graph.getNodeCount());
 		
 		GreedyAlgorithm greedyColouring = new GreedyAlgorithm();
 		greedyColouring.init(graph);
 		greedyColouring.compute();
 				
-		graph.display();
-		Thread.sleep(20000); 
+		Thread.sleep(60000); 
 
 		assertNotNull(graph);
 	}

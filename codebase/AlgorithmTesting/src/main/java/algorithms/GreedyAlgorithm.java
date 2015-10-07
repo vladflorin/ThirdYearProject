@@ -25,7 +25,7 @@ public class GreedyAlgorithm implements Algorithm{
 	}
 
 	public void compute() {
-		long startTime = System.currentTimeMillis();
+		long startTime = System.nanoTime();
 		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
 			Node currentNode = graph.getNode(index);				
@@ -33,7 +33,7 @@ public class GreedyAlgorithm implements Algorithm{
 			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
 		}
 				
-		long stopTime = System.currentTimeMillis();
+		long stopTime = System.nanoTime();
 		time = stopTime - startTime;
 	}
 	
