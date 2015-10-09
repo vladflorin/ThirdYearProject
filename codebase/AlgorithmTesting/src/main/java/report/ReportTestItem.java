@@ -8,7 +8,7 @@ public class ReportTestItem {
 	private ArrayList<Long> time;
 	private ArrayList<Integer> k;
 
-	public ReportTestItem(long size) {
+	public ReportTestItem() {
 		super();
 		time = new ArrayList<Long>();
 		k = new ArrayList<Integer>();

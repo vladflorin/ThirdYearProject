@@ -92,11 +92,15 @@ public class AlgorithmsTesting {
 			} catch (Exception e) {
 				logger.info("Something went wrong while generating the reportItem" , e);
 			}
-					
+			
+			logger.info("END: Testing currentGraphSize = " + currentGraphSize);
+		}
+		
+		for (ReportItem reportItem : report.getReportItemList()) {
 			if (reportItem != null) {
 				System.out.println("Size of graph: " + reportItem.getSizeOfGraph());
 				System.out.println("Number of graphs: " + reportItem.getNoOfGraphs());
-				System.out.println("Number of algorithm: " + reportItem.getTestList().size());
+				System.out.println("Number of algorithms: " + reportItem.getTestList().size());
 				List<ReportTestItem> list = reportItem.getTestList();
 				for (int index = 0; index < list.size(); index++) {
 					System.out.println(list.get(index).getAlgorithmName());
@@ -105,8 +109,6 @@ public class AlgorithmsTesting {
 					System.out.println();
 				}
 			}
-			
-			logger.info("END: Testing currentGraphSize = " + currentGraphSize);
 		}
 		
 		logger.info("END: Testing");	
@@ -180,7 +182,7 @@ public class AlgorithmsTesting {
 			reportItem.setNoOfGraphs(Constants.NUMBER_OF_GRAPHS);
 			reportItem.setSizeOfGraph(currentGraphSize);
 			
-			ReportTestItem reportTestItem = new ReportTestItem(Constants.NUMBER_OF_GRAPHS);
+			ReportTestItem reportTestItem = new ReportTestItem();
 			reportTestItem.setAlgorithmName(algorithmNames[algorithmIndex]);
 			for (int index = 0; index < list.size(); index++) {
 				reportTestItem.getTime().add(index, list.get(index).getAlgorithmList().get(algorithmIndex).getTime());
