@@ -26,7 +26,7 @@ public class ReportTest {
 		
 		report.build();
 		
-		/*for (ReportItem reportItem : report.getReportItemList()) {
+		for (ReportItem reportItem : report.getReportItemList()) {
 			if (reportItem != null) {
 				System.out.println("Size of graph: " + reportItem.getSizeOfGraph());
 				System.out.println("Number of graphs: " + reportItem.getNoOfGraphs());
@@ -39,7 +39,7 @@ public class ReportTest {
 					System.out.println();
 				}
 			}
-		} */
+		}
 		
 		assertNotNull(report);
 	}
@@ -63,7 +63,7 @@ public class ReportTest {
 		reportTestItem.setAlgorithmName(algorithmName);
 		
 		for (int index = 0; index < noOfGraphs; index++) {
-			reportTestItem.getK().add((int)Math.random() * 5);
+			reportTestItem.getK().add((int)(Math.random() * 5) + 1);
 			reportTestItem.getTime().add((long) (Math.random() * 100000));
 		}
 		

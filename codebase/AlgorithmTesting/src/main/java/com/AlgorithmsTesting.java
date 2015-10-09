@@ -1,5 +1,6 @@
 package main.java.com;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,10 +15,9 @@ import main.java.report.Report;
 import main.java.report.ReportItem;
 import main.java.report.ReportTestItem;
 import main.java.utils.Constants;
+import net.sf.dynamicreports.report.exception.DRException;
 
 import org.apache.log4j.Logger;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 
 public class AlgorithmsTesting {
 
@@ -28,9 +28,9 @@ public class AlgorithmsTesting {
 
 	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
 
-	private static String[] algorithmNames = {"Greedy Colouring Algorithm", "Random Sequential Colouring Algorithm", "Largest First Colouring Algorithm"};
+	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First"};
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DRException, IOException {
 		  
 		logger.info("START: Testing");
 		
@@ -71,17 +71,6 @@ public class AlgorithmsTesting {
 				currentTest = cleanMemory(currentTest);			
 			}
 			
-			/*// Print
-			for (int index = 0; index < listOfTests.size(); index ++) {
-				System.out.println("TEST " + index);
-				Test currentTest = listOfTests.get(index);
-				List<Algorithm> list = currentTest.getAlgorithmList();
-				for (int i = 0; i < list.size(); i ++) {
-					Algorithm currentAlgo = list.get(i);
-					System.out.println(currentAlgo.getName() + ": k = " + currentAlgo.getK() + " , time = " + currentAlgo.getTime());
-				}
-			} */
-			
 			ReportItem reportItem = null;
 			
 			try {
@@ -96,26 +85,13 @@ public class AlgorithmsTesting {
 			logger.info("END: Testing currentGraphSize = " + currentGraphSize);
 		}
 		
-		for (ReportItem reportItem : report.getReportItemList()) {
-			if (reportItem != null) {
-				System.out.println("Size of graph: " + reportItem.getSizeOfGraph());
-				System.out.println("Number of graphs: " + reportItem.getNoOfGraphs());
-				System.out.println("Number of algorithms: " + reportItem.getTestList().size());
-				List<ReportTestItem> list = reportItem.getTestList();
-				for (int index = 0; index < list.size(); index++) {
-					System.out.println(list.get(index).getAlgorithmName());
-					System.out.println("Time: " + list.get(index).getTime());
-					System.out.println("K   : " + list.get(index).getK());
-					System.out.println();
-				}
-			}
-		}
+		report.build();
 		
 		logger.info("END: Testing");	
 	}
 	
 	private static Algorithm greedyColouring(Test currentTest) {
-		Algorithm greedyAlgorithm = new Algorithm("Greedy Colouring Algorithm");
+		Algorithm greedyAlgorithm = new Algorithm("Greedy");
 		greedyAlgorithm.setColoredGraph(currentTest.getInitialGraph());
 		
 		GreedyAlgorithm greedyColouring = new GreedyAlgorithm();
@@ -129,7 +105,7 @@ public class AlgorithmsTesting {
 	}
 	
 	private static Algorithm randomSequential(Test currentTest) {
-		Algorithm randomSequentialAlgorithm = new Algorithm("Random Sequential Colouring Algorithm");
+		Algorithm randomSequentialAlgorithm = new Algorithm("Random Sequential");
 		randomSequentialAlgorithm.setColoredGraph(currentTest.getInitialGraph());
 		
 		RandomSequentialAlgorithm randomSequentialColouring = new RandomSequentialAlgorithm();
@@ -143,7 +119,7 @@ public class AlgorithmsTesting {
 	}
 	
 	private static Algorithm largestFirst(Test currentTest) {
-		Algorithm largestFirstAlgorithm = new Algorithm("Largest First Colouring Algorithm");
+		Algorithm largestFirstAlgorithm = new Algorithm("Largest First");
 		largestFirstAlgorithm.setColoredGraph(currentTest.getInitialGraph());
 		
 		LargestFirstAlgorithm largestFirstColouring = new LargestFirstAlgorithm();
