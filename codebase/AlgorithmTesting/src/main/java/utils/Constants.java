@@ -2,8 +2,8 @@ package main.java.utils;
 
 public class Constants {
 
-	public final static long NUMBER_OF_GRAPHS = 10;
-	public final static long[] GRAPH_SIZE_LIST = {20, 40};
+	public final static long NUMBER_OF_GRAPHS = 25;
+	public final static long[] GRAPH_SIZE_LIST = {100, 1000};
 
 	public final static int AVG_DEGREE = 3;
 	

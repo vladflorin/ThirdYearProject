@@ -24,6 +24,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 import net.sf.dynamicreports.examples.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.chart.XyChartSerieBuilder;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.FillerBuilder;
 import net.sf.dynamicreports.report.builder.component.ImageBuilder;
@@ -92,15 +93,15 @@ public class Report {
 		report.toPdf(new FileOutputStream(new File(filePath)));
 	}
 	
-	private static void generateKTable(JasperReportBuilder mainReport, ReportItem reportItem) {
-		JasperReportBuilder report = DynamicReports.report();
-		
+	private static void generateKTable(JasperReportBuilder mainReport, ReportItem reportItem) {		
 		// StyleBuilders
 		StyleBuilder underlineBoldStyle = DynamicReports.stl.style().bold().underline();
 		StyleBuilder textTitle = DynamicReports.stl.style(underlineBoldStyle).setHorizontalAlignment(HorizontalAlignment.LEFT).setFontSize(12).setVerticalAlignment(VerticalAlignment.MIDDLE);;
 		StyleBuilder boldStyle = stl.style().bold(); 
 		StyleBuilder boldCenteredStyle = stl.style(boldStyle).setHorizontalAlignment(HorizontalAlignment.CENTER);
 		StyleBuilder columnTitleStyle  = stl.style(boldCenteredStyle).setBorder(stl.pen1Point()).setBackgroundColor(Color.LIGHT_GRAY);
+
+		JasperReportBuilder report = DynamicReports.report();
 
 		TextFieldBuilder<String> chromaticNumber = DynamicReports.cmp.text("Chromatic Number\n").setStyle(textTitle);
 		report.addTitle(chromaticNumber);
@@ -114,19 +115,37 @@ public class Report {
 		report.columns(algorithm, avg, min, max);
 		report.setDataSource(createDataSourceK(reportItem.getTestList(), reportItem.getSizeOfGraph()));
 		
-		mainReport.title(cmp.horizontalList(cmp.subreport(report)));
+		JasperReportBuilder diagram = DynamicReports.report();
+		// LIST : 0 - greedy, 1 - rs, 2- lf
+		TextColumnBuilder<Integer> graph = col.column("Graph", "graph", type.integerType());
+		// TODO: add new algorithms column + series + dataSource method
+		TextColumnBuilder<Integer> greedyK = col.column("Greedy", "greedyK", type.integerType());
+		TextColumnBuilder<Integer> rsK = col.column("RS", "rsK", type.integerType());
+		TextColumnBuilder<Integer> lfK = col.column("LF", "lfK", type.integerType());
+			
+		diagram.summary(
+				cht.xyLineChart()
+					.setXValue(graph)
+					.series(
+						cht.xySerie(greedyK), cht.xySerie(rsK), cht.xySerie(lfK))
+					.setXAxisFormat(cht.axisFormat().setLabel("Graph"))
+					.setYAxisFormat(cht.axisFormat().setLabel("K")))
+				.setDataSource(createKDiagramData(reportItem));
+									
+		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
+		
 		mainReport.addTitle(newLine);
 	}
 	
 	private static void generateTimeTable(JasperReportBuilder mainReport, ReportItem reportItem) {
-		JasperReportBuilder report = DynamicReports.report();
-
 		// StyleBuilders
 		StyleBuilder underlineBoldStyle = DynamicReports.stl.style().bold().underline();
 		StyleBuilder textTitle = DynamicReports.stl.style(underlineBoldStyle).setHorizontalAlignment(HorizontalAlignment.LEFT).setFontSize(12).setVerticalAlignment(VerticalAlignment.MIDDLE);;
 		StyleBuilder boldStyle = stl.style().bold(); 
 		StyleBuilder boldCenteredStyle = stl.style(boldStyle).setHorizontalAlignment(HorizontalAlignment.CENTER);
 		StyleBuilder columnTitleStyle  = stl.style(boldCenteredStyle).setBorder(stl.pen1Point()).setBackgroundColor(Color.LIGHT_GRAY);
+		
+		JasperReportBuilder report = DynamicReports.report();
 
 		TextFieldBuilder<String> chromaticNumber = DynamicReports.cmp.text("Execution Time (nanoseconds)\n").setStyle(textTitle);
 		report.addTitle(chromaticNumber);
@@ -139,8 +158,26 @@ public class Report {
 		report.setColumnTitleStyle(columnTitleStyle).highlightDetailEvenRows();
 		report.columns(algorithm, avg, min, max);
 		report.setDataSource(createDataSourceTime(reportItem.getTestList(), reportItem.getSizeOfGraph()));
-				
-		mainReport.title(cmp.horizontalList(cmp.subreport(report)));
+
+		JasperReportBuilder diagram = DynamicReports.report();
+		// LIST : 0 - greedy, 1 - rs, 2- lf
+		TextColumnBuilder<Integer> graph = col.column("Graph", "graph", type.integerType());
+		// TODO: add new algorithms column + series + dataSource method
+		TextColumnBuilder<Long> greedyTime = col.column("Greedy", "greedyTime", type.longType());
+		TextColumnBuilder<Long> rsTime = col.column("RS", "rsTime", type.longType());
+		TextColumnBuilder<Long> lfTime = col.column("LF", "lfTime", type.longType());
+					
+		diagram.summary(
+				cht.xyLineChart()
+						.setXValue(graph)
+						.series(
+							cht.xySerie(greedyTime), cht.xySerie(rsTime), cht.xySerie(lfTime))
+						.setXAxisFormat(cht.axisFormat().setLabel("Graph"))
+						.setYAxisFormat(cht.axisFormat().setLabel("Time (nanoseconds)")))
+					.setDataSource(createTimeDiagramData(reportItem));
+							
+		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
+		
 		mainReport.addTitle(newLine);
 	}
 	
@@ -193,6 +230,29 @@ public class Report {
 
 		return list;
 	}
+	
+	private static JRDataSource createKDiagramData(ReportItem reportItem) {
+		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK");
+		List<ReportTestItem> list = reportItem.getTestList();
+		if (list.get(0) != null) {
+			for (int index = 0; index < list.get(0).getK().size(); index++) {
+				dataSource.add(index, list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index));
+			}
+		}
+		return dataSource;
+	}
+	
+	private static JRDataSource createTimeDiagramData(ReportItem reportItem) {
+		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime");
+		List<ReportTestItem> list = reportItem.getTestList();
+		if (list.get(0) != null) {
+			for (int index = 0; index < list.get(0).getTime().size(); index++) {
+				dataSource.add(index, list.get(0).getTime().get(index), list.get(1).getTime().get(index), list.get(2).getTime().get(index));
+			}
+		}
+		return dataSource;
+	}
+	
 	public List<ReportItem> getReportItemList() {
 		return reportItemList;
 	}
