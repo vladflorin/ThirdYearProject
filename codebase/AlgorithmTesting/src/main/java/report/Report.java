@@ -110,27 +110,27 @@ public class Report {
 		TextColumnBuilder<Float> avg = col.column("Average", "avg", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 		TextColumnBuilder<Long> min = col.column("Minimum", "min", type.longType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 		TextColumnBuilder<Long> max = col.column("Maximum", "max", type.longType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
-		
+		TextColumnBuilder<Float> stdDev = col.column("Standard Deviation", "stdDev", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
+
 		report.setColumnTitleStyle(columnTitleStyle).highlightDetailEvenRows();
 		report.columns(algorithm, avg, min, max);
 		report.setDataSource(createDataSourceK(reportItem.getTestList(), reportItem.getSizeOfGraph()));
 		
 		JasperReportBuilder diagram = DynamicReports.report();
 		// LIST : 0 - greedy, 1 - rs, 2- lf
-		TextColumnBuilder<Integer> graph = col.column("Graph", "graph", type.integerType());
+		TextColumnBuilder<String> graph = col.column("Graph", "graph", type.stringType());
 		// TODO: add new algorithms column + series + dataSource method
 		TextColumnBuilder<Integer> greedyK = col.column("Greedy", "greedyK", type.integerType());
 		TextColumnBuilder<Integer> rsK = col.column("RS", "rsK", type.integerType());
 		TextColumnBuilder<Integer> lfK = col.column("LF", "lfK", type.integerType());
-			
+		
 		diagram.summary(
-				cht.xyLineChart()
-					.setXValue(graph)
+				cht.barChart()
+					.setCategory(graph)
 					.series(
-						cht.xySerie(greedyK), cht.xySerie(rsK), cht.xySerie(lfK))
-					.setXAxisFormat(cht.axisFormat().setLabel("Graph"))
-					.setYAxisFormat(cht.axisFormat().setLabel("K")))
-				.setDataSource(createKDiagramData(reportItem));
+						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK))
+					.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
+				.setDataSource(createKDiagramData(reportItem)));
 									
 		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
 		
@@ -154,27 +154,27 @@ public class Report {
 		TextColumnBuilder<Float> avg = col.column("Average", "avg", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 		TextColumnBuilder<Long> min = col.column("Minimum", "min", type.longType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 		TextColumnBuilder<Long> max = col.column("Maximum", "max", type.longType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
-		
+		TextColumnBuilder<Float> stdDev = col.column("Standard Deviation", "stdDev", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
+
 		report.setColumnTitleStyle(columnTitleStyle).highlightDetailEvenRows();
-		report.columns(algorithm, avg, min, max);
+		report.columns(algorithm, avg, min, max, stdDev);
 		report.setDataSource(createDataSourceTime(reportItem.getTestList(), reportItem.getSizeOfGraph()));
 
 		JasperReportBuilder diagram = DynamicReports.report();
 		// LIST : 0 - greedy, 1 - rs, 2- lf
-		TextColumnBuilder<Integer> graph = col.column("Graph", "graph", type.integerType());
+		TextColumnBuilder<String> graph = col.column("Graph", "graph", type.stringType());
 		// TODO: add new algorithms column + series + dataSource method
 		TextColumnBuilder<Long> greedyTime = col.column("Greedy", "greedyTime", type.longType());
 		TextColumnBuilder<Long> rsTime = col.column("RS", "rsTime", type.longType());
 		TextColumnBuilder<Long> lfTime = col.column("LF", "lfTime", type.longType());
 					
 		diagram.summary(
-				cht.xyLineChart()
-						.setXValue(graph)
+				cht.barChart()
+						.setCategory(graph)
 						.series(
-							cht.xySerie(greedyTime), cht.xySerie(rsTime), cht.xySerie(lfTime))
-						.setXAxisFormat(cht.axisFormat().setLabel("Graph"))
-						.setYAxisFormat(cht.axisFormat().setLabel("Time (nanoseconds)")))
-					.setDataSource(createTimeDiagramData(reportItem));
+							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime))
+						.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
+					.setDataSource(createTimeDiagramData(reportItem)));
 							
 		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
 		
@@ -200,7 +200,17 @@ public class Report {
 				sum = sum + kList.get(index);
 			}
 			float avg = (float) sum / kList.size();
-			list.add(new TableItem(alg, avg, min, max));
+			
+			float stdDev = 0;
+			float variance = 0;
+			for (int index = 0; index < kList.size(); index++) {
+				variance += ((kList.get(index) - avg) * (kList.get(index) - avg));
+			}
+			
+			variance = (float) variance / kList.size();
+			stdDev = (float) Math.sqrt(variance);
+			
+			list.add(new TableItem(alg, avg, min, max, stdDev));
 		}
 
 		return list;
@@ -225,7 +235,17 @@ public class Report {
 				sum = sum + timeList.get(index);
 			}
 			float avg = (float) sum / timeList.size();
-			list.add(new TableItem(alg, avg, min, max));
+			
+			float stdDev = 0;
+			float variance = 0;
+			for (int index = 0; index < timeList.size(); index++) {
+				variance += ((timeList.get(index) - avg) * (timeList.get(index) - avg));
+			}
+			
+			variance = (float) variance / timeList.size();
+			stdDev = (float) Math.sqrt(variance);
+			
+			list.add(new TableItem(alg, avg, min, max, stdDev));
 		}
 
 		return list;
@@ -236,7 +256,7 @@ public class Report {
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getK().size(); index++) {
-				dataSource.add(index, list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index));
+				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index));
 			}
 		}
 		return dataSource;
@@ -247,7 +267,7 @@ public class Report {
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getTime().size(); index++) {
-				dataSource.add(index, list.get(0).getTime().get(index), list.get(1).getTime().get(index), list.get(2).getTime().get(index));
+				dataSource.add(index + "", list.get(0).getTime().get(index), list.get(1).getTime().get(index), list.get(2).getTime().get(index));
 			}
 		}
 		return dataSource;
