@@ -9,6 +9,7 @@ import java.util.List;
 import main.java.algorithms.GreedyAlgorithm;
 import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
+import main.java.algorithms.SmallestLastAlgorithm;
 import main.java.com.GraphGenerator;
 import main.java.com.Test;
 import main.java.report.Report;
@@ -28,7 +29,7 @@ public class AlgorithmsTesting {
 
 	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
 
-	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First"};
+	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First", "Smallest Last"};
 	
 	public static void main(String[] args) throws DRException, IOException {
 		  
@@ -65,6 +66,10 @@ public class AlgorithmsTesting {
 				
 				// Largest First Algorithm Testing
 				currentTest.getAlgorithmList().add(largestFirst(currentTest));				
+				currentTest.resetInitialGraph();
+				
+				// Smallest Last Algorithm Testing
+				currentTest.getAlgorithmList().add(smallestLast(currentTest));				
 				currentTest.resetInitialGraph();
 				
 				// Clean memory
@@ -130,6 +135,20 @@ public class AlgorithmsTesting {
 		largestFirstAlgorithm.setTime(largestFirstColouring.getTime());
 		
 		return largestFirstAlgorithm;
+	}
+	
+	private static Algorithm smallestLast(Test currentTest) {
+		Algorithm smallestLastAlgorithm = new Algorithm("Smallest Last");
+		smallestLastAlgorithm.setColoredGraph(currentTest.getInitialGraph());
+		
+		SmallestLastAlgorithm smallestLastColouring = new SmallestLastAlgorithm();
+		smallestLastColouring.init(smallestLastAlgorithm.getColoredGraph());
+		smallestLastColouring.compute();
+
+		smallestLastAlgorithm.setK(smallestLastColouring.getK());
+		smallestLastAlgorithm.setTime(smallestLastColouring.getTime());
+		
+		return smallestLastAlgorithm;
 	}
 	
 	private static void validateGraphSize(long graphSize) {

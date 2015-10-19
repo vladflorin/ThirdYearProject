@@ -1,12 +1,10 @@
 package main.java.report;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,15 +14,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
-import net.sf.dynamicreports.examples.Templates;
+import main.java.utils.Constants;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.chart.XyChartSerieBuilder;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.FillerBuilder;
 import net.sf.dynamicreports.report.builder.component.ImageBuilder;
@@ -36,6 +30,7 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
 
+@SuppressWarnings("deprecation")
 public class Report {
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmss"); 
@@ -45,12 +40,19 @@ public class Report {
 	
 	private static TextFieldBuilder<String> newLine = DynamicReports.cmp.text("\n");
 
+	private static Boolean displayDiagrams = true;
+	
 	public Report() {
 		super();
 		reportItemList = new ArrayList<ReportItem>();
 	}
 	
+	@SuppressWarnings("unused")
 	public static void build() throws DRException, IOException {
+		
+		if (Constants.NUMBER_OF_GRAPHS > 25) {
+			displayDiagrams = false;
+		}
 		
 		JasperReportBuilder report = DynamicReports.report();	
 		
@@ -93,6 +95,7 @@ public class Report {
 		report.toPdf(new FileOutputStream(new File(filePath)));
 	}
 	
+	@SuppressWarnings("unused")
 	private static void generateKTable(JasperReportBuilder mainReport, ReportItem reportItem) {		
 		// StyleBuilders
 		StyleBuilder underlineBoldStyle = DynamicReports.stl.style().bold().underline();
@@ -113,26 +116,31 @@ public class Report {
 		TextColumnBuilder<Float> stdDev = col.column("Standard Deviation", "stdDev", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 
 		report.setColumnTitleStyle(columnTitleStyle).highlightDetailEvenRows();
-		report.columns(algorithm, avg, min, max);
+		report.columns(algorithm, avg, min, max, stdDev);
 		report.setDataSource(createDataSourceK(reportItem.getTestList(), reportItem.getSizeOfGraph()));
 		
 		JasperReportBuilder diagram = DynamicReports.report();
-		// LIST : 0 - greedy, 1 - rs, 2- lf
+		// LIST : 0 - greedy, 1 - rs, 2- lf, 3 - sl
 		TextColumnBuilder<String> graph = col.column("Graph", "graph", type.stringType());
 		// TODO: add new algorithms column + series + dataSource method
 		TextColumnBuilder<Integer> greedyK = col.column("Greedy", "greedyK", type.integerType());
 		TextColumnBuilder<Integer> rsK = col.column("RS", "rsK", type.integerType());
 		TextColumnBuilder<Integer> lfK = col.column("LF", "lfK", type.integerType());
+		TextColumnBuilder<Integer> slK = col.column("SL", "slK", type.integerType());
 		
 		diagram.summary(
 				cht.barChart()
 					.setCategory(graph)
 					.series(
-						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK))
+						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK), cht.serie(slK))
 					.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
 				.setDataSource(createKDiagramData(reportItem)));
 									
-		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
+		if (displayDiagrams) {
+			mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
+		} else {
+			mainReport.title(cmp.verticalList(cmp.subreport(report)));
+		}
 		
 		mainReport.addTitle(newLine);
 	}
@@ -161,22 +169,27 @@ public class Report {
 		report.setDataSource(createDataSourceTime(reportItem.getTestList(), reportItem.getSizeOfGraph()));
 
 		JasperReportBuilder diagram = DynamicReports.report();
-		// LIST : 0 - greedy, 1 - rs, 2- lf
+		// LIST : 0 - greedy, 1 - rs, 2 - lf, 3 - sl
 		TextColumnBuilder<String> graph = col.column("Graph", "graph", type.stringType());
 		// TODO: add new algorithms column + series + dataSource method
 		TextColumnBuilder<Long> greedyTime = col.column("Greedy", "greedyTime", type.longType());
 		TextColumnBuilder<Long> rsTime = col.column("RS", "rsTime", type.longType());
 		TextColumnBuilder<Long> lfTime = col.column("LF", "lfTime", type.longType());
-					
+		TextColumnBuilder<Long> slTime = col.column("SL", "slTime", type.longType());
+	
 		diagram.summary(
 				cht.barChart()
 						.setCategory(graph)
 						.series(
-							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime))
+							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime), cht.serie(slTime))
 						.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
 					.setDataSource(createTimeDiagramData(reportItem)));
 							
-		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
+		if (displayDiagrams) {
+			mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagram)));
+		} else {
+			mainReport.title(cmp.verticalList(cmp.subreport(report)));
+		}
 		
 		mainReport.addTitle(newLine);
 	}
@@ -252,22 +265,22 @@ public class Report {
 	}
 	
 	private static JRDataSource createKDiagramData(ReportItem reportItem) {
-		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK");
+		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK", "slK");
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getK().size(); index++) {
-				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index));
+				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index), list.get(3).getK().get(index));
 			}
 		}
 		return dataSource;
 	}
 	
 	private static JRDataSource createTimeDiagramData(ReportItem reportItem) {
-		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime");
+		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime", "slTime", "slTime");
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getTime().size(); index++) {
-				dataSource.add(index + "", list.get(0).getTime().get(index), list.get(1).getTime().get(index), list.get(2).getTime().get(index));
+				dataSource.add(index + "", list.get(0).getTime().get(index), list.get(1).getTime().get(index), list.get(2).getTime().get(index), list.get(3).getTime().get(index));
 			}
 		}
 		return dataSource;
