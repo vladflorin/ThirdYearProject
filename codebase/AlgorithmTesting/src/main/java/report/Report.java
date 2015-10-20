@@ -36,7 +36,7 @@ public class Report {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmss"); 
 	private static String filePath = "/Users/vladflorin/Eclipse/Documents/reports/GraphColouring Report " + dateFormat.format(new Date())+ ".pdf";
 
-	private static List<ReportItem> reportItemList;
+	private List<ReportItem> reportItemList;
 	
 	private static TextFieldBuilder<String> newLine = DynamicReports.cmp.text("\n");
 
@@ -48,7 +48,7 @@ public class Report {
 	}
 	
 	@SuppressWarnings("unused")
-	public static void build() throws DRException, IOException {
+	public void build() throws DRException, IOException {
 		
 		if (Constants.NUMBER_OF_GRAPHS > 25) {
 			displayDiagrams = false;
@@ -95,7 +95,6 @@ public class Report {
 		report.toPdf(new FileOutputStream(new File(filePath)));
 	}
 	
-	@SuppressWarnings("unused")
 	private static void generateKTable(JasperReportBuilder mainReport, ReportItem reportItem) {		
 		// StyleBuilders
 		StyleBuilder underlineBoldStyle = DynamicReports.stl.style().bold().underline();

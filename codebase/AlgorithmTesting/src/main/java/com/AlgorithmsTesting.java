@@ -44,34 +44,41 @@ public class AlgorithmsTesting {
 		for (int count = 0; count < graphSizeList.length; count++) {
 			long currentGraphSize = graphSizeList[count];
 			
+			int avgDegree = (int) (currentGraphSize / Constants.AVG_DEGREE_WEIGHT * Math.random()) + 1;
+						
 			validateGraphSize(currentGraphSize);
 			
-			logger.info("START: Testing currentGraphSize = " + currentGraphSize);
+			logger.info("START: Testing currentGraphSize = " + currentGraphSize + " avgDegree = " + avgDegree);
 			
 			List<Test> listOfTests = new ArrayList<Test>();
 
 			for (int index = 0; index < Constants.NUMBER_OF_GRAPHS; index++) {
 				logger.info("Current graph: " + index);
 
-				Test currentTest = new Test(currentGraphSize - GraphGenerator.getAvgDegree());
+				Test currentTest = new Test(currentGraphSize - GraphGenerator.getAvgDegree(), avgDegree);
 				listOfTests.add(currentTest);
-				
+				logger.info("Current graph: " + index + " graph generation");
+
 				// Greedy Algorithm Testing
 				currentTest.getAlgorithmList().add(greedyColouring(currentTest));				
 				currentTest.resetInitialGraph();
-				
+				logger.info("Current graph: " + index + " greedyColouring");
+
 				// Random Sequential Algorithm Testing
 				currentTest.getAlgorithmList().add(randomSequential(currentTest));				
 				currentTest.resetInitialGraph();
-				
+				logger.info("Current graph: " + index + " randomSequential");
+
 				// Largest First Algorithm Testing
 				currentTest.getAlgorithmList().add(largestFirst(currentTest));				
 				currentTest.resetInitialGraph();
-				
+				logger.info("Current graph: " + index + " largestFirst");
+
 				// Smallest Last Algorithm Testing
 				currentTest.getAlgorithmList().add(smallestLast(currentTest));				
 				currentTest.resetInitialGraph();
-				
+				logger.info("Current graph: " + index + " smallestLast");
+
 				// Clean memory
 				currentTest = cleanMemory(currentTest);			
 			}
@@ -92,7 +99,7 @@ public class AlgorithmsTesting {
 		
 		report.build();
 		
-		logger.info("END: Testing");	
+		logger.info("END: Testing");
 	}
 	
 	private static Algorithm greedyColouring(Test currentTest) {

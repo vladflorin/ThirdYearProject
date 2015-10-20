@@ -9,12 +9,13 @@ import org.graphstream.graph.implementations.SingleGraph;
 
 public class GraphGenerator {
 
+	private final static int avgDegreeWeight = Constants.AVG_DEGREE_WEIGHT;
 	private final static int avgDegree = Constants.AVG_DEGREE;
 
 	// Generate a random graph
 	public static Graph generate(long size) {
 		Graph graph = new SingleGraph("Random" + Math.random());
-		Generator gen = new RandomGenerator(avgDegree);		
+		Generator gen = new RandomGenerator(avgDegree);
 		gen.addSink(graph);
 		gen.begin();
 		for(int i=0; i<size; i++) {
@@ -24,8 +25,21 @@ public class GraphGenerator {
 		return graph;
 	}
 	
+	// Generate a random graph using avgDegree
+		public static Graph generate(long size, int avgDegree) {
+			Graph graph = new SingleGraph("Random" + Math.random());
+			Generator gen = new RandomGenerator(avgDegree);
+			gen.addSink(graph);
+			gen.begin();
+			for(int i=0; i<size; i++) {
+			    gen.nextEvents();
+			}
+			gen.end();
+			return graph;
+		}
+	
 	public static int getAvgDegree() {
-		return avgDegree + 1;
+		return avgDegreeWeight + 1;
 	}
 
 }

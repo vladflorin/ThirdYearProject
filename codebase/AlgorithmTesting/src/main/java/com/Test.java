@@ -3,11 +3,8 @@ package main.java.com;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.utils.Constants;
-
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 
 public class Test {
 
@@ -17,6 +14,12 @@ public class Test {
 	public Test(long graphSize) {
 		super();
 		initialGraph = GraphGenerator.generate(graphSize);
+		algorithmList = new ArrayList<Algorithm>();
+	}
+	
+	public Test(long graphSize, int avgDegree) {
+		super();
+		initialGraph = GraphGenerator.generate(graphSize, avgDegree);
 		algorithmList = new ArrayList<Algorithm>();
 	}
 

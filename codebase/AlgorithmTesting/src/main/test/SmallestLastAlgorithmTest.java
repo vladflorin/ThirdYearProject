@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.algorithms.SmallestLastAlgorithm;
 import main.java.com.GraphGenerator;
 
@@ -46,7 +45,8 @@ public class SmallestLastAlgorithmTest {
 	@Test
 	public void testSmallestLastAlgorithmGivenGraph() throws InterruptedException {		
 		Graph graph = createGraph();
-		
+		graph.display();
+		Thread.sleep(4000);
 		System.out.println("Graph size: " + graph.getNodeCount());
 		
 		SmallestLastAlgorithm smallestLast = new SmallestLastAlgorithm();
@@ -56,8 +56,8 @@ public class SmallestLastAlgorithmTest {
 		System.out.println("k: " + smallestLast.getK());
 		System.out.println("time: " + smallestLast.getTime());	
 
-		Thread.sleep(60000);
-		
+graph.display();
+Thread.sleep(10000);
 		assertNotNull(graph);
 	}
 	
