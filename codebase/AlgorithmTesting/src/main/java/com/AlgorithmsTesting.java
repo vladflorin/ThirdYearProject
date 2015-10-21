@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import main.java.algorithms.ConnectedSequentialAlgorithm;
 import main.java.algorithms.GreedyAlgorithm;
 import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
@@ -29,7 +30,7 @@ public class AlgorithmsTesting {
 
 	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
 
-	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First", "Smallest Last"};
+	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First", "Smallest Last", "Connected Sequential"};
 	
 	public static void main(String[] args) throws DRException, IOException {
 		  
@@ -78,6 +79,11 @@ public class AlgorithmsTesting {
 				currentTest.getAlgorithmList().add(smallestLast(currentTest));				
 				currentTest.resetInitialGraph();
 				logger.info("Current graph: " + index + " smallestLast");
+				
+				// Connected Sequential Algorithm Testing
+				currentTest.getAlgorithmList().add(connectedSequential(currentTest));				
+				currentTest.resetInitialGraph();
+				logger.info("Current graph: " + index + " connectedSequential");
 
 				// Clean memory
 				currentTest = cleanMemory(currentTest);			
@@ -156,6 +162,20 @@ public class AlgorithmsTesting {
 		smallestLastAlgorithm.setTime(smallestLastColouring.getTime());
 		
 		return smallestLastAlgorithm;
+	}
+	
+	private static Algorithm connectedSequential(Test currentTest) {
+		Algorithm connectedSequentialAlgorithm = new Algorithm("Connected Sequential");
+		connectedSequentialAlgorithm.setColoredGraph(currentTest.getInitialGraph());
+		
+		ConnectedSequentialAlgorithm connectedSequentialColouring = new ConnectedSequentialAlgorithm();
+		connectedSequentialColouring.init(connectedSequentialAlgorithm.getColoredGraph());
+		connectedSequentialColouring.compute();
+
+		connectedSequentialAlgorithm.setK(connectedSequentialColouring.getK());
+		connectedSequentialAlgorithm.setTime(connectedSequentialColouring.getTime());
+		
+		return connectedSequentialAlgorithm;
 	}
 	
 	private static void validateGraphSize(long graphSize) {

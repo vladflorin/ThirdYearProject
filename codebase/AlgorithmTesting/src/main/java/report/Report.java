@@ -126,12 +126,13 @@ public class Report {
 		TextColumnBuilder<Integer> rsK = col.column("RS", "rsK", type.integerType());
 		TextColumnBuilder<Integer> lfK = col.column("LF", "lfK", type.integerType());
 		TextColumnBuilder<Integer> slK = col.column("SL", "slK", type.integerType());
+		TextColumnBuilder<Integer> csK = col.column("CS", "csK", type.integerType());
 		
 		diagram.summary(
 				cht.barChart()
 					.setCategory(graph)
 					.series(
-						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK), cht.serie(slK))
+						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK), cht.serie(slK), cht.serie(csK))
 					.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
 				.setDataSource(createKDiagramData(reportItem)));
 									
@@ -154,13 +155,13 @@ public class Report {
 		
 		JasperReportBuilder report = DynamicReports.report();
 
-		TextFieldBuilder<String> chromaticNumber = DynamicReports.cmp.text("Execution Time (nanoseconds)\n").setStyle(textTitle);
+		TextFieldBuilder<String> chromaticNumber = DynamicReports.cmp.text("Execution Time (milliseconds)\n").setStyle(textTitle);
 		report.addTitle(chromaticNumber);
 		
 		TextColumnBuilder<String> algorithm = col.column("Algorithm", "algorithm", type.stringType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 		TextColumnBuilder<Float> avg = col.column("Average", "avg", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
-		TextColumnBuilder<Long> min = col.column("Minimum", "min", type.longType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
-		TextColumnBuilder<Long> max = col.column("Maximum", "max", type.longType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
+		TextColumnBuilder<Float> min = col.column("Minimum", "min", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
+		TextColumnBuilder<Float> max = col.column("Maximum", "max", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 		TextColumnBuilder<Float> stdDev = col.column("Standard Deviation", "stdDev", type.floatType()).setStyle(DynamicReports.stl.style().setHorizontalAlignment(HorizontalAlignment.CENTER));
 
 		report.setColumnTitleStyle(columnTitleStyle).highlightDetailEvenRows();
@@ -171,16 +172,17 @@ public class Report {
 		// LIST : 0 - greedy, 1 - rs, 2 - lf, 3 - sl
 		TextColumnBuilder<String> graph = col.column("Graph", "graph", type.stringType());
 		// TODO: add new algorithms column + series + dataSource method
-		TextColumnBuilder<Long> greedyTime = col.column("Greedy", "greedyTime", type.longType());
-		TextColumnBuilder<Long> rsTime = col.column("RS", "rsTime", type.longType());
-		TextColumnBuilder<Long> lfTime = col.column("LF", "lfTime", type.longType());
-		TextColumnBuilder<Long> slTime = col.column("SL", "slTime", type.longType());
-	
+		TextColumnBuilder<Float> greedyTime = col.column("Greedy", "greedyTime", type.floatType());
+		TextColumnBuilder<Float> rsTime = col.column("RS", "rsTime", type.floatType());
+		TextColumnBuilder<Float> lfTime = col.column("LF", "lfTime", type.floatType());
+		TextColumnBuilder<Float> slTime = col.column("SL", "slTime", type.floatType());
+		TextColumnBuilder<Float> csTime = col.column("CS", "csTime", type.floatType());
+
 		diagram.summary(
 				cht.barChart()
 						.setCategory(graph)
 						.series(
-							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime), cht.serie(slTime))
+							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime), cht.serie(slTime), cht.serie(csTime))
 						.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
 					.setDataSource(createTimeDiagramData(reportItem)));
 							
@@ -228,14 +230,14 @@ public class Report {
 		return list;
 	}
 	
-	private static List<TableItem> createDataSourceTime(List<ReportTestItem> testList, long graphSize) {
-		List<TableItem> list = new ArrayList<TableItem>();
+	private static List<TableItemTime> createDataSourceTime(List<ReportTestItem> testList, long graphSize) {
+		List<TableItemTime> list = new ArrayList<TableItemTime>();
 		
 		for (ReportTestItem reportTestItem : testList) {
 			String alg = reportTestItem.getAlgorithmName();
-			long min = Long.MAX_VALUE;
-			long max = -1;
-			long sum = 0;
+			float min = Float.MAX_VALUE;
+			float max = -1;
+			float sum = 0;
 			List<Long> timeList = reportTestItem.getTime();
 			for (int index = 0; index < timeList.size(); index++) {
 				if (timeList.get(index) <= min) {
@@ -257,29 +259,35 @@ public class Report {
 			variance = (float) variance / timeList.size();
 			stdDev = (float) Math.sqrt(variance);
 			
-			list.add(new TableItem(alg, avg, min, max, stdDev));
+			list.add(new TableItemTime(alg, avg, min, max, stdDev));
 		}
 
 		return list;
 	}
 	
 	private static JRDataSource createKDiagramData(ReportItem reportItem) {
-		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK", "slK");
+		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK", "slK", "csK");
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getK().size(); index++) {
-				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index), list.get(3).getK().get(index));
+				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index), list.get(3).getK().get(index), list.get(4).getK().get(index));
 			}
 		}
 		return dataSource;
 	}
 	
 	private static JRDataSource createTimeDiagramData(ReportItem reportItem) {
-		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime", "slTime", "slTime");
+		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime", "slTime", "slTime", "csTime");
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getTime().size(); index++) {
-				dataSource.add(index + "", list.get(0).getTime().get(index), list.get(1).getTime().get(index), list.get(2).getTime().get(index), list.get(3).getTime().get(index));
+				float time0 = (float) (list.get(0).getTime().get(index) / 1000000.0);
+				float time1 = (float) (list.get(1).getTime().get(index) / 1000000.0);
+				float time2 = (float) (list.get(2).getTime().get(index) / 1000000.0);
+				float time3 = (float) (list.get(3).getTime().get(index) / 1000000.0);
+				float time4 = (float) (list.get(4).getTime().get(index) / 1000000.0);
+
+				dataSource.add(index + "", time0, time1, time2, time3, time4);
 			}
 		}
 		return dataSource;
