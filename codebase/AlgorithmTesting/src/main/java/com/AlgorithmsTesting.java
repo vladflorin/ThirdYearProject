@@ -10,6 +10,7 @@ import main.java.algorithms.ConnectedSequentialAlgorithm;
 import main.java.algorithms.GreedyAlgorithm;
 import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
+import main.java.algorithms.SaturationLargestFirstAlgorithm;
 import main.java.algorithms.SmallestLastAlgorithm;
 import main.java.com.GraphGenerator;
 import main.java.com.Test;
@@ -30,7 +31,7 @@ public class AlgorithmsTesting {
 
 	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
 
-	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First", "Smallest Last", "Connected Sequential"};
+	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First", "Smallest Last", "Connected Sequential", "Saturation Largest First"};
 	
 	public static void main(String[] args) throws DRException, IOException {
 		  
@@ -84,6 +85,11 @@ public class AlgorithmsTesting {
 				currentTest.getAlgorithmList().add(connectedSequential(currentTest));				
 				currentTest.resetInitialGraph();
 				logger.info("Current graph: " + index + " connectedSequential");
+				
+				// Saturation Largest First Algorithm Testing
+				currentTest.getAlgorithmList().add(saturationLargestFirst(currentTest));				
+				currentTest.resetInitialGraph();
+				logger.info("Current graph: " + index + " saturationLargestFirst");
 
 				// Clean memory
 				currentTest = cleanMemory(currentTest);			
@@ -148,6 +154,20 @@ public class AlgorithmsTesting {
 		largestFirstAlgorithm.setTime(largestFirstColouring.getTime());
 		
 		return largestFirstAlgorithm;
+	}
+	
+	private static Algorithm saturationLargestFirst(Test currentTest) {
+		Algorithm saturationLargestFirstAlgorithm = new Algorithm("Saturation Largest First");
+		saturationLargestFirstAlgorithm.setColoredGraph(currentTest.getInitialGraph());
+		
+		SaturationLargestFirstAlgorithm saturationLargestFirstColouring = new SaturationLargestFirstAlgorithm();
+		saturationLargestFirstColouring.init(saturationLargestFirstAlgorithm.getColoredGraph());
+		saturationLargestFirstColouring.compute();
+
+		saturationLargestFirstAlgorithm.setK(saturationLargestFirstColouring.getK());
+		saturationLargestFirstAlgorithm.setTime(saturationLargestFirstColouring.getTime());
+		
+		return saturationLargestFirstAlgorithm;
 	}
 	
 	private static Algorithm smallestLast(Test currentTest) {

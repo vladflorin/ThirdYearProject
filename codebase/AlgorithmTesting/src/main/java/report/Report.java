@@ -127,12 +127,14 @@ public class Report {
 		TextColumnBuilder<Integer> lfK = col.column("LF", "lfK", type.integerType());
 		TextColumnBuilder<Integer> slK = col.column("SL", "slK", type.integerType());
 		TextColumnBuilder<Integer> csK = col.column("CS", "csK", type.integerType());
+		TextColumnBuilder<Integer> slfK = col.column("SLF", "slfK", type.integerType());
+
 		
 		diagram.summary(
 				cht.barChart()
 					.setCategory(graph)
 					.series(
-						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK), cht.serie(slK), cht.serie(csK))
+						cht.serie(greedyK), cht.serie(rsK), cht.serie(lfK), cht.serie(slK), cht.serie(csK), cht.serie(slfK))
 					.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
 				.setDataSource(createKDiagramData(reportItem)));
 									
@@ -177,12 +179,13 @@ public class Report {
 		TextColumnBuilder<Float> lfTime = col.column("LF", "lfTime", type.floatType());
 		TextColumnBuilder<Float> slTime = col.column("SL", "slTime", type.floatType());
 		TextColumnBuilder<Float> csTime = col.column("CS", "csTime", type.floatType());
+		TextColumnBuilder<Float> slfTime = col.column("SLF", "slfTime", type.floatType());
 
 		diagram.summary(
 				cht.barChart()
 						.setCategory(graph)
 						.series(
-							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime), cht.serie(slTime), cht.serie(csTime))
+							cht.serie(greedyTime), cht.serie(rsTime), cht.serie(lfTime), cht.serie(slTime), cht.serie(csTime), cht.serie(slfTime))
 						.setCategoryAxisFormat(cht.axisFormat().setLabel("Graph"))
 					.setDataSource(createTimeDiagramData(reportItem)));
 							
@@ -266,18 +269,18 @@ public class Report {
 	}
 	
 	private static JRDataSource createKDiagramData(ReportItem reportItem) {
-		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK", "slK", "csK");
+		DRDataSource dataSource = new DRDataSource("graph", "greedyK", "rsK", "lfK", "slK", "csK", "slfK");
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getK().size(); index++) {
-				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index), list.get(3).getK().get(index), list.get(4).getK().get(index));
+				dataSource.add(index + "", list.get(0).getK().get(index), list.get(1).getK().get(index), list.get(2).getK().get(index), list.get(3).getK().get(index), list.get(4).getK().get(index), list.get(5).getK().get(index));
 			}
 		}
 		return dataSource;
 	}
 	
 	private static JRDataSource createTimeDiagramData(ReportItem reportItem) {
-		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime", "slTime", "slTime", "csTime");
+		DRDataSource dataSource = new DRDataSource("graph", "greedyTime", "rsTime", "lfTime", "slTime", "csTime", "slfTime");
 		List<ReportTestItem> list = reportItem.getTestList();
 		if (list.get(0) != null) {
 			for (int index = 0; index < list.get(0).getTime().size(); index++) {
@@ -286,8 +289,9 @@ public class Report {
 				float time2 = (float) (list.get(2).getTime().get(index) / 1000000.0);
 				float time3 = (float) (list.get(3).getTime().get(index) / 1000000.0);
 				float time4 = (float) (list.get(4).getTime().get(index) / 1000000.0);
+				float time5 = (float) (list.get(5).getTime().get(index) / 1000000.0);
 
-				dataSource.add(index + "", time0, time1, time2, time3, time4);
+				dataSource.add(index + "", time0, time1, time2, time3, time4, time5);
 			}
 		}
 		return dataSource;
