@@ -1,8 +1,6 @@
 package main.java.algorithms;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import main.java.utils.Constants;
 
