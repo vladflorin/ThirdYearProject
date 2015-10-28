@@ -1,14 +1,12 @@
 package main.java.algorithms;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import main.java.utils.Constants;
 
 import org.graphstream.algorithm.Algorithm;
-import org.graphstream.graph.BreadthFirstIterator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 

@@ -3,7 +3,6 @@ package main.java.com;
 import main.java.utils.Constants;
 
 import org.graphstream.algorithm.ConnectedComponents;
-import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;

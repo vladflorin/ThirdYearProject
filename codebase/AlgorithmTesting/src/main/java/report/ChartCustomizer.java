@@ -10,6 +10,7 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.axis.ValueAxis;
 
+@SuppressWarnings("serial")
 public class ChartCustomizer implements DRIChartCustomizer, Serializable{
 
 	
