@@ -41,7 +41,7 @@ public class Report {
 
 	private List<ReportItem> reportItemList;
 		
-	private static final int diagramMax = 25;
+	private static final int diagramMax = 20;
 	
 	public Report() {
 		super();
