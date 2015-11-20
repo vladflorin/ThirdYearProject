@@ -1,4 +1,4 @@
-package main.java.com.gui.panels;
+package main.java.ui.panels;
 
 import javax.swing.JPanel;
 
@@ -8,11 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import main.java.com.utils.Constants;
+import main.java.utils.Constants;
 
 import javax.swing.JTextPane;
 
 import java.awt.Font;
+import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
@@ -28,9 +29,9 @@ public class WelcomePanel extends JPanel {
 		// Add logoLabel
 		JLabel logoLabel = new JLabel("");
 		logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		logoLabel.setIcon(new ImageIcon(Constants.LOGO_PATH));
+		logoLabel.setIcon(new ImageIcon(Constants.LOGO_PATH_M));
 		logoLabel.setBackground(Color.WHITE);
-		logoLabel.setBounds(237, 237, 640, 98);
+		logoLabel.setBounds(240, 237, 640, 98);
 		add(logoLabel);
 
 		JTextPane version = new JTextPane();
@@ -40,4 +41,5 @@ public class WelcomePanel extends JPanel {
 		version.setBounds(6, 584, 36, 16);
 		add(version);
 	}
+
 }

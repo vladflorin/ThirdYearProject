@@ -3,9 +3,8 @@ package main.java.com;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.JFrame;
-
-import main.java.com.gui.frames.MainFrame;
+import main.java.ui.frames.Clicks;
+import main.java.ui.frames.MainFrame;
 
 import org.apache.log4j.Logger;
 
@@ -23,7 +22,10 @@ public class GraphColouring {
 		logger.info("START GraphColouring application");
 		
 		// Create new JFrame
-		JFrame mainFrame = new MainFrame();
+		MainFrame mainFrame = new MainFrame();
+		mainFrame.setVisible(true);
+		
+		//Clicks click = new Clicks();
 		
 		logger.info("END GraphColouring application");
 		
