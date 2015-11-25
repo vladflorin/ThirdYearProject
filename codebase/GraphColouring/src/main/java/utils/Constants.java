@@ -6,9 +6,11 @@ public class Constants {
 	public final static int LOGO_WAIT_TIME = 5000;
 	public final static String LOGO_PATH_M = "/Users/vladflorin/Eclipse/Documents/utils/logo-medium.png";
 	public final static String LOGO_PATH_S = "/Users/vladflorin/Eclipse/Documents/utils/logo-small.png";
+	
+	public final static String INFO_ICON = "/Users/vladflorin/Eclipse/Documents/utils/info.png";
 
-	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Pink", "Violet",
-		"Azure", "Yellow", "Beige", "Bisque", "BlueViolet", "CadetBlue", 
+	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Orange", "Pink",
+		"Yellow", "Olive", "Beige", "Bisque", "BlueViolet", "CadetBlue", 
 		"Chartreuse", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", 
 		"DarkGoldenRod", "DarkGray", "DarkGrey", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", 
 		"Darkorange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", 
@@ -20,7 +22,7 @@ public class Constants {
 		"LightSlateGray", "LightSlateGrey", "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", 
 		"Maroon", "MediumAquaMarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", 
 		"MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose", "Moccasin", 
-		"NavajoWhite", "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenRod", 
+		"NavajoWhite", "OldLace", "OliveDrab", "OrangeRed", "Orchid", "PaleGoldenRod", 
 		"PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", "Plum", "PowderBlue", 
 		"Purple", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", "Sienna", 
 		"Silver", "SkyBlue", "SlateBlue", "SlateGray", "SlateGrey", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", 

@@ -31,14 +31,14 @@ public class WelcomePanel extends JPanel {
 		logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		logoLabel.setIcon(new ImageIcon(Constants.LOGO_PATH_M));
 		logoLabel.setBackground(Color.WHITE);
-		logoLabel.setBounds(240, 237, 640, 98);
+		logoLabel.setBounds(311, 272, 640, 98);
 		add(logoLabel);
 
 		JTextPane version = new JTextPane();
 		version.setEditable(false);
 		version.setFont(new Font("Candara", Font.PLAIN, 11));
 		version.setText("V1.0");
-		version.setBounds(6, 584, 36, 16);
+		version.setBounds(6, 661, 36, 16);
 		add(version);
 	}
 

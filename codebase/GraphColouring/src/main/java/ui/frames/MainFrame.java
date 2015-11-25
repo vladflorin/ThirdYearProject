@@ -24,9 +24,9 @@ public class MainFrame extends JFrame {
 		this.setResizable(false);
 		this.setVisible(true);
 
-		//container.getCardLayout().show(container, "welcomePanel");
+		container.getCardLayout().show(container, "welcomePanel");
 		
-		//Thread.sleep(3000);
+		Thread.sleep(3500);
 		
 		container.getCardLayout().show(container, "inputPanel");
 	
