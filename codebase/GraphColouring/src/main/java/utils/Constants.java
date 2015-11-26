@@ -7,7 +7,10 @@ public class Constants {
 	public final static String LOGO_PATH_M = "/Users/vladflorin/Eclipse/Documents/utils/logo-medium.png";
 	public final static String LOGO_PATH_S = "/Users/vladflorin/Eclipse/Documents/utils/logo-small.png";
 	
-	public final static String INFO_ICON = "/Users/vladflorin/Eclipse/Documents/utils/info.png";
+	public final static String LEFT_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/left_arrow.png";
+
+	public final static String RIGHT_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/right_arrow.png";
+	public final static String HOME_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/home.png";
 
 	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Orange", "Pink",
 		"Yellow", "Olive", "Beige", "Bisque", "BlueViolet", "CadetBlue", 

@@ -6,25 +6,14 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
-import java.util.EventListener;
 
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
-
-import com.lowagie.text.Font;
-
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
-import main.java.algorithms.GreedyAlgorithm;
 import main.java.utils.Constants;
-import main.java.utils.GraphGenerator;
-
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
 
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
@@ -32,35 +21,29 @@ import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
-import java.awt.GridLayout;
-
-import javax.swing.border.MatteBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.JButton;
 
 @SuppressWarnings("serial")
-public class AlgorithmPanel extends JPanel implements ViewerListener  {
+public class AlgorithmPanel extends JPanel  {
 	
+	Container container;
+
 	protected boolean loop = true;
 	
 	Graph graph = new SingleGraph("graph" + new Date());
 	
 	Viewer viewer;
 	View view;
-
-	JButton btnNewButton;
 	
-	ViewerPipe fromViewer;
+	// Navigation panel UI
+	JButton btnHomePanel;
+	JButton btnPreviousPanel;
 	
-	public AlgorithmPanel() {
+	public AlgorithmPanel(Container currentContainer) {
+		this.container = currentContainer;
+		System.out.println(this.graph.getId());
 		setupPanel();
-	}
-	
-	public AlgorithmPanel(Graph givenGraph) {
-		this.graph = Graphs.clone(givenGraph);
 	}
 
 	private void setupPanel(){
@@ -78,10 +61,6 @@ public class AlgorithmPanel extends JPanel implements ViewerListener  {
 		viewer.enableAutoLayout();
 		view = viewer.addDefaultView(false);
 		
-		fromViewer = viewer.newViewerPipe();
-        fromViewer.addViewerListener(this);
-        fromViewer.addSink(graph);
-        
 		graphPanel.add((Component) view, BorderLayout.CENTER); 
 			
 		JLabel lblNewLabel = new JLabel("");
@@ -90,48 +69,52 @@ public class AlgorithmPanel extends JPanel implements ViewerListener  {
 		add(lblNewLabel);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(928, 30, 248, 597);
-		panel_1.setBackground(Color.RED);
+		panel_1.setBorder(new LineBorder(new Color(222, 184, 135), 3, true));
+		panel_1.setBounds(928, 30, 248, 220);
+		panel_1.setBackground(new Color(250, 240, 230));
 		add(panel_1);
+				
+		JPanel navigationPanel = new JPanel();
+		navigationPanel.setLayout(null);
+		navigationPanel.setBorder(new LineBorder(new Color(34, 139, 34), 3, true));
+		navigationPanel.setBackground(new Color(240, 255, 240));
+		navigationPanel.setBounds(928, 534, 248, 93);
+		add(navigationPanel);
 		
-		btnNewButton = new JButton("Random graph");
-		btnNewButton.setBounds(48, 6, 135, 40);
-		btnNewButton.addActionListener(new GenerateGraphActionListener());
-		panel_1.setLayout(null);
+		btnHomePanel = new JButton("");
+		btnHomePanel.setIcon(new ImageIcon("/Users/vladflorin/Eclipse/Documents/utils/home.png"));
+		btnHomePanel.setBounds(96, 20, 55, 55);
+		navigationPanel.add(btnHomePanel);
 		
-		panel_1.add(btnNewButton);
-
-		new Thread(new Runnable() {
-        	public void run() {
-        		while(loop) {
-        			fromViewer.pump();
-        		}
-        	}
-        }).start();
+		btnPreviousPanel = new JButton("");
+		btnPreviousPanel.setIcon(new ImageIcon("/Users/vladflorin/Eclipse/Documents/utils/left_arrow.png"));
+		btnPreviousPanel.setBounds(29, 20, 55, 55);
+		btnPreviousPanel.addActionListener(new PreviousPanelActionListener());
+		navigationPanel.add(btnPreviousPanel);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(255, 127, 80), 3, true));
+		panel.setBackground(new Color(255, 228, 225));
+		panel.setBounds(928, 262, 248, 260);
+		add(panel);
 	}
-		
-	public JButton getBtnNewButton() {
-		return btnNewButton;
+
+	public Graph getGraph() {
+		return graph;
 	}
 
-	class GenerateGraphActionListener implements ActionListener{
+	public void setGraph(Graph graph) {
+		this.graph.clear();
+		Graphs.mergeIn(this.graph, graph);
+	}
+	
+	class PreviousPanelActionListener implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			graph.clear();
-            graph = GraphGenerator.generate(10, 3, graph);
+			container.getInputPanel().clear();
+			container.getCardLayout().show(container, "inputPanel");			
 		}
 		
-	}
-
-	public void viewClosed(String id) {
-		loop = false;
-	}
-	 
-	public void buttonPushed(String id) {
-		System.out.println("Button pushed on node "+id);
-	}
-	 
-	public void buttonReleased(String id) {
-		System.out.println("Button released on node "+id);
 	}
 }

@@ -5,27 +5,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Date;
-import java.util.EventListener;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
-
-import com.lowagie.text.Font;
-
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
-import main.java.algorithms.GreedyAlgorithm;
 import main.java.utils.Constants;
 import main.java.utils.GraphGenerator;
 import main.java.utils.Utils;
 
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
 
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
@@ -33,18 +27,16 @@ import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
-import java.awt.GridLayout;
-
-import javax.swing.border.MatteBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextField;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class InputPanel extends JPanel implements ViewerListener  {
+	
+	Container container;
 	
 	protected boolean loop = true;
 	
@@ -52,23 +44,35 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	
 	Viewer viewer;
 	View view;
-
-	JButton btnGenerateRandomGraph;
-	
 	ViewerPipe fromViewer;
 	
 	// Random Graph Generator UI
+	JButton btnGenerateRandomGraph;
 	private JTextField noOfNodesTextField;
 	int noOfNodes;
 	private JTextField avgDegreeTextField;
 	int avgDegree;
-	
 	JLabel generateRandomGraphErrorLabel;
 	
-	public InputPanel() {
+	// Upload graph UI
+	final JFileChooser fc = new JFileChooser();
+	JButton btnUploadGraph;
+	
+	// Navigation panel UI
+	JButton btnNextPanel;
+	JButton btnHomePanel;
+	JLabel nextPanelErrorLabel;
+	
+	public InputPanel(Container currentContainer) {
+		this.container = currentContainer;
 		setupPanel();
 	}
 
+	public Graph getGraph() {
+		Graph newGraph = Graphs.clone(graph);
+		return newGraph;
+	}
+	
 	private void setupPanel(){
 		setBackground(Color.WHITE);
 		setLayout(null);
@@ -98,7 +102,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		JPanel randomGeneratePanel = new JPanel();
 		randomGeneratePanel.setBorder(new LineBorder(new Color(255, 160, 122), 3, true));
 		randomGeneratePanel.setBackground(new Color(255, 250, 205));
-		randomGeneratePanel.setBounds(928, 329, 248, 129);
+		randomGeneratePanel.setBounds(928, 302, 248, 129);
 		add(randomGeneratePanel);
 		
 		btnGenerateRandomGraph = new JButton("Random graph");
@@ -147,19 +151,39 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		add(navigationPanel);
 		navigationPanel.setLayout(null);
 		
+		btnNextPanel = new JButton("");
+		btnNextPanel.setIcon(new ImageIcon(Constants.RIGHT_ICON_PATH));
+		btnNextPanel.setBounds(163, 20, 55, 55);
+		btnNextPanel.addActionListener(new NextPanelActionListener());
+		navigationPanel.add(btnNextPanel);
+		
+		btnHomePanel = new JButton("");
+		btnHomePanel.setIcon(new ImageIcon(Constants.HOME_ICON_PATH));
+		btnHomePanel.setBounds(96, 20, 55, 55);
+		navigationPanel.add(btnHomePanel);
+		
+		nextPanelErrorLabel = new JLabel("Please provide a graph as input.");
+		nextPanelErrorLabel.setForeground(Color.RED);
+		nextPanelErrorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 9));
+		nextPanelErrorLabel.setBounds(52, 71, 155, 16);
+		nextPanelErrorLabel.setVisible(false);
+		navigationPanel.add(nextPanelErrorLabel);
+		
 		JPanel uploadGraphPanel = new JPanel();
 		uploadGraphPanel.setBorder(new LineBorder(new Color(100, 149, 237), 3, true));
 		uploadGraphPanel.setBackground(new Color(224, 255, 255));
-		uploadGraphPanel.setBounds(928, 470, 248, 52);
+		uploadGraphPanel.setBounds(928, 443, 248, 79);
 		add(uploadGraphPanel);
 		uploadGraphPanel.setLayout(null);
 		
-		JButton btnUploadGraph = new JButton("Upload graph");
-		btnUploadGraph.setBounds(58, 6, 135, 40);
+		btnUploadGraph = new JButton("Upload graph");
+		btnUploadGraph.setBounds(58, 19, 135, 40);
+		btnUploadGraph.addActionListener(new UploadGraphActionListener());
 		uploadGraphPanel.add(btnUploadGraph);
 		
 		JPanel drawGraphPanel = new JPanel();
-		drawGraphPanel.setBounds(928, 30, 248, 287);
+		drawGraphPanel.setBorder(new LineBorder(Color.GRAY, 3, true));
+		drawGraphPanel.setBounds(928, 30, 248, 260);
 		add(drawGraphPanel);
 
 		new Thread(new Runnable() {
@@ -169,12 +193,16 @@ public class InputPanel extends JPanel implements ViewerListener  {
         		}
         	}
         }).start();
-	}
 		
-	public JButton getBtnNewButton() {
-		return btnGenerateRandomGraph;
 	}
 
+	public void clear() {
+		noOfNodesTextField.setText("");
+		avgDegreeTextField.setText("");
+		nextPanelErrorLabel.setVisible(false);
+		generateRandomGraphErrorLabel.setVisible(false);
+	}
+	
 	class GenerateGraphActionListener implements ActionListener{
 		private Boolean validateInputLabels() {
 			Boolean isValid = false;
@@ -207,6 +235,41 @@ public class InputPanel extends JPanel implements ViewerListener  {
 				generateRandomGraphErrorLabel.setVisible(true);
 				noOfNodesTextField.setText("");
 				avgDegreeTextField.setText("");
+			}
+		}
+		
+	}
+	
+	class UploadGraphActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			FileFilter filter = new FileNameExtensionFilter("DGS File", "dgs");
+			fc.setFileFilter(filter);
+			
+			int returnVal = fc.showOpenDialog(InputPanel.this);
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+	            File file = fc.getSelectedFile();
+	            //This is where a real application would open the file.
+	            System.out.println("Opening: " + file.getName() + ".");
+	        } else {
+	        	System.out.println("Open command cancelled by user.");
+	        }
+		}
+		
+	}
+	
+	class NextPanelActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (graph.getNodeCount() > 0) {
+				nextPanelErrorLabel.setVisible(false);
+				container.getAlgorithmPanel().setGraph(graph);
+				container.getCardLayout().show(container, "algorithmPanel");
+			} else {
+				nextPanelErrorLabel.setVisible(true);
 			}
 		}
 		
