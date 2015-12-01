@@ -23,6 +23,7 @@ public class Container extends JPanel {
 	private WelcomePanel welcomePanel;
 	private InputPanel inputPanel;
 	private AlgorithmPanel algorithmPanel;
+	private ColouringPanel colouringPanel;
 		
 	public Container() {
 		setupPanel();
@@ -38,10 +39,12 @@ public class Container extends JPanel {
 		welcomePanel = new WelcomePanel();
 		inputPanel = new InputPanel(this);
 		algorithmPanel = new AlgorithmPanel(this);
+		colouringPanel = new ColouringPanel(this);
 		
 		this.add(welcomePanel, "welcomePanel");
 		this.add(inputPanel, "inputPanel");
 		this.add(algorithmPanel, "algorithmPanel");
+		this.add(colouringPanel, "colouringPanel");
 	}
 	
 	public CardLayout getCardLayout() {
@@ -60,6 +63,12 @@ public class Container extends JPanel {
 		return algorithmPanel;
 	}
 	
-	
+	public ColouringPanel getColouringPanel() {
+		return colouringPanel;
+	}
+
+	public void setColouringPanel(ColouringPanel colouringPanel) {
+		this.colouringPanel = colouringPanel;
+	}
 
 }

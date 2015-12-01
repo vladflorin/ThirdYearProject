@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 
 import main.java.utils.Constants;
 
+import org.apache.log4j.Logger;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -24,9 +25,17 @@ import org.graphstream.ui.view.ViewerPipe;
 import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 
+import java.awt.Font;
+
+import javax.swing.JComboBox;
+
+import java.awt.Button;
+
 @SuppressWarnings("serial")
 public class AlgorithmPanel extends JPanel  {
 	
+	final static Logger logger = Logger.getLogger(AlgorithmPanel.class);
+
 	Container container;
 
 	protected boolean loop = true;
@@ -40,9 +49,14 @@ public class AlgorithmPanel extends JPanel  {
 	JButton btnHomePanel;
 	JButton btnPreviousPanel;
 	
+	// Single algorithm mode
+	JComboBox comboBox;
+	JButton btnColourGraph;
+	JButton btnTutorial;
+	JLabel singleAlgErrorLabel;
+	
 	public AlgorithmPanel(Container currentContainer) {
 		this.container = currentContainer;
-		System.out.println(this.graph.getId());
 		setupPanel();
 	}
 
@@ -73,6 +87,39 @@ public class AlgorithmPanel extends JPanel  {
 		panel_1.setBounds(928, 30, 248, 220);
 		panel_1.setBackground(new Color(250, 240, 230));
 		add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel selectSingleAlgLabel = new JLabel("Select algorithm");
+		selectSingleAlgLabel.setBounds(70, 33, 106, 16);
+		panel_1.add(selectSingleAlgLabel);
+		
+		singleAlgErrorLabel = new JLabel("Please select an algorithm.");
+		singleAlgErrorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 9));
+		singleAlgErrorLabel.setForeground(Color.RED);
+		singleAlgErrorLabel.setBounds(61, 78, 132, 16);
+		singleAlgErrorLabel.setVisible(false);
+		panel_1.add(singleAlgErrorLabel);
+		
+		comboBox = new JComboBox(Constants.ALGORITHMS);
+		comboBox.setSelectedIndex(-1);
+		comboBox.setBounds(21, 52, 202, 27);
+		comboBox.addActionListener(new SingleGraphColouringComboboxActionListener());
+		panel_1.add(comboBox);
+		
+		btnColourGraph = new JButton("Colour graph");
+		btnColourGraph.setForeground(Color.BLACK);
+		btnColourGraph.setBounds(57, 117, 132, 35);
+		btnColourGraph.addActionListener(new SingleGraphColouringActionListener());
+		panel_1.add(btnColourGraph);
+		
+		btnTutorial = new JButton("Tutorial");
+		btnTutorial.setForeground(Color.BLACK);
+		btnTutorial.setBounds(57, 164, 132, 35);
+		panel_1.add(btnTutorial);
+		
+		JLabel lblNewLabel_1 = new JLabel("--------  or  --------");
+		lblNewLabel_1.setBounds(47, 149, 157, 16);
+		panel_1.add(lblNewLabel_1);
 				
 		JPanel navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
@@ -108,13 +155,49 @@ public class AlgorithmPanel extends JPanel  {
 		Graphs.mergeIn(this.graph, graph);
 	}
 	
+	public void clear() {
+		singleAlgErrorLabel.setVisible(false);
+		comboBox.setSelectedIndex(-1);
+	}
+	
 	class PreviousPanelActionListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			logger.info("START: Change AlgorithmPanel to InputPanel");
 			container.getInputPanel().clear();
-			container.getCardLayout().show(container, "inputPanel");			
+			container.getCardLayout().show(container, "inputPanel");
+			logger.info("END: Change AlgorithmPanel to InputPanel");
+		}	
+	}
+	
+	class SingleGraphColouringActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (comboBox.getSelectedIndex() == -1) {
+				singleAlgErrorLabel.setVisible(true);
+			} else {
+				String selectedAlgorithm = (String) comboBox.getSelectedItem();
+				singleAlgErrorLabel.setVisible(false);
+				System.out.println("Selected algorithm: " + selectedAlgorithm);
+				displayColouringPanel(selectedAlgorithm);
+			}
 		}
 		
+		public void displayColouringPanel(String algorithm) {
+			logger.info("START: Change AlgorithmPanel to ColouringPanel");
+			container.getColouringPanel().clear();
+			container.getColouringPanel().setGraph(graph);
+			container.getColouringPanel().setAlgorithm(algorithm);
+			container.getColouringPanel().colourGraph();
+			container.getCardLayout().show(container, "colouringPanel");
+			logger.info("END: Change AlgorithmPanel to ColouringPanel");
+		}
+	}
+	
+	class SingleGraphColouringComboboxActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			singleAlgErrorLabel.setVisible(false);
+		}
 	}
 }

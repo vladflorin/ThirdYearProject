@@ -1,5 +1,9 @@
 package main.java.utils;
 
+import javax.swing.text.html.CSS;
+
+import sun.org.mozilla.javascript.internal.Node;
+
 public class Constants {
 
 	// Logo
@@ -12,6 +16,17 @@ public class Constants {
 	public final static String RIGHT_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/right_arrow.png";
 	public final static String HOME_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/home.png";
 
+	
+	public final static String GREEDY = "Greedy";
+	public final static String RANDOM_SEQ = "Random Sequential";
+	public final static String LARGEST_FIRST = "Largest First";
+	public final static String SMALLEST_LAST = "Smallest Last";
+	public final static String CONNECTED_SEQ = "Connected Sequential";
+	public final static String SATURATION_LF = "Saturation Largest First";
+
+	public final static String[] ALGORITHMS = {GREEDY, RANDOM_SEQ, LARGEST_FIRST, SMALLEST_LAST, CONNECTED_SEQ, SATURATION_LF};
+
+	
 	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Orange", "Pink",
 		"Yellow", "Olive", "Beige", "Bisque", "BlueViolet", "CadetBlue", 
 		"Chartreuse", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", 

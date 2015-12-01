@@ -1,12 +1,19 @@
 package main.java.ui.frames;
 
 import java.awt.Color;
+
 import javax.swing.JFrame;
+
+import org.apache.log4j.Logger;
+
+import main.java.com.GraphColouring;
 import main.java.ui.panels.Container;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
+	final static Logger logger = Logger.getLogger(MainFrame.class);
+	
 	private Container container;
 	
 	public MainFrame() throws InterruptedException {
@@ -14,7 +21,7 @@ public class MainFrame extends JFrame {
 		setupFrame();
 	}
 	
-	private void setupFrame() throws InterruptedException {			
+	private void setupFrame() throws InterruptedException {
 		// Add the containerPanel
 		this.setContentPane(container);
 		
@@ -24,9 +31,9 @@ public class MainFrame extends JFrame {
 		this.setResizable(false);
 		this.setVisible(true);
 
-		container.getCardLayout().show(container, "welcomePanel");
+		//container.getCardLayout().show(container, "welcomePanel");
 		
-		Thread.sleep(3500);
+		//Thread.sleep(3500);
 		
 		container.getCardLayout().show(container, "inputPanel");
 	

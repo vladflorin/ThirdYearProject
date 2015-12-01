@@ -13,12 +13,15 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
+import main.java.ui.frames.MainFrame;
 import main.java.utils.Constants;
 import main.java.utils.GraphGenerator;
+import main.java.utils.NodeUtils;
 import main.java.utils.Utils;
 
 import javax.swing.JButton;
 
+import org.apache.log4j.Logger;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -31,11 +34,14 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextField;
+
 import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class InputPanel extends JPanel implements ViewerListener  {
 	
+	final static Logger logger = Logger.getLogger(InputPanel.class);
+
 	Container container;
 	
 	protected boolean loop = true;
@@ -222,15 +228,21 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (validateInputLabels()) {
-				generateRandomGraphErrorLabel.setVisible(false);
-				graph.clear();
-				if (noOfNodes > avgDegree && noOfNodes != 0 && avgDegree != 0) {
-					graph = GraphGenerator.generate(noOfNodes - avgDegree - 1, avgDegree, graph);
-				} else {
-					generateRandomGraphErrorLabel.setVisible(true);
-					noOfNodesTextField.setText("");
-					avgDegreeTextField.setText("");
+				logger.info("START: generate random graph");
+				try {
+					generateRandomGraphErrorLabel.setVisible(false);
+					if (noOfNodes > avgDegree && noOfNodes != 0 && avgDegree != 0) {
+						graph.clear();
+						graph = GraphGenerator.generate(noOfNodes - avgDegree - 1, avgDegree, graph);
+					} else {
+						generateRandomGraphErrorLabel.setVisible(true);
+						noOfNodesTextField.setText("");
+						avgDegreeTextField.setText("");
+					}
+				} catch (Exception exception) { 
+					logger.error("Something went wrong." + exception);
 				}
+				logger.info("END: generate random graph");
 			} else {
 				generateRandomGraphErrorLabel.setVisible(true);
 				noOfNodesTextField.setText("");
@@ -267,7 +279,14 @@ public class InputPanel extends JPanel implements ViewerListener  {
 			if (graph.getNodeCount() > 0) {
 				nextPanelErrorLabel.setVisible(false);
 				container.getAlgorithmPanel().setGraph(graph);
-				container.getCardLayout().show(container, "algorithmPanel");
+				container.getAlgorithmPanel().clear();
+				logger.info("START: Change InputPanel to AlgorithmPanel");
+				try {
+					container.getCardLayout().show(container, "algorithmPanel");
+					logger.info("END: Change InputPanel to AlgorithmPanel");
+				} catch (Exception exception) {
+					logger.error("Something went wrong." + exception);
+				}
 			} else {
 				nextPanelErrorLabel.setVisible(true);
 			}
@@ -281,9 +300,11 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	 
 	public void buttonPushed(String id) {
 		System.out.println("Button pushed on node "+id);
+		//NodeUtils.setAsSelected(graph.getNode(id));
 	}
 	 
 	public void buttonReleased(String id) {
 		System.out.println("Button released on node "+id);
+		//NodeUtils.setAsUnselected(graph.getNode(id));
 	}
 }

@@ -17,14 +17,16 @@ public class GraphColouring {
 	final static Logger logger = Logger.getLogger(GraphColouring.class);
 
 	public static void main(String[] args) throws InterruptedException {
-				
-		logger.info("START GraphColouring application");
-		
+						
 		// Create new JFrame
-		MainFrame mainFrame = new MainFrame();
-		mainFrame.setVisible(true);
-				
-		logger.info("END GraphColouring application");
+		logger.info("START: Open MainFrame");
+		try {
+			MainFrame mainFrame = new MainFrame();
+			mainFrame.setVisible(true);
+			logger.info("END: Open MainFrame");
+		} catch (Exception e) {
+			logger.error("Something went wrong" + e);
+		}
 		
 	}
 	

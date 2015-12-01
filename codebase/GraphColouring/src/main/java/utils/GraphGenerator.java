@@ -6,6 +6,7 @@ import org.graphstream.algorithm.ConnectedComponents;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
 public class GraphGenerator {
@@ -20,6 +21,14 @@ public class GraphGenerator {
 		}
 		gen.end();
 	
+		for (Node node : graph.getNodeSet()) {
+			NodeUtils.setInitialSize(node);
+			NodeUtils.addLabel(node);
+		}
+		
+		graph.addAttribute("ui.quality");
+		graph.addAttribute("ui.antialias");
+		
 		return graph;
 	}
 
