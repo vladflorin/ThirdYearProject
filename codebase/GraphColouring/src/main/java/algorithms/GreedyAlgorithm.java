@@ -27,10 +27,11 @@ public class GreedyAlgorithm implements Algorithm{
 	public void compute() {
 		long startTime = System.nanoTime();
 		
-		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(index);				
-			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
+		for (Node currentNode : graph.getNodeSet()) {
+			if (currentNode != null) {
+				currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
+				currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
+			}
 		}
 				
 		long stopTime = System.nanoTime();

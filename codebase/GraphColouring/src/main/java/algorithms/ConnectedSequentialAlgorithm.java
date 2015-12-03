@@ -1,6 +1,7 @@
 package main.java.algorithms;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,10 +16,10 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
-	List<Integer> seq;
+	List<Node> seq;
 	
 	public void init(Graph givenGraph) {
-		graph = givenGraph;	
+		graph = givenGraph;
 		
 		// Initialise the color of each node with zero
 		initialiseGraph();
@@ -33,26 +34,31 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 	public void compute() {
 		long startTime = System.nanoTime();
 		
-		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(seq.get(index));				
+		for (Node currentNode : seq) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
+			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
 		}
 
 		long stopTime = System.nanoTime();
 		time = stopTime - startTime;
 	}
 	
-	public static List<Integer> generateBfsSequence(Graph graph) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-        
-		if (graph.getNode(0) != null) {
-			Iterator<Node> iterator = graph.getNode(0).getBreadthFirstIterator();
-			while (iterator.hasNext()) {
-				Node currentNode = iterator.next();
-				list.add(Integer.parseInt(currentNode.getId()));
+	public static List<Node> generateBfsSequence(Graph graph) {
+		List<Node> list = new ArrayList<Node>();
+	
+		for (Node node : graph.getNodeSet()) {
+			if (!list.contains(node)) {
+				Iterator<Node> iterator = node.getBreadthFirstIterator();
+				while (iterator.hasNext()) {
+					Node currentNode = iterator.next();
+					if (!list.contains(currentNode)) {
+						list.add(currentNode);
+					}
+				}
 			}
 		}
+		
+		System.out.println(list);
 		
 		return list;
 	}

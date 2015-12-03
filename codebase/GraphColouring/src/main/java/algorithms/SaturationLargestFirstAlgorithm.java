@@ -27,13 +27,16 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 	public void compute() {
 		long startTime = System.nanoTime();
 		
-		while (!isGraphFullyColoured()) {
+		int numberOfColouredNodes = 0;
+		while (numberOfColouredNodes < graph.getNodeCount()) {
 			// Find the vertex with the highest saturation
 			Node maxSaturationNode = findMaxSaturationNode();
 			
 			// Assign smallest possible colour to the minSaturationVertex
 			maxSaturationNode.setAttribute("colour", findSmallestPossibleColour(maxSaturationNode));
 			maxSaturationNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) maxSaturationNode.getAttribute("colour")] + ";");
+			
+			numberOfColouredNodes++;
 		}
 				
 		long stopTime = System.nanoTime();
@@ -61,10 +64,12 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 		Iterator<Node> connectedNodesIterator = currentNode.getNeighborNodeIterator();			
 		while (connectedNodesIterator.hasNext()){
 			Node currentLinkedNode = connectedNodesIterator.next();
-			int currentColour = currentLinkedNode.getAttribute("colour");
+			if (currentLinkedNode != null) {
+				int currentColour = currentLinkedNode.getAttribute("colour");
 			
-			if (currentColour != -1 && currentColour < k) {
-				usedColours[currentColour] = 1;
+				if (currentColour != -1 && currentColour < k) {
+					usedColours[currentColour] = 1;
+				}
 			}
 		}	
 
@@ -81,17 +86,6 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 		}
 		
 		return minColour;
-	}
-	
-	private Boolean isGraphFullyColoured() {
-		Boolean coloured = true;
-		for (Node currentNode : graph.getNodeSet()) {
-			if ((int) currentNode.getAttribute("colour") == -1) {
-				coloured = false;
-				break;
-			}
-		}
-		return coloured;
 	}
 	
 	private Node findMaxSaturationNode() {

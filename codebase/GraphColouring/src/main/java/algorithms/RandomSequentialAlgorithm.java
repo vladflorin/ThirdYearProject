@@ -16,7 +16,7 @@ public class RandomSequentialAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
-	List<Integer> randomSeq;
+	List<Node> randomSeq;
 	
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
@@ -28,29 +28,30 @@ public class RandomSequentialAlgorithm implements Algorithm{
 		k = 0;
 		
 		// Generate random sequence
-		randomSeq = generateRandomSequence(graph.getNodeCount());
+		randomSeq = generateRandomSequence(graph);
 	}
 
 	public void compute() {
 		long startTime = System.nanoTime();
 		
-		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(randomSeq.get(index));				
+		for (Node currentNode : randomSeq) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
+			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
 		}
 
 		long stopTime = System.nanoTime();
 		time = stopTime - startTime;
 	}
 	
-	public static List<Integer> generateRandomSequence(int size) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < size; i++) {
-            list.add(new Integer(i));
+	public static List<Node> generateRandomSequence(Graph graph) { 
+        List<Node> nodeList = new ArrayList<Node>();
+        
+        for (Node node : graph.getNodeSet()) {
+        	nodeList.add(node);
         }
-        Collections.shuffle(list);
-		return list;
+        
+        Collections.shuffle(nodeList);    
+		return nodeList;
 	}
 	
 	private void initialiseGraph() {

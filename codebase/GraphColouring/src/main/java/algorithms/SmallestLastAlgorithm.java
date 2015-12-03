@@ -14,10 +14,10 @@ import org.graphstream.graph.implementations.Graphs;
 
 public class SmallestLastAlgorithm implements Algorithm{
 
-	Graph graph;
+	static Graph graph;
 	int k;
 	long time;
-	List<Integer> smallestLastSeq;
+	List<Node> smallestLastSeq;
 	
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
@@ -40,18 +40,19 @@ public class SmallestLastAlgorithm implements Algorithm{
 	public void compute() {
 		long startTime = System.nanoTime();
 		
-		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(smallestLastSeq.get(index));				
+		System.out.println(smallestLastSeq);
+		
+		for (Node currentNode : graph.getNodeSet()) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
+			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
 		}
 
 		long stopTime = System.nanoTime();
 		time = stopTime - startTime;
 	}
 	
-	public static List<Integer> generateSmallestLastSequence(Graph givenGraph) throws InterruptedException {
-		ArrayList<Integer> list = new ArrayList<Integer>();
+	public static List<Node> generateSmallestLastSequence(Graph givenGraph) throws InterruptedException {
+		ArrayList<Node> list = new ArrayList<>();
        
 		while (givenGraph.getNodeCount() > 0) {
 			Node minNode = null;
@@ -65,7 +66,7 @@ public class SmallestLastAlgorithm implements Algorithm{
 			}
 		
 			if (minNode != null) {
-				list.add(Integer.parseInt(minNode.getId()));
+				list.add(graph.getNode(minNode.getId()));
 				givenGraph.removeNode(minNode);
 			}
 		}	

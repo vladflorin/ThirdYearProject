@@ -15,8 +15,8 @@ public class LargestFirstAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
-	static List<Integer> degreeList;
-	static List<Integer> largestFirstList;
+	
+	List<Node> largestFirstList;
 	
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
@@ -26,62 +26,48 @@ public class LargestFirstAlgorithm implements Algorithm{
 		
 		// Initially the chromatic number of the graph should be -1 (no color)
 		k = 0;
-		
-		// List containing the degree of each node
-		degreeList = initialiseDegreeList(graph);
-		
+
 		// Non-increasing order of degrees
-		largestFirstList = generateLargestFirstList(degreeList);
+		largestFirstList = generateLargestFirstList();		
 	}
 
 	public void compute() {
 		long startTime = System.nanoTime();
 		
-		for (int index = 0; index < graph.getNodeCount(); index++) {
-			Node currentNode = graph.getNode(largestFirstList.get(index));				
-			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
+		System.out.println(largestFirstList);
+		
+		for (Node currentNode : largestFirstList) {
+			if (currentNode != null) {
+				currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
+				currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
+			}
 		}
 				
 		long stopTime = System.nanoTime();
 		time = stopTime - startTime;
 	}
 	
-	public static List<Integer> generateLargestFirstList(List<Integer> list) {
-		List<Integer> resultList = new ArrayList<Integer>();
+	public List<Node> generateLargestFirstList() {
+		List<Node> list = new ArrayList<Node>();
 		
-		for (int index = 0; index < list.size(); index++) {
-			resultList.add(getMaxDegreeIndex(list));
-		}
-		
-		return resultList;
-	}
-	
-	public static List<Integer> initialiseDegreeList(Graph givenGraph) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		for (int index = 0; index < givenGraph.getNodeCount(); index ++) {
-			list.add(givenGraph.getNode(index).getDegree());
-		}
-		return list;
-	}
-	
-	public static int getMaxDegreeIndex(List<Integer> degreeList) {
-		int max = -1;
-		int maxIndex = -1;
-		
-		for (int index = 0; index < degreeList.size(); index++) {
-			if (degreeList.get(index) > max) {
-				max = degreeList.get(index);
-				maxIndex = index;
+		for (int index = 0; index < graph.getNodeCount(); index++) {
+			
+			Node nodeMaxDegree = null;
+			int max = -1;
+			
+			for (Node node : graph.getNodeSet()) {
+				if (node.getDegree() > max && !list.contains(node)) {
+					max = node.getDegree();
+					nodeMaxDegree = node;
+				}
+			}
+			
+			if (nodeMaxDegree != null) {
+				list.add(nodeMaxDegree);
 			}
 		}
-
-		if (max != -1) {
-			degreeList.remove(maxIndex);
-			degreeList.add(maxIndex, -2);
-		}
 		
-		return maxIndex;
+		return list;
 	}
 	
 	public void initialiseGraph() {

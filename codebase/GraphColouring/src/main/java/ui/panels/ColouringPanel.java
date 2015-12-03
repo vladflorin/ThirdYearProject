@@ -18,9 +18,11 @@ import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.algorithms.SaturationLargestFirstAlgorithm;
 import main.java.algorithms.SmallestLastAlgorithm;
 import main.java.utils.Constants;
+import main.java.utils.NodeUtils;
 
 import org.apache.log4j.Logger;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
@@ -167,6 +169,9 @@ public class ColouringPanel extends JPanel  {
 	public void setGraph(Graph graph) {
 		this.graph.clear();
 		Graphs.mergeIn(this.graph, graph);
+		for (Node node : this.graph.getNodeSet()) {
+			NodeUtils.setInitialSize(node);
+		}
 	}
 	
 	// TODO:

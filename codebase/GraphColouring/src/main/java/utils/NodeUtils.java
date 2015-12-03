@@ -14,13 +14,18 @@ public class NodeUtils {
 		return node;
 	}
 	
-	public static Node setAsSelected(Node node) {
+	public static Node setColourRed(Node node) {
 		node.addAttribute("ui.style", "fill-color: red;");
 		return node;
 	}
 	
-	public static Node setAsUnselected(Node node) {
+	public static Node setColourBlack(Node node) {
 		node.addAttribute("ui.style", "fill-color: black;");
+		return node;
+	}
+	
+	public static Node setColourGreen(Node node) {
+		node.addAttribute("ui.style", "fill-color: green;");
 		return node;
 	}
 	

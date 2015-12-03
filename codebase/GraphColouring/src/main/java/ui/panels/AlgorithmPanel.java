@@ -12,9 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
 import main.java.utils.Constants;
+import main.java.utils.NodeUtils;
 
 import org.apache.log4j.Logger;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
@@ -153,6 +155,9 @@ public class AlgorithmPanel extends JPanel  {
 	public void setGraph(Graph graph) {
 		this.graph.clear();
 		Graphs.mergeIn(this.graph, graph);
+		for (Node node : this.graph.getNodeSet()) {
+			NodeUtils.setInitialSize(node);
+		}
 	}
 	
 	public void clear() {

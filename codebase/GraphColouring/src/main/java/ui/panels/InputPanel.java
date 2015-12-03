@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import javax.swing.JFileChooser;
@@ -23,8 +24,11 @@ import javax.swing.JButton;
 
 import org.apache.log4j.Logger;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.FileSource;
+import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
@@ -69,6 +73,24 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	JButton btnHomePanel;
 	JLabel nextPanelErrorLabel;
 	
+	// Draw graph UI
+	JButton btnAddNode;
+	
+	JButton btnAddEdge;
+	Boolean btnAddEdgePressed = false;
+	
+	JButton btnRemoveNode;
+	Boolean btnRemoveNodePressed = false;
+	
+	JButton btnRemoveEdge;
+	Boolean btnRemoveEdgePressed = false;
+	
+	Node previousNode = null;
+	Node currentNode = null;
+	
+	// Remove graph UI
+	JButton btnClearGraph;
+	
 	public InputPanel(Container currentContainer) {
 		this.container = currentContainer;
 		setupPanel();
@@ -108,10 +130,10 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		JPanel randomGeneratePanel = new JPanel();
 		randomGeneratePanel.setBorder(new LineBorder(new Color(255, 160, 122), 3, true));
 		randomGeneratePanel.setBackground(new Color(255, 250, 205));
-		randomGeneratePanel.setBounds(928, 302, 248, 129);
+		randomGeneratePanel.setBounds(928, 221, 248, 129);
 		add(randomGeneratePanel);
 		
-		btnGenerateRandomGraph = new JButton("Random graph");
+		btnGenerateRandomGraph = new JButton("Random Graph");
 		btnGenerateRandomGraph.setBounds(57, 83, 135, 40);
 		btnGenerateRandomGraph.addActionListener(new GenerateGraphActionListener());
 		randomGeneratePanel.setLayout(null);
@@ -178,19 +200,73 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		JPanel uploadGraphPanel = new JPanel();
 		uploadGraphPanel.setBorder(new LineBorder(new Color(100, 149, 237), 3, true));
 		uploadGraphPanel.setBackground(new Color(224, 255, 255));
-		uploadGraphPanel.setBounds(928, 443, 248, 79);
+		uploadGraphPanel.setBounds(928, 362, 248, 79);
 		add(uploadGraphPanel);
 		uploadGraphPanel.setLayout(null);
 		
-		btnUploadGraph = new JButton("Upload graph");
+		btnUploadGraph = new JButton("Upload Graph");
 		btnUploadGraph.setBounds(58, 19, 135, 40);
 		btnUploadGraph.addActionListener(new UploadGraphActionListener());
 		uploadGraphPanel.add(btnUploadGraph);
 		
 		JPanel drawGraphPanel = new JPanel();
 		drawGraphPanel.setBorder(new LineBorder(Color.GRAY, 3, true));
-		drawGraphPanel.setBounds(928, 30, 248, 260);
+		drawGraphPanel.setBounds(928, 30, 248, 179);
 		add(drawGraphPanel);
+		drawGraphPanel.setLayout(null);
+		
+		btnAddNode = new JButton("NODE");
+		btnAddNode.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		btnAddNode.setBounds(27, 40, 83, 41);
+		btnAddNode.addActionListener(new AddNodeActionListener());
+		drawGraphPanel.add(btnAddNode);
+		
+		JLabel lblAdd = new JLabel("--- ADD ---");
+		lblAdd.setForeground(new Color(34, 139, 34));
+		lblAdd.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblAdd.setBounds(78, 24, 86, 16);
+		drawGraphPanel.add(lblAdd);
+		
+		btnAddEdge = new JButton("EDGE");
+		btnAddEdge.setToolTipText("Select two nodes to add an edge.");
+		btnAddEdge.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		btnAddEdge.setBounds(132, 40, 83, 41);
+		btnAddEdge.addActionListener(new AddEdgeActionListener());
+		btnAddEdge.setOpaque(true);
+		drawGraphPanel.add(btnAddEdge);
+		
+		JLabel lblRemove = new JLabel("--- REMOVE ---");
+		lblRemove.setForeground(new Color(255, 0, 0));
+		lblRemove.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblRemove.setBounds(65, 98, 113, 16);
+		drawGraphPanel.add(lblRemove);
+		
+		btnRemoveNode = new JButton("NODE");
+		btnRemoveNode.setToolTipText("Select the node to be removed.");
+		btnRemoveNode.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		btnRemoveNode.setBounds(27, 116, 83, 41);
+		btnRemoveNode.setOpaque(true);
+		btnRemoveNode.addActionListener(new RemoveNodeActionListener());
+		drawGraphPanel.add(btnRemoveNode);
+		
+		btnRemoveEdge = new JButton("EDGE");
+		btnRemoveEdge.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		btnRemoveEdge.setBounds(132, 116, 83, 41);
+		btnRemoveEdge.setOpaque(true);
+		btnRemoveEdge.addActionListener(new RemoveEdgeActionListener());
+		drawGraphPanel.add(btnRemoveEdge);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBorder(new LineBorder(new Color(255, 0, 0), 3, true));
+		panel.setBackground(new Color(255, 228, 225));
+		panel.setBounds(928, 453, 248, 69);
+		add(panel);
+		
+		btnClearGraph = new JButton("Clear Graph");
+		btnClearGraph.setBounds(57, 17, 135, 36);
+		btnClearGraph.addActionListener(new ClearGraphActionListener());
+		panel.add(btnClearGraph);
 
 		new Thread(new Runnable() {
         	public void run() {
@@ -207,6 +283,14 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		avgDegreeTextField.setText("");
 		nextPanelErrorLabel.setVisible(false);
 		generateRandomGraphErrorLabel.setVisible(false);
+		btnAddEdgePressed = false;
+		btnAddEdge.setBackground(null);
+
+		btnRemoveEdgePressed = false;
+		btnRemoveEdge.setBackground(null);
+
+		btnRemoveNodePressed = false;
+		btnRemoveNode.setBackground(null);
 	}
 	
 	class GenerateGraphActionListener implements ActionListener{
@@ -264,9 +348,45 @@ public class InputPanel extends JPanel implements ViewerListener  {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 	            File file = fc.getSelectedFile();
 	            //This is where a real application would open the file.
-	            System.out.println("Opening: " + file.getName() + ".");
+	            String filePath = file.getPath();
+	            logger.info("Opening: " + filePath + ".");
+	            
+	            graph.clear();
+	            
+	            FileSource fs = null;
+	            try {
+					fs = FileSourceFactory.sourceFor(filePath);
+					fs.addSink(graph);
+					try {
+						fs.begin(filePath);
+						while (fs.nextEvents()) {
+						}
+					} catch (IOException e2) {
+						logger.error(e2);
+					}
+					
+					try {
+						fs.end();
+					} catch (IOException e2) {
+						logger.error(e2);
+					} finally {
+						fs.removeSink(graph);
+					}
+					
+					for (Node node : graph.getNodeSet()) {
+						NodeUtils.setInitialSize(node);
+						NodeUtils.addLabel(node);
+					}
+					
+					graph.addAttribute("ui.quality");
+					graph.addAttribute("ui.antialias");
+					
+				} catch (IOException e1) {
+					logger.error("There was an error while upload the graph. " + e1);
+				}
+	            
 	        } else {
-	        	System.out.println("Open command cancelled by user.");
+	        	logger.info("Open command cancelled by user.");
 	        }
 		}
 		
@@ -293,18 +413,167 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		}
 		
 	}
+	
+	class ClearGraphActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if ((graph != null) && (graph.getNodeSet().size() != 0)) {
+				graph.clear();
+			}
+		}
+		
+	}
+	
+	class AddNodeActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (graph != null) {
+				String newNodeId = Integer.toString(getNewNodeId());				
+				Node currentNode = graph.addNode(newNodeId);
+				currentNode = NodeUtils.setInitialSize(graph.getNode(newNodeId));
+				currentNode = NodeUtils.addLabel(graph.getNode(newNodeId));
+			}
+		}
+		
+		private int getNewNodeId() {
+			int max = -1;
+			
+			for (Node currentNode : graph.getNodeSet())
+			{
+				if (Integer.parseInt(currentNode.getId()) > max) {
+					max = Integer.parseInt(currentNode.getId());
+				}
+			}
+			
+			return (max + 1);
+		}
+	}
+	
+	class AddEdgeActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (graph.getNodeSet().size() > 1) {
+				if (!btnAddEdgePressed) {
+					btnAddEdgePressed = true;
+					btnAddEdge.setBackground(Color.GREEN);
+					enableButtons(btnAddEdge, false);
+				} else {
+					if (previousNode != null) {
+						NodeUtils.setColourBlack(previousNode);
+						previousNode = null; 
+					}
+
+					currentNode = null;
+
+					btnAddEdgePressed = false;
+					btnAddEdge.setBackground(null);
+					enableButtons(btnAddEdge, true);
+				}
+			}
+		}		
+	}
+	
+	class RemoveNodeActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (graph.getNodeSet().size() >= 1 || btnRemoveNodePressed) {
+				if (!btnRemoveNodePressed) {
+					btnRemoveNodePressed = true;
+					btnRemoveNode.setBackground(Color.RED);
+					enableButtons(btnRemoveNode, false);
+				} else {
+					btnRemoveNodePressed = false;
+					btnRemoveNode.setBackground(null);
+					enableButtons(btnRemoveNode, true);
+				}
+			}
+		}	
+	}
+	
+	class RemoveEdgeActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (graph.getEdgeSet().size() >= 1 || btnRemoveEdgePressed) {
+				if (!btnRemoveEdgePressed) {
+					btnRemoveEdgePressed = true;
+					btnRemoveEdge.setBackground(Color.RED);
+					enableButtons(btnRemoveEdge, false);
+				} else {
+					if (previousNode != null) {
+						NodeUtils.setColourBlack(previousNode);
+						previousNode = null;
+					}
+					
+					currentNode = null;
+					
+					btnRemoveEdgePressed = false;
+					btnRemoveEdge.setBackground(null);
+					enableButtons(btnRemoveEdge, true);
+				}
+			}
+		}
+	}
 
 	public void viewClosed(String id) {
 		loop = false;
 	}
 	 
 	public void buttonPushed(String id) {
-		System.out.println("Button pushed on node "+id);
-		//NodeUtils.setAsSelected(graph.getNode(id));
+		if (btnAddEdgePressed) {
+			if (previousNode == null) {
+				previousNode = graph.getNode(id);
+				NodeUtils.setColourGreen(previousNode);
+			} else if (previousNode != graph.getNode(id) && !previousNode.hasEdgeBetween(graph.getNode(id))) {
+				currentNode = graph.getNode(id);
+				NodeUtils.setColourGreen(currentNode);
+				graph.addEdge(Math.random() + id, previousNode, currentNode);
+				
+				NodeUtils.setColourBlack(previousNode);
+				NodeUtils.setColourBlack(currentNode);
+				
+				previousNode = null;
+				currentNode = null;
+			} else if (!previousNode.hasEdgeBetween(graph.getNode(id))) {
+				NodeUtils.setColourBlack(previousNode);
+				previousNode = null;
+			}
+		} else if (btnRemoveNodePressed) {
+			graph.removeNode(id);
+		} else if (btnRemoveEdgePressed) {
+			if (previousNode == null) {
+				previousNode = graph.getNode(id);
+				NodeUtils.setColourRed(previousNode);
+			} else if (previousNode != graph.getNode(id) && previousNode.hasEdgeBetween(graph.getNode(id))) {
+				currentNode = graph.getNode(id);
+				NodeUtils.setColourRed(currentNode);
+				graph.removeEdge(previousNode, currentNode);
+				
+				NodeUtils.setColourBlack(previousNode);
+				NodeUtils.setColourBlack(currentNode);
+				
+				previousNode = null;
+				currentNode = null;
+			} else if (previousNode.equals(graph.getNode(id))) {
+				NodeUtils.setColourBlack(previousNode);
+				previousNode = null;
+			}
+		}
 	}
 	 
 	public void buttonReleased(String id) {
-		System.out.println("Button released on node "+id);
-		//NodeUtils.setAsUnselected(graph.getNode(id));
+		// TODO: Button released on node id
+	}
+	
+	public void enableButtons(JButton currentButton, Boolean enable) {
+		if (!currentButton.equals(btnAddNode)) { btnAddNode.setEnabled(enable); }
+		if (!currentButton.equals(btnAddEdge)) { btnAddEdge.setEnabled(enable); }
+		if (!currentButton.equals(btnRemoveNode)) { btnRemoveNode.setEnabled(enable); }
+		if (!currentButton.equals(btnRemoveEdge)) { btnRemoveEdge.setEnabled(enable); }
+		if (!currentButton.equals(btnGenerateRandomGraph)) { btnGenerateRandomGraph.setEnabled(enable); }
+		if (!currentButton.equals(btnUploadGraph)) { btnUploadGraph.setEnabled(enable); }
+		if (!currentButton.equals(btnHomePanel)) { btnHomePanel.setEnabled(enable); }
+		if (!currentButton.equals(btnNextPanel)) { btnNextPanel.setEnabled(enable); }
+		if (!currentButton.equals(btnClearGraph)) { btnClearGraph.setEnabled(enable); }
 	}
 }
