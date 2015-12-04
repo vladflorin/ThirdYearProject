@@ -18,6 +18,8 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 	long time;
 	List<Node> seq;
 	
+	String script = "";
+
 	public void init(Graph givenGraph) {
 		graph = givenGraph;
 		
@@ -29,6 +31,9 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 		
 		// Generate random sequence
 		seq = generateBfsSequence(graph);
+
+		script = script + "Step 1: Colouring sequence\n" + getNodeIdSequence().toString() + "\n\n"; 
+		script = script + "Step 2: Colour the nodes\n";
 	}
 
 	public void compute() {
@@ -36,7 +41,9 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 		
 		for (Node currentNode : seq) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
-			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
+			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		
+			
+			script = script + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
 		}
 
 		long stopTime = System.nanoTime();
@@ -57,9 +64,7 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 				}
 			}
 		}
-		
-		System.out.println(list);
-		
+				
 		return list;
 	}
 	
@@ -114,4 +119,17 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 		return time;
 	}
 
+	public List<Integer> getNodeIdSequence() {
+		List<Integer> result = new ArrayList<>();
+		
+		for (Node currentNode : seq) {
+			result.add(Integer.parseInt(currentNode.getId()));
+		}
+		
+		return result;
+	}
+	
+	public String getScript() {
+		return script;
+	}
 }

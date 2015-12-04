@@ -1,6 +1,8 @@
 package main.java.algorithms;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import main.java.utils.Constants;
 
@@ -13,15 +15,20 @@ public class GreedyAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
+
+	String script = "";
 	
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
 		initialiseGraph();
-		
+
 		// Initially the chromatic number of the graph should be -1 (no color)
 		k = 0;
+		
+		script = script + "Step 1: Colouring sequence\n" + getNodeIdSequence().toString() + "\n\n"; 
+		script = script + "Step 2: Colour the nodes\n";
 	}
 
 	public void compute() {
@@ -31,6 +38,7 @@ public class GreedyAlgorithm implements Algorithm{
 			if (currentNode != null) {
 				currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 				currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
+				script = script + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
 			}
 		}
 				
@@ -87,6 +95,20 @@ public class GreedyAlgorithm implements Algorithm{
 	
 	public long getTime() {
 		return time;
+	}
+	
+	public List<Integer> getNodeIdSequence() {
+		List<Integer> result = new ArrayList<>();
+		
+		for (Node currentNode : graph.getNodeSet()) {
+			result.add(Integer.parseInt(currentNode.getId()));
+		}
+		
+		return result;
+	}
+	
+	public String getScript() {
+		return script;
 	}
 
 }

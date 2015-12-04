@@ -1,6 +1,8 @@
 package main.java.algorithms;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import main.java.utils.Constants;
 
@@ -14,6 +16,10 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 	int k;
 	long time;
 	
+	List<Integer> seq = new ArrayList<>();
+
+	String script = "";
+
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
 		
@@ -36,9 +42,18 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 			maxSaturationNode.setAttribute("colour", findSmallestPossibleColour(maxSaturationNode));
 			maxSaturationNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) maxSaturationNode.getAttribute("colour")] + ";");
 			
+			seq.add(Integer.parseInt(maxSaturationNode.getId()));
+			
 			numberOfColouredNodes++;
 		}
-				
+		
+		script = script + "Step 1: Colouring sequence\n" + getNodeIdSequence().toString() + "\n\n"; 
+		script = script + "Step 2: Colour the nodes\n";
+		
+		for (Node node : graph.getNodeSet()) {
+			script = script + "Assign node " + node.getId() + " colour " + Constants.COLOURS[(int) node.getAttribute("colour")] + "\n";
+		}
+		
 		long stopTime = System.nanoTime();
 		time = stopTime - startTime;
 	}
@@ -146,5 +161,12 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 	public long getTime() {
 		return time;
 	}
-
+	
+	public List<Integer> getNodeIdSequence() {
+		return seq;
+	}
+	
+	public String getScript() {
+		return script;
+	}
 }

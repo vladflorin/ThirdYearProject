@@ -18,6 +18,8 @@ public class RandomSequentialAlgorithm implements Algorithm{
 	long time;
 	List<Node> randomSeq;
 	
+	String script = "";
+
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
 		
@@ -29,6 +31,9 @@ public class RandomSequentialAlgorithm implements Algorithm{
 		
 		// Generate random sequence
 		randomSeq = generateRandomSequence(graph);
+		
+		script = script + "Step 1: Colouring sequence\n" + getNodeIdSequence().toString() + "\n\n"; 
+		script = script + "Step 2: Colour the nodes\n";
 	}
 
 	public void compute() {
@@ -37,6 +42,7 @@ public class RandomSequentialAlgorithm implements Algorithm{
 		for (Node currentNode : randomSeq) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
+			script = script + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
 		}
 
 		long stopTime = System.nanoTime();
@@ -103,6 +109,20 @@ public class RandomSequentialAlgorithm implements Algorithm{
 	
 	public long getTime() {
 		return time;
+	}
+	
+	public List<Integer> getNodeIdSequence() {
+		List<Integer> result = new ArrayList<>();
+		
+		for (Node currentNode : randomSeq) {
+			result.add(Integer.parseInt(currentNode.getId()));
+		}
+		
+		return result;
+	}
+	
+	public String getScript() {
+		return script;
 	}
 
 }

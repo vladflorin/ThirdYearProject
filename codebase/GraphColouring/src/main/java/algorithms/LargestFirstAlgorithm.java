@@ -18,28 +18,33 @@ public class LargestFirstAlgorithm implements Algorithm{
 	
 	List<Node> largestFirstList;
 	
+	String script = "";
+
 	public void init(Graph givenGraph) {
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
 		initialiseGraph();
-		
+
 		// Initially the chromatic number of the graph should be -1 (no color)
 		k = 0;
 
 		// Non-increasing order of degrees
-		largestFirstList = generateLargestFirstList();		
+		largestFirstList = generateLargestFirstList();
+		
+		script = script + "Step 1: Colouring sequence\n" + getNodeIdSequence().toString() + "\n\n"; 
+		script = script + "Step 2: Colour the nodes\n";
 	}
 
 	public void compute() {
 		long startTime = System.nanoTime();
-		
-		System.out.println(largestFirstList);
-		
+				
 		for (Node currentNode : largestFirstList) {
 			if (currentNode != null) {
 				currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 				currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
+				
+				script = script + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
 			}
 		}
 				
@@ -121,4 +126,18 @@ public class LargestFirstAlgorithm implements Algorithm{
 		return time;
 	}
 
+	public List<Integer> getNodeIdSequence() {
+		List<Integer> result = new ArrayList<>();
+		
+		for (Node currentNode : largestFirstList) {
+			result.add(Integer.parseInt(currentNode.getId()));
+		}
+		
+		return result;
+	}
+	
+	
+	public String getScript() {
+		return script;
+	}
 }
