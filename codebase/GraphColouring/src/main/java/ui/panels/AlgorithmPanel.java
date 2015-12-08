@@ -32,6 +32,7 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 
 import java.awt.Button;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class AlgorithmPanel extends JPanel  {
@@ -56,6 +57,12 @@ public class AlgorithmPanel extends JPanel  {
 	JButton btnColourGraph;
 	JButton btnTutorial;
 	JLabel singleAlgErrorLabel;
+	
+	// Compare algorithms mode
+	JComboBox comboBoxCompare2;
+	JComboBox comboBoxCompare1;
+	JLabel compareAlgErrorLabel;
+	JButton btnCompareAlgorithms;
 	
 	public AlgorithmPanel(Container currentContainer) {
 		this.container = currentContainer;
@@ -117,6 +124,7 @@ public class AlgorithmPanel extends JPanel  {
 		btnTutorial = new JButton("Tutorial");
 		btnTutorial.setForeground(Color.BLACK);
 		btnTutorial.setBounds(57, 164, 132, 35);
+		btnTutorial.setEnabled(false);
 		panel_1.add(btnTutorial);
 		
 		JLabel lblNewLabel_1 = new JLabel("--------  or  --------");
@@ -146,6 +154,39 @@ public class AlgorithmPanel extends JPanel  {
 		panel.setBackground(new Color(255, 228, 225));
 		panel.setBounds(928, 262, 248, 260);
 		add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblSelectAlgorithm = new JLabel("Select algorithm 1");
+		lblSelectAlgorithm.setBounds(67, 29, 114, 16);
+		panel.add(lblSelectAlgorithm);
+		
+		compareAlgErrorLabel = new JLabel("Please select two algorithms.");
+		compareAlgErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		compareAlgErrorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 9));
+		compareAlgErrorLabel.setForeground(Color.RED);
+		compareAlgErrorLabel.setBounds(47, 143, 154, 16);
+		compareAlgErrorLabel.setVisible(false);
+		panel.add(compareAlgErrorLabel);
+		
+		comboBoxCompare1 = new JComboBox(Constants.ALGORITHMS);
+		comboBoxCompare1.setSelectedIndex(-1);
+		comboBoxCompare1.setBounds(23, 48, 202, 27);
+		panel.add(comboBoxCompare1);
+		
+		JLabel lblSelectAlgorithm_1 = new JLabel("Select algorithm 2");
+		lblSelectAlgorithm_1.setBounds(67, 97, 114, 16);
+		panel.add(lblSelectAlgorithm_1);
+		
+		comboBoxCompare2 = new JComboBox(Constants.ALGORITHMS);
+		comboBoxCompare2.setSelectedIndex(-1);
+		comboBoxCompare2.setBounds(23, 115, 202, 27);
+		panel.add(comboBoxCompare2);
+		
+		btnCompareAlgorithms = new JButton("Compare algorithms");
+		btnCompareAlgorithms.setForeground(Color.BLACK);
+		btnCompareAlgorithms.setBounds(47, 192, 154, 35);
+		btnCompareAlgorithms.addActionListener(new CompareAlgorithmsActionListener());
+		panel.add(btnCompareAlgorithms);
 	}
 
 	public Graph getGraph() {
@@ -163,6 +204,9 @@ public class AlgorithmPanel extends JPanel  {
 	public void clear() {
 		singleAlgErrorLabel.setVisible(false);
 		comboBox.setSelectedIndex(-1);
+		comboBoxCompare1.setSelectedIndex(-1);
+		comboBoxCompare2.setSelectedIndex(-1);
+		compareAlgErrorLabel.setVisible(false);
 	}
 	
 	class PreviousPanelActionListener implements ActionListener {
@@ -183,7 +227,7 @@ public class AlgorithmPanel extends JPanel  {
 			} else {
 				String selectedAlgorithm = (String) comboBox.getSelectedItem();
 				singleAlgErrorLabel.setVisible(false);
-				System.out.println("Selected algorithm: " + selectedAlgorithm);
+				logger.info("Selected algorithm: " + selectedAlgorithm);
 				displayColouringPanel(selectedAlgorithm);
 			}
 		}
@@ -203,6 +247,33 @@ public class AlgorithmPanel extends JPanel  {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			singleAlgErrorLabel.setVisible(false);
+		}
+	}
+	
+	class CompareAlgorithmsActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (comboBoxCompare1.getSelectedIndex() == -1 || comboBoxCompare2.getSelectedIndex() == -1) {
+				compareAlgErrorLabel.setVisible(true);
+			} else {
+				compareAlgErrorLabel.setVisible(false);
+				String selectedAlgorithm1 = (String) comboBoxCompare1.getSelectedItem();
+				String selectedAlgorithm2 = (String) comboBoxCompare2.getSelectedItem();			
+				logger.info("Selected algorithms: " + selectedAlgorithm1 + ", " + selectedAlgorithm2);
+				displayComparePanel(selectedAlgorithm1, selectedAlgorithm2);
+			}
+		}
+		
+		public void displayComparePanel(String algorithm1, String algorithm2) {
+			logger.info("START: Change AlgorithmPanel to ComparePanel");
+			container.getComparePanel().clear();
+			container.getComparePanel().setGraph1(graph);
+			container.getComparePanel().setGraph2(graph);
+			container.getComparePanel().setAlgorithm1(algorithm1);
+			container.getComparePanel().setAlgorithm2(algorithm2);
+			container.getComparePanel().colourGraph();
+			container.getCardLayout().show(container, "comparePanel");
+			logger.info("END: Change AlgorithmPanel to ComparePanel");
 		}
 	}
 }

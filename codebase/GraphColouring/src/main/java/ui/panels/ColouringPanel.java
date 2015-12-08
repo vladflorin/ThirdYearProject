@@ -58,7 +58,7 @@ import java.awt.Panel;
 @SuppressWarnings("serial")
 public class ColouringPanel extends JPanel  {
 	
-	final static Logger logger = Logger.getLogger(AlgorithmPanel.class);
+	final static Logger logger = Logger.getLogger(ColouringPanel.class);
 
 	Container container;
 	private String algorithm = null;
@@ -76,6 +76,8 @@ public class ColouringPanel extends JPanel  {
 	JTextPane txtColourSeq;
 	JTextPane panelColour;
 	JTextPane txtPaneScript;
+	JScrollPane slider;
+	JScrollPane slider2;
 	
 	JComboBox comboBoxNodeId;
 	
@@ -178,9 +180,9 @@ public class ColouringPanel extends JPanel  {
 		txtColourSeq.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		txtColourSeq.setBackground(new Color(255, 250, 240));
 		txtColourSeq.setForeground(Color.BLUE);
-		txtColourSeq.setBounds(19, 138, 206, 85);
+		txtColourSeq.setBounds(19, 138, 209, 85);
 		
-		JScrollPane slider = new JScrollPane(txtColourSeq);
+		slider = new JScrollPane(txtColourSeq);
 		slider.setBounds(19, 138, 213, 85);
 		slider.setBorder(null);
 		resultPanel.add(slider);
@@ -199,7 +201,7 @@ public class ColouringPanel extends JPanel  {
 		
 		panelColour = new JTextPane();
 		panelColour.setForeground(Color.BLACK);
-		panelColour.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		panelColour.setFont(new Font("Lucida Grande", Font.BOLD, 14));
 		panelColour.setEditable(false);
 		panelColour.setBackground(new Color(255, 250, 240));
 		panelColour.setBounds(156, 244, 63, 20);
@@ -207,12 +209,12 @@ public class ColouringPanel extends JPanel  {
 		
 		txtPaneScript = new JTextPane();
 		txtPaneScript.setForeground(Color.BLUE);
-		txtPaneScript.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
+		txtPaneScript.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		txtPaneScript.setEditable(false);
 		txtPaneScript.setBackground(new Color(255, 250, 240));
-		txtPaneScript.setBounds(19, 279, 213, 190);
+		txtPaneScript.setBounds(19, 279, 209, 190);
 		
-		JScrollPane slider2 = new JScrollPane(txtPaneScript);
+		slider2 = new JScrollPane(txtPaneScript);
 		slider2.setBounds(19, 279, 213, 190);
 		slider2.setBorder(null);
 		resultPanel.add(slider2);
@@ -230,7 +232,7 @@ public class ColouringPanel extends JPanel  {
 			greedyAlgorithm.compute();
 			lblKValue.setText(Integer.toString(greedyAlgorithm.getK()));
 			txtColourSeq.setText(greedyAlgorithm.getNodeIdSequence().toString());
-			txtPaneScript.setText(greedyAlgorithm.getScript());
+			txtPaneScript.setText(greedyAlgorithm.getScript());			
 			break;
 
 		case Constants.RANDOM_SEQ:
@@ -278,6 +280,10 @@ public class ColouringPanel extends JPanel  {
 			txtPaneScript.setText(saturationLargestFirstAlgorithm.getScript());
 			break;
 		}
+		
+		txtPaneScript.setCaretPosition(0);
+		txtColourSeq.setCaretPosition(0);
+
 	}
 	
 	public String getAlgorithm() {
