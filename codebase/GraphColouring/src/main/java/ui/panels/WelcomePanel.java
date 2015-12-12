@@ -13,15 +13,23 @@ import main.java.utils.Constants;
 import javax.swing.JTextPane;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
 	
-	public WelcomePanel() {
+	Container container;
+	
+	public WelcomePanel(Container container) {
 		setupPanel();
+		this.container = container;
 	}
 
+	JButton startButton;
+	
 	private void setupPanel(){
 		setBackground(Color.WHITE);
 		setLayout(null);
@@ -37,9 +45,23 @@ public class WelcomePanel extends JPanel {
 		JTextPane version = new JTextPane();
 		version.setEditable(false);
 		version.setFont(new Font("Candara", Font.PLAIN, 11));
-		version.setText("V1.0");
+		version.setText("V2.2");
 		version.setBounds(6, 661, 36, 16);
 		add(version);
+		
+		startButton = new JButton("START");
+		startButton.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+		startButton.setForeground(Color.BLACK);
+		startButton.setBounds(512, 420, 196, 48);
+		startButton.addActionListener(new StartButtonActionListener());
+		add(startButton);
 	}
 
+	class StartButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			container.getInputPanel().clear();
+			container.getCardLayout().show(container, "inputPanel");
+		}
+	}
 }

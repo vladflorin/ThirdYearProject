@@ -32,6 +32,7 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 
 import java.awt.Button;
+
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
@@ -141,6 +142,7 @@ public class AlgorithmPanel extends JPanel  {
 		btnHomePanel = new JButton("");
 		btnHomePanel.setIcon(new ImageIcon("/Users/vladflorin/Eclipse/Documents/utils/home.png"));
 		btnHomePanel.setBounds(96, 20, 55, 55);
+		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
 		
 		btnPreviousPanel = new JButton("");
@@ -242,6 +244,15 @@ public class AlgorithmPanel extends JPanel  {
 			logger.info("END: Change AlgorithmPanel to ColouringPanel");
 		}
 	}
+
+	class WelcomePanelActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			container.getCardLayout().show(container, "welcomePanel");		
+			// Clear all the panels
+			container.clearAllPanels();
+		}	
+	}
 	
 	class SingleGraphColouringComboboxActionListener implements ActionListener {
 		@Override
@@ -271,7 +282,8 @@ public class AlgorithmPanel extends JPanel  {
 			container.getComparePanel().setGraph2(graph);
 			container.getComparePanel().setAlgorithm1(algorithm1);
 			container.getComparePanel().setAlgorithm2(algorithm2);
-			container.getComparePanel().colourGraph();
+			container.getComparePanel().colourGraph1();
+			container.getComparePanel().colourGraph2();
 			container.getCardLayout().show(container, "comparePanel");
 			logger.info("END: Change AlgorithmPanel to ComparePanel");
 		}

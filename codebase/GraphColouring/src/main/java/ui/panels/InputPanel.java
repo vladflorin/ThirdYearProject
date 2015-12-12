@@ -188,6 +188,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		btnHomePanel = new JButton("");
 		btnHomePanel.setIcon(new ImageIcon(Constants.HOME_ICON_PATH));
 		btnHomePanel.setBounds(96, 20, 55, 55);
+		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
 		
 		nextPanelErrorLabel = new JLabel("Please provide a graph as input.");
@@ -412,6 +413,15 @@ public class InputPanel extends JPanel implements ViewerListener  {
 			}
 		}
 		
+	}
+	
+	class WelcomePanelActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			container.getCardLayout().show(container, "welcomePanel");		
+			// Clear all the panels
+			container.clearAllPanels();
+		}	
 	}
 	
 	class ClearGraphActionListener implements ActionListener {

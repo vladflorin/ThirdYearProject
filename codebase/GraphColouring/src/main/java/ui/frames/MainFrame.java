@@ -31,12 +31,8 @@ public class MainFrame extends JFrame {
 		this.setResizable(false);
 		this.setVisible(true);
 
-		//container.getCardLayout().show(container, "welcomePanel");
-		
-		//Thread.sleep(3500);
-		
-		container.getCardLayout().show(container, "inputPanel");
-	
+		container.getCardLayout().show(container, "welcomePanel");
+					
 		// Close application
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); 
 	}

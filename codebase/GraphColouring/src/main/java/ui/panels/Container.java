@@ -37,7 +37,7 @@ public class Container extends JPanel {
 	}
 	
 	private void setupContainer() {
-		welcomePanel = new WelcomePanel();
+		welcomePanel = new WelcomePanel(this);
 		inputPanel = new InputPanel(this);
 		algorithmPanel = new AlgorithmPanel(this);
 		colouringPanel = new ColouringPanel(this);
@@ -48,6 +48,13 @@ public class Container extends JPanel {
 		this.add(algorithmPanel, "algorithmPanel");
 		this.add(colouringPanel, "colouringPanel");
 		this.add(comparePanel, "comparePanel");
+	}
+	
+	public void clearAllPanels() {
+		inputPanel.clear();
+		algorithmPanel.clear();
+		colouringPanel.clear();
+		comparePanel.clear();
 	}
 	
 	public CardLayout getCardLayout() {

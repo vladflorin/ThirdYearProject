@@ -130,6 +130,7 @@ public class ColouringPanel extends JPanel  {
 		btnHomePanel = new JButton("");
 		btnHomePanel.setIcon(new ImageIcon("/Users/vladflorin/Eclipse/Documents/utils/home.png"));
 		btnHomePanel.setBounds(96, 20, 55, 55);
+		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
 		
 		btnPreviousPanel = new JButton("");
@@ -329,6 +330,15 @@ public class ColouringPanel extends JPanel  {
 			container.getAlgorithmPanel().clear();
 			container.getCardLayout().show(container, "algorithmPanel");
 			logger.info("END: Change ColouringPanel to AlgorithmPanel");
+		}	
+	}
+	
+	class WelcomePanelActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			container.getCardLayout().show(container, "welcomePanel");		
+			// Clear all the panels
+			container.clearAllPanels();
 		}	
 	}
 	
