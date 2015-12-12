@@ -55,6 +55,7 @@ public class Container extends JPanel {
 		algorithmPanel.clear();
 		colouringPanel.clear();
 		comparePanel.clear();
+		inputPanel.clearGraph();
 	}
 	
 	public CardLayout getCardLayout() {

@@ -101,6 +101,10 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		return newGraph;
 	}
 	
+	public void clearGraph() {
+		graph.clear();
+	}
+	
 	private void setupPanel(){
 		setBackground(Color.WHITE);
 		setLayout(null);

@@ -60,7 +60,7 @@ public class WelcomePanel extends JPanel {
 	class StartButtonActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			container.getInputPanel().clear();
+			container.clearAllPanels();
 			container.getCardLayout().show(container, "inputPanel");
 		}
 	}
