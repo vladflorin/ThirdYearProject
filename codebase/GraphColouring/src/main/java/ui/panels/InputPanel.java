@@ -128,7 +128,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 			
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(17, 636, 250, 38);
-		lblNewLabel.setIcon(new ImageIcon(Constants.LOGO_PATH_S));
+		lblNewLabel.setIcon(new ImageIcon(getClass().getResource(Constants.LOGO_PATH_S)));
 		add(lblNewLabel);
 		
 		JPanel randomGeneratePanel = new JPanel();
@@ -184,13 +184,13 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		navigationPanel.setLayout(null);
 		
 		btnNextPanel = new JButton("");
-		btnNextPanel.setIcon(new ImageIcon(Constants.RIGHT_ICON_PATH));
+		btnNextPanel.setIcon(new ImageIcon(getClass().getResource(Constants.RIGHT_ICON_PATH)));
 		btnNextPanel.setBounds(163, 20, 55, 55);
 		btnNextPanel.addActionListener(new NextPanelActionListener());
 		navigationPanel.add(btnNextPanel);
 		
 		btnHomePanel = new JButton("");
-		btnHomePanel.setIcon(new ImageIcon(Constants.HOME_ICON_PATH));
+		btnHomePanel.setIcon(new ImageIcon(getClass().getResource(Constants.HOME_ICON_PATH)));
 		btnHomePanel.setBounds(96, 20, 55, 55);
 		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
@@ -201,6 +201,12 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		nextPanelErrorLabel.setBounds(52, 71, 155, 16);
 		nextPanelErrorLabel.setVisible(false);
 		navigationPanel.add(nextPanelErrorLabel);
+		
+		JButton btnReport = new JButton("");
+		btnReport.setToolTipText("Generate Report");
+		btnReport.setIcon(new ImageIcon(getClass().getResource(Constants.CHART_ICON_PATH)));
+		btnReport.setBounds(29, 20, 55, 55);
+		navigationPanel.add(btnReport);
 		
 		JPanel uploadGraphPanel = new JPanel();
 		uploadGraphPanel.setBorder(new LineBorder(new Color(100, 149, 237), 3, true));

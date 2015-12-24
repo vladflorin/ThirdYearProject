@@ -8,14 +8,15 @@ public class Constants {
 
 	// Logo
 	public final static int LOGO_WAIT_TIME = 5000;
-	public final static String LOGO_PATH_M = "/Users/vladflorin/Eclipse/Documents/utils/logo-medium.png";
-	public final static String LOGO_PATH_S = "/Users/vladflorin/Eclipse/Documents/utils/logo-small.png";
+	public final static String LOGO_PATH_M = "/images/logo-medium.png";
+	public final static String LOGO_PATH_S = "/images/logo-small.png";
 	
-	public final static String LEFT_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/left_arrow.png";
+	public final static String LEFT_ICON_PATH = "/images/left_arrow.png";
 
-	public final static String RIGHT_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/right_arrow.png";
-	public final static String HOME_ICON_PATH = "/Users/vladflorin/Eclipse/Documents/utils/home.png";
+	public final static String RIGHT_ICON_PATH = "/images/right_arrow.png";
+	public final static String HOME_ICON_PATH = "/images/home.png";
 
+	public final static String CHART_ICON_PATH = "/images/chart.png";
 	
 	public final static String GREEDY = "Greedy";
 	public final static String RANDOM_SEQ = "Random Sequential";

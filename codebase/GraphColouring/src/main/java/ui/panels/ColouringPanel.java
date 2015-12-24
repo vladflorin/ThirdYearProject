@@ -117,7 +117,7 @@ public class ColouringPanel extends JPanel  {
 			
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(17, 636, 250, 38);
-		lblNewLabel.setIcon(new ImageIcon(Constants.LOGO_PATH_S));
+		lblNewLabel.setIcon(new ImageIcon(getClass().getResource(Constants.LOGO_PATH_S)));
 		add(lblNewLabel);
 				
 		JPanel navigationPanel = new JPanel();
@@ -128,13 +128,13 @@ public class ColouringPanel extends JPanel  {
 		add(navigationPanel);
 		
 		btnHomePanel = new JButton("");
-		btnHomePanel.setIcon(new ImageIcon("/Users/vladflorin/Eclipse/Documents/utils/home.png"));
+		btnHomePanel.setIcon(new ImageIcon(getClass().getResource(Constants.HOME_ICON_PATH)));
 		btnHomePanel.setBounds(96, 20, 55, 55);
 		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
 		
 		btnPreviousPanel = new JButton("");
-		btnPreviousPanel.setIcon(new ImageIcon("/Users/vladflorin/Eclipse/Documents/utils/left_arrow.png"));
+		btnPreviousPanel.setIcon(new ImageIcon(getClass().getResource(Constants.LEFT_ICON_PATH)));
 		btnPreviousPanel.setBounds(29, 20, 55, 55);
 		btnPreviousPanel.addActionListener(new PreviousPanelActionListener());
 		navigationPanel.add(btnPreviousPanel);

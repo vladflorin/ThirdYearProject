@@ -37,7 +37,7 @@ public class WelcomePanel extends JPanel {
 		// Add logoLabel
 		JLabel logoLabel = new JLabel("");
 		logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		logoLabel.setIcon(new ImageIcon(Constants.LOGO_PATH_M));
+		logoLabel.setIcon(new ImageIcon(getClass().getResource(Constants.LOGO_PATH_M)));
 		logoLabel.setBackground(Color.WHITE);
 		logoLabel.setBounds(311, 272, 640, 98);
 		add(logoLabel);

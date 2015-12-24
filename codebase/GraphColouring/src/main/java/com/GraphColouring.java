@@ -25,7 +25,7 @@ public class GraphColouring {
 			mainFrame.setVisible(true);
 			logger.info("END: Open MainFrame");
 		} catch (Exception e) {
-			logger.error("Something went wrong" + e);
+			logger.error("Something went wrong" + e.getStackTrace());
 		}
 		
 	}
