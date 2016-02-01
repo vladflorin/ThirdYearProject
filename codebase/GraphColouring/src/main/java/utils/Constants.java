@@ -18,6 +18,9 @@ public class Constants {
 
 	public final static String CHART_ICON_PATH = "/images/chart.png";
 	
+	public final static String REPORT_SPINNER = "/images/spinner.gif";
+	public final static String REPORT_SPINNER2 = "/images/spinner2.gif";
+	
 	public final static String GREEDY = "Greedy";
 	public final static String RANDOM_SEQ = "Random Sequential";
 	public final static String LARGEST_FIRST = "Largest First";
@@ -26,7 +29,6 @@ public class Constants {
 	public final static String SATURATION_LF = "Saturation Largest First";
 
 	public final static String[] ALGORITHMS = {GREEDY, RANDOM_SEQ, LARGEST_FIRST, SMALLEST_LAST, CONNECTED_SEQ, SATURATION_LF};
-
 	
 	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Orange", "Pink",
 		"Yellow", "Olive", "Beige", "Bisque", "BlueViolet", "CadetBlue", 

@@ -1,6 +1,8 @@
 package main.java.ui.frames;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
@@ -32,7 +34,7 @@ public class MainFrame extends JFrame {
 		this.setVisible(true);
 
 		container.getCardLayout().show(container, "welcomePanel");
-					
+		
 		// Close application
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); 
 	}

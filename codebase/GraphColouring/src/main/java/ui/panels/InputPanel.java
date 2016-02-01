@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
+import main.java.ui.frames.GenerateReportFrame;
 import main.java.ui.frames.MainFrame;
 import main.java.utils.Constants;
 import main.java.utils.GraphGenerator;
@@ -72,6 +75,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	JButton btnNextPanel;
 	JButton btnHomePanel;
 	JLabel nextPanelErrorLabel;
+	JButton btnReport;
 	
 	// Draw graph UI
 	JButton btnAddNode;
@@ -202,10 +206,11 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		nextPanelErrorLabel.setVisible(false);
 		navigationPanel.add(nextPanelErrorLabel);
 		
-		JButton btnReport = new JButton("");
+		btnReport = new JButton("");
 		btnReport.setToolTipText("Generate Report");
 		btnReport.setIcon(new ImageIcon(getClass().getResource(Constants.CHART_ICON_PATH)));
 		btnReport.setBounds(29, 20, 55, 55);
+		btnReport.addActionListener(new GenerateReportActionListener());
 		navigationPanel.add(btnReport);
 		
 		JPanel uploadGraphPanel = new JPanel();
@@ -511,6 +516,15 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		}	
 	}
 	
+	class GenerateReportActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			logger.info("Generate Report Button pressed.");
+			JFrame reportGeneratorFrame = new GenerateReportFrame();
+			reportGeneratorFrame.setVisible(true);
+		}	
+	}
+	
 	class RemoveEdgeActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -595,5 +609,6 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		if (!currentButton.equals(btnHomePanel)) { btnHomePanel.setEnabled(enable); }
 		if (!currentButton.equals(btnNextPanel)) { btnNextPanel.setEnabled(enable); }
 		if (!currentButton.equals(btnClearGraph)) { btnClearGraph.setEnabled(enable); }
+		if (!currentButton.equals(btnReport)) { btnReport.setEnabled(enable); }
 	}
 }
