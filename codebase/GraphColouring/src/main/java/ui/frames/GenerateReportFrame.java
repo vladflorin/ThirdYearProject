@@ -13,7 +13,7 @@ public class GenerateReportFrame extends JFrame {
 	
 	public GenerateReportFrame() {
 		
-		GenerateReportPanel panel = new GenerateReportPanel();
+		GenerateReportPanel panel = new GenerateReportPanel(this);
 		panel.setBounds(0, 0, 545, 298);
 
 		

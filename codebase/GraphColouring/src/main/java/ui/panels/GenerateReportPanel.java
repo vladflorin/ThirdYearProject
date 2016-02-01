@@ -11,8 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
 
@@ -21,6 +25,8 @@ import main.java.utils.Utils;
 
 @SuppressWarnings("serial")
 public class GenerateReportPanel extends JPanel {
+	
+	JFrame parent;
 	
 	final static Logger logger = Logger.getLogger(InputPanel.class);
 
@@ -33,7 +39,17 @@ public class GenerateReportPanel extends JPanel {
 	JLabel lblErrorMessage;
 	JLabel lblSpinner;
 	
+	JLabel lblTrue;
+	JLabel lblFalse;
+	
 	public GenerateReportPanel() {
+		
+	}
+	
+	public GenerateReportPanel(JFrame givenFrame) {
+		
+		this.parent = givenFrame;
+		
 		setBorder(null);
 		setBackground(Color.WHITE);
 		setLayout(null);
@@ -67,7 +83,7 @@ public class GenerateReportPanel extends JPanel {
 		
 		lblSpinner = new JLabel("");
 		lblSpinner.setIcon(new ImageIcon(GenerateReportPanel.class.getResource(Constants.REPORT_SPINNER2)));
-		lblSpinner.setBounds(254, 220, 76, 61);
+		lblSpinner.setBounds(252, 218, 76, 61);
 		lblSpinner.setVisible(false);
 		add(lblSpinner);
 		
@@ -82,12 +98,58 @@ public class GenerateReportPanel extends JPanel {
 		lblErrorMessage.setBounds(179, 148, 214, 37);
 		lblErrorMessage.setVisible(false);
 		add(lblErrorMessage);
+		
+		lblTrue = new JLabel("Successfully generated the report.");
+		lblTrue.setForeground(new Color(34, 139, 34));
+		lblTrue.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblTrue.setBounds(171, 230, 236, 37);
+		lblTrue.setVisible(false);
+		add(lblTrue);
+		
+		lblFalse = new JLabel("Failed to generate the report.");
+		lblFalse.setForeground(new Color(255, 0, 0));
+		lblFalse.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblFalse.setBounds(190, 230, 206, 37);
+		lblFalse.setVisible(false);
+		add(lblFalse);
+	}
+	
+	class ReportGenerator extends SwingWorker<Boolean, Integer>
+	{
+	    protected Boolean doInBackground() throws Exception
+	    {
+	    	parent.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	    	// GENERATE REPORT TODO
+	        return Utils.printOK(500000);
+	    }
+
+	    protected void done()
+	    {
+	        try
+	        {
+	        	parent.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        	
+	        	if (get()) {
+	        		lblTrue.setVisible(true);
+	        		lblFalse.setVisible(false);
+	        	} else {
+	        		lblTrue.setVisible(false);
+	        		lblFalse.setVisible(true);
+	        	}
+	        	
+	        	lblSpinner.setVisible(false);
+	        }
+	        catch (Exception e)
+	        {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 	
 	class GenerateGraphActionListener implements ActionListener{
 		private Boolean validateInputLabels() {
 			Boolean isValid = false;
-			
+			    
 			String noOfGraphsString = txtFieldNoOfGraphs.getText();
 			String sizeOfGraphString = txtFieldSizeGraphs.getText();
 			
@@ -102,9 +164,18 @@ public class GenerateReportPanel extends JPanel {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			lblTrue.setVisible(false);
+			lblFalse.setVisible(false);
+			
 			if (validateInputLabels()) {
 				lblErrorMessage.setVisible(false);
 				
+				logger.info("START: Generate Report");
+				lblSpinner.setVisible(true);
+
+				new ReportGenerator().execute();
+
+				logger.info("END: Generate Report");
 				
 			} else {
 				lblErrorMessage.setVisible(true);
