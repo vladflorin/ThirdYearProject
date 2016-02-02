@@ -37,7 +37,10 @@ import net.sf.jasperreports.engine.JRDataSource;
 public class Report {
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmss"); 
-	private static String filePath = "/Users/vladflorin/Eclipse/Documents/reports/GraphColouring Report " + dateFormat.format(new Date())+ ".pdf";
+	private static String filePath;
+	
+	private static TextFieldBuilder<String> newLine = DynamicReports.cmp.text("\n");
+
 
 	private List<ReportItem> reportItemList;
 		
@@ -46,6 +49,13 @@ public class Report {
 	public Report() {
 		super();
 		reportItemList = new ArrayList<ReportItem>();
+		filePath = "/Users/vladflorin/Eclipse/Documents/reports/GraphColouring Report " + dateFormat.format(new Date())+ ".pdf";
+	}
+	
+	public Report(String location) {
+		super();
+		reportItemList = new ArrayList<ReportItem>();
+		filePath = location + "/GraphColouring Report " + dateFormat.format(new Date())+ ".pdf";
 	}
 	
 	@SuppressWarnings("unused")
@@ -81,13 +91,14 @@ public class Report {
 			currentReport.title(DynamicReports.cmp.horizontalFlowList(title, img).newRow().newRow().add(filler));
 			
 			TextFieldBuilder<String> testNumber = DynamicReports.cmp.text("\nTest " + (++count)).setStyle(headingLeft);
-			TextFieldBuilder<String> sizeOfGraph = DynamicReports.cmp.text("Graph size: " + reportItem.getSizeOfGraph() + "; Number of graphs: " + reportItem.getNoOfGraphs() + "\n").setStyle(textLeft);
+			TextFieldBuilder<String> sizeOfGraph = DynamicReports.cmp.text("Number of graphs: " + reportItem.getNoOfGraphs() + " (number of nodes: " + reportItem.getSizeOfGraph() + ")\n").setStyle(textLeft);
 			
-			currentReport.addTitle(testNumber);
+			//currentReport.addTitle(testNumber);
+			currentReport.addTitle(newLine);
 			currentReport.addTitle(sizeOfGraph);
 
 			MultiPageListBuilder builder = cmp.multiPageList();
-		    builder.setSplitType(SplitType.PREVENT);
+		    builder.setSplitType(SplitType.IMMEDIATE);
 		     
 		    builder.add(cmp.subreport(generateKTable(reportItem)));
 		    builder.add(cmp.subreport(generateTimeTable(reportItem)));
@@ -157,6 +168,7 @@ public class Report {
 		diagrams.title(builder);
 
 		mainReport.title(cmp.verticalList(cmp.subreport(report), cmp.subreport(diagrams)));
+		mainReport.addTitle(newLine);
 		
 		return mainReport;
 	}

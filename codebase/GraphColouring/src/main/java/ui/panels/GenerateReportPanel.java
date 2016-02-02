@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
 
+import main.java.com.AlgorithmsTestingUI;
 import main.java.utils.Constants;
 import main.java.utils.Utils;
 
@@ -120,7 +121,17 @@ public class GenerateReportPanel extends JPanel {
 	    {
 	    	parent.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	    	// GENERATE REPORT TODO
-	        return Utils.printOK(500000);
+	    	AlgorithmsTestingUI algTesting = new AlgorithmsTestingUI();
+	    	boolean result = false;
+	    	try {
+				result = algTesting.createReport(noOfGraphs, sizeGraphs);
+			} catch (Exception exception) {
+				logger.error("Something went wrong: " + exception);
+				lblSpinner.setVisible(true);
+				lblTrue.setVisible(false);
+        		lblFalse.setVisible(true);
+			}
+	        return result;
 	    }
 
 	    protected void done()
@@ -159,6 +170,10 @@ public class GenerateReportPanel extends JPanel {
 				sizeGraphs = Integer.parseInt(sizeOfGraphString);
 			}
 			
+			if ((noOfGraphs <= 0) || (sizeGraphs <=0)) {
+				isValid = false;
+			}
+			
 			return isValid;
 		}
 		
@@ -172,9 +187,9 @@ public class GenerateReportPanel extends JPanel {
 				
 				logger.info("START: Generate Report");
 				lblSpinner.setVisible(true);
-
+				
 				new ReportGenerator().execute();
-
+				
 				logger.info("END: Generate Report");
 				
 			} else {

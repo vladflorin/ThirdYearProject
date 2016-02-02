@@ -22,31 +22,37 @@ import net.sf.dynamicreports.report.exception.DRException;
 
 import org.apache.log4j.Logger;
 
-public class AlgorithmsTesting {
+public class AlgorithmsTestingUI {
 
 	static {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    System.setProperty("current.date", dateFormat.format(new Date()));
 	}
 
-	final static Logger logger = Logger.getLogger(AlgorithmsTesting.class);
+	final static Logger logger = Logger.getLogger(AlgorithmsTestingUI.class);
 
 	private static String[] algorithmNames = {"Greedy", "Random Sequential", "Largest First", "Smallest Last", "Connected Sequential", "Saturation Largest First"};
 	
-	public static void main(String[] args) throws DRException, IOException {
+	public void AlgorithmsTestingUI() {
+	}
+	
+	public boolean createReport(long noOfGraphs, long sizeGraph) throws DRException, IOException {
 		  
+		boolean result = false;
+		
 		logger.info("START: Testing");
 		
-		long[] graphSizeList = Constants.GRAPH_SIZE_LIST;
+		long[] graphSizeList = {sizeGraph};
 		
 		validateGraphSizeList(graphSizeList);
 		
-		Report report = new Report();
+		// Save Report on Desktop
+		Report report = new Report(System.getProperty("user.home") + "/Desktop");
 		
 		for (int count = 0; count < graphSizeList.length; count++) {
 			long currentGraphSize = graphSizeList[count];
 			
-			int avgDegree = ((int) (currentGraphSize / Constants.AVG_DEGREE_WEIGHT) + 1) % 25;
+			int avgDegree = ((int) (currentGraphSize / Constants.AVG_DEGREE_WEIGHT)) % 25;
 						
 			validateGraphSize(currentGraphSize);
 			
@@ -54,7 +60,7 @@ public class AlgorithmsTesting {
 			
 			List<Test> listOfTests = new ArrayList<Test>();
 
-			for (int index = 0; index < Constants.NUMBER_OF_GRAPHS; index++) {
+			for (int index = 0; index < noOfGraphs; index++) {
 				logger.info("Current graph: " + index);
 
 				Test currentTest = new Test(currentGraphSize - GraphGenerator.getAvgDegree(), avgDegree);
@@ -99,10 +105,12 @@ public class AlgorithmsTesting {
 			
 			try {
 				logger.info("START: Generate ReportItem element for graphSize = " + currentGraphSize);
-				reportItem = generateReportItem(listOfTests, currentGraphSize);
+				reportItem = generateReportItem(listOfTests, currentGraphSize, noOfGraphs);
 				report.getReportItemList().add(reportItem);
+				result = true;
 				logger.info("END: Generate ReportItem element for graphSize = " + currentGraphSize);
 			} catch (Exception e) {
+				result = false;
 				logger.info("Something went wrong while generating the reportItem" , e);
 			}
 			
@@ -112,6 +120,8 @@ public class AlgorithmsTesting {
 		report.build();
 		
 		logger.info("END: Testing");
+		
+		return result;
 	}
 	
 	private static Algorithm greedyColouring(Test currentTest) {
@@ -201,7 +211,6 @@ public class AlgorithmsTesting {
 	private static void validateGraphSize(long graphSize) {
 		if (graphSize <= (Constants.AVG_DEGREE + 1)) {
 			logger.error("Something went wrong. The graphSize should be more than " + (Constants.AVG_DEGREE + 1));
-			System.exit(1);
 		}
 	}
 	
@@ -217,11 +226,11 @@ public class AlgorithmsTesting {
 		return currentTest;
 	}
 	
-	private static ReportItem generateReportItem(List<Test> list, long currentGraphSize) {
+	private static ReportItem generateReportItem(List<Test> list, long currentGraphSize, long noOfGraphs) {
 		ReportItem reportItem = new ReportItem();
 		
 		for (int algorithmIndex = 0; algorithmIndex < algorithmNames.length; algorithmIndex++) {
-			reportItem.setNoOfGraphs(Constants.NUMBER_OF_GRAPHS);
+			reportItem.setNoOfGraphs(noOfGraphs);
 			reportItem.setSizeOfGraph(currentGraphSize);
 			
 			ReportTestItem reportTestItem = new ReportTestItem();
