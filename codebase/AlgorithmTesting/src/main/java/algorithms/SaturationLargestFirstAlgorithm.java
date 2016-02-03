@@ -14,7 +14,11 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 	int k;
 	long time;
 	
+	long startTime;
+	
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
@@ -24,9 +28,7 @@ public class SaturationLargestFirstAlgorithm implements Algorithm{
 		k = 0;
 	}
 
-	public void compute() {
-		long startTime = System.nanoTime();
-		
+	public void compute() {		
 		while (!isGraphFullyColoured()) {
 			// Find the vertex with the highest saturation
 			Node maxSaturationNode = findMaxSaturationNode();

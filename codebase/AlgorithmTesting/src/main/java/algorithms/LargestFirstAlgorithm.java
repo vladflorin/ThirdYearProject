@@ -15,10 +15,15 @@ public class LargestFirstAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
+	
+	long startTime;
+
 	static List<Integer> degreeList;
 	static List<Integer> largestFirstList;
 	
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
@@ -34,9 +39,7 @@ public class LargestFirstAlgorithm implements Algorithm{
 		largestFirstList = generateLargestFirstList(degreeList);
 	}
 
-	public void compute() {
-		long startTime = System.nanoTime();
-		
+	public void compute() {		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
 			Node currentNode = graph.getNode(largestFirstList.get(index));				
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));

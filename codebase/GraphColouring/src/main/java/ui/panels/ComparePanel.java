@@ -78,12 +78,14 @@ public class ComparePanel extends JPanel  {
 	// Results UI 1
 	JLabel lblAlgorithmName1;
 	JLabel lblKValue1;
+	JLabel lblTime1;
 	JTextPane txtColourSeq1;
 	JScrollPane slider1;
 	JLabel lblAlg1;
 	
 	// Results UI 2
 	JLabel lblAlgorithmName2;
+	JLabel lblTime2;
 	JLabel lblKValue2;
 	JLabel lblAlg2;
 	JTextPane txtColourSeq2;
@@ -159,14 +161,14 @@ public class ComparePanel extends JPanel  {
 		lblAlgorithmName1.setFont(new Font("Lucida Grande", Font.BOLD, 14));
 		lblAlgorithmName1.setForeground(Color.RED);
 		lblAlgorithmName1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAlgorithmName1.setBounds(29, 35, 191, 27);
+		lblAlgorithmName1.setBounds(29, 25, 191, 27);
 		resultPanel1.add(lblAlgorithmName1);
 		
 		JLabel lblChromaticNumber = new JLabel();
 		lblChromaticNumber.setText("Chromatic number:");
 		lblChromaticNumber.setForeground(Color.BLACK);
 		lblChromaticNumber.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-		lblChromaticNumber.setBounds(19, 92, 135, 27);
+		lblChromaticNumber.setBounds(20, 64, 135, 27);
 		resultPanel1.add(lblChromaticNumber);
 		
 		lblKValue1 = new JLabel();
@@ -174,7 +176,7 @@ public class ComparePanel extends JPanel  {
 		lblKValue1.setText("--");
 		lblKValue1.setForeground(Color.BLUE);
 		lblKValue1.setFont(new Font("Lucida Grande", Font.BOLD, 17));
-		lblKValue1.setBounds(144, 92, 63, 27);
+		lblKValue1.setBounds(157, 64, 63, 27);
 		resultPanel1.add(lblKValue1);
 		
 		JLabel lblColouringSeq = new JLabel();
@@ -196,6 +198,21 @@ public class ComparePanel extends JPanel  {
 		slider1.setBorder(null);
 		resultPanel1.add(slider1);
 		
+		JLabel lblExecTime1 = new JLabel();
+		lblExecTime1.setText("Execution time (ms):");
+		lblExecTime1.setForeground(Color.BLACK);
+		lblExecTime1.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblExecTime1.setBounds(20, 89, 147, 27);
+		resultPanel1.add(lblExecTime1);
+		
+		lblTime1 = new JLabel();
+		lblTime1.setText("--");
+		lblTime1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTime1.setForeground(new Color(34, 139, 34));
+		lblTime1.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblTime1.setBounds(157, 89, 63, 27);
+		resultPanel1.add(lblTime1);
+		
 		JPanel resultPanel2 = new JPanel();
 		resultPanel2.setLayout(null);
 		resultPanel2.setBorder(new LineBorder(new Color(165, 42, 42), 3, true));
@@ -208,14 +225,14 @@ public class ComparePanel extends JPanel  {
 		lblAlgorithmName2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlgorithmName2.setForeground(Color.RED);
 		lblAlgorithmName2.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		lblAlgorithmName2.setBounds(30, 35, 191, 27);
+		lblAlgorithmName2.setBounds(30, 25, 191, 27);
 		resultPanel2.add(lblAlgorithmName2);
 		
 		JLabel label_1 = new JLabel();
 		label_1.setText("Chromatic number:");
 		label_1.setForeground(Color.BLACK);
 		label_1.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-		label_1.setBounds(19, 92, 135, 27);
+		label_1.setBounds(19, 64, 135, 27);
 		resultPanel2.add(label_1);
 		
 		lblKValue2 = new JLabel();
@@ -223,7 +240,7 @@ public class ComparePanel extends JPanel  {
 		lblKValue2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblKValue2.setForeground(Color.BLUE);
 		lblKValue2.setFont(new Font("Lucida Grande", Font.BOLD, 17));
-		lblKValue2.setBounds(144, 92, 63, 27);
+		lblKValue2.setBounds(157, 64, 63, 27);
 		resultPanel2.add(lblKValue2);
 		
 		JLabel label_3 = new JLabel();
@@ -252,6 +269,21 @@ public class ComparePanel extends JPanel  {
 		slider2.setBounds(19, 147, 217, 85);
 		slider2.setBorder(null);
 		resultPanel2.add(slider2);
+		
+		JLabel lblExecTime2 = new JLabel();
+		lblExecTime2.setText("Execution time (ms):");
+		lblExecTime2.setForeground(Color.BLACK);
+		lblExecTime2.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblExecTime2.setBounds(19, 89, 147, 27);
+		resultPanel2.add(lblExecTime2);
+		
+		lblTime2 = new JLabel();
+		lblTime2.setText("--");
+		lblTime2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTime2.setForeground(new Color(34, 139, 34));
+		lblTime2.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblTime2.setBounds(157, 89, 63, 27);
+		resultPanel2.add(lblTime2);
 				
 		JPanel graph2Panel = new JPanel();
 		graph2Panel.setBorder(new LineBorder(UIManager.getColor("window"), 2, true));
@@ -294,6 +326,7 @@ public class ComparePanel extends JPanel  {
 			greedyAlgorithm.init(graph1);
 			greedyAlgorithm.compute();
 			lblKValue1.setText(Integer.toString(greedyAlgorithm.getK()));
+			lblTime1.setText(String.valueOf((float) (greedyAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq1.setText(greedyAlgorithm.getNodeIdSequence().toString());
 			break;
 
@@ -302,6 +335,7 @@ public class ComparePanel extends JPanel  {
 			randomSequentialAlgorithm.init(graph1);
 			randomSequentialAlgorithm.compute();
 			lblKValue1.setText(Integer.toString(randomSequentialAlgorithm.getK()));
+			lblTime1.setText(String.valueOf((float) (randomSequentialAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq1.setText(randomSequentialAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -310,6 +344,7 @@ public class ComparePanel extends JPanel  {
 			largestFirstAlgorithm.init(graph1);
 			largestFirstAlgorithm.compute();
 			lblKValue1.setText(Integer.toString(largestFirstAlgorithm.getK()));
+			lblTime1.setText(String.valueOf((float) (largestFirstAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq1.setText(largestFirstAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -318,6 +353,7 @@ public class ComparePanel extends JPanel  {
 			smallestLastAlgorithm.init(graph1);
 			smallestLastAlgorithm.compute();
 			lblKValue1.setText(Integer.toString(smallestLastAlgorithm.getK()));
+			lblTime1.setText(String.valueOf((float) (smallestLastAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq1.setText(smallestLastAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -326,6 +362,7 @@ public class ComparePanel extends JPanel  {
 			connectedSequentialAlgorithm.init(graph1);
 			connectedSequentialAlgorithm.compute();
 			lblKValue1.setText(Integer.toString(connectedSequentialAlgorithm.getK()));
+			lblTime1.setText(String.valueOf((float) (connectedSequentialAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq1.setText(connectedSequentialAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -334,6 +371,7 @@ public class ComparePanel extends JPanel  {
 			saturationLargestFirstAlgorithm.init(graph1);
 			saturationLargestFirstAlgorithm.compute();
 			lblKValue1.setText(Integer.toString(saturationLargestFirstAlgorithm.getK()));
+			lblTime1.setText(String.valueOf((float) (saturationLargestFirstAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq1.setText(saturationLargestFirstAlgorithm.getNodeIdSequence().toString());
 			break;
 		}	
@@ -351,6 +389,7 @@ public class ComparePanel extends JPanel  {
 			greedyAlgorithm.init(graph2);
 			greedyAlgorithm.compute();
 			lblKValue2.setText(Integer.toString(greedyAlgorithm.getK()));
+			lblTime2.setText(String.valueOf((float) (greedyAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq2.setText(greedyAlgorithm.getNodeIdSequence().toString());
 			break;
 
@@ -359,6 +398,7 @@ public class ComparePanel extends JPanel  {
 			randomSequentialAlgorithm.init(graph2);
 			randomSequentialAlgorithm.compute();
 			lblKValue2.setText(Integer.toString(randomSequentialAlgorithm.getK()));
+			lblTime2.setText(String.valueOf((float) (randomSequentialAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq2.setText(randomSequentialAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -367,6 +407,7 @@ public class ComparePanel extends JPanel  {
 			largestFirstAlgorithm.init(graph2);
 			largestFirstAlgorithm.compute();
 			lblKValue2.setText(Integer.toString(largestFirstAlgorithm.getK()));
+			lblTime2.setText(String.valueOf((float) (largestFirstAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq2.setText(largestFirstAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -375,6 +416,7 @@ public class ComparePanel extends JPanel  {
 			smallestLastAlgorithm.init(graph2);
 			smallestLastAlgorithm.compute();
 			lblKValue2.setText(Integer.toString(smallestLastAlgorithm.getK()));
+			lblTime2.setText(String.valueOf((float) (smallestLastAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq2.setText(smallestLastAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -383,6 +425,7 @@ public class ComparePanel extends JPanel  {
 			connectedSequentialAlgorithm.init(graph2);
 			connectedSequentialAlgorithm.compute();
 			lblKValue2.setText(Integer.toString(connectedSequentialAlgorithm.getK()));
+			lblTime2.setText(String.valueOf((float) (connectedSequentialAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq2.setText(connectedSequentialAlgorithm.getNodeIdSequence().toString());
 			break;
 			
@@ -391,6 +434,7 @@ public class ComparePanel extends JPanel  {
 			saturationLargestFirstAlgorithm.init(graph2);
 			saturationLargestFirstAlgorithm.compute();
 			lblKValue2.setText(Integer.toString(saturationLargestFirstAlgorithm.getK()));
+			lblTime2.setText(String.valueOf((float) (saturationLargestFirstAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq2.setText(saturationLargestFirstAlgorithm.getNodeIdSequence().toString());
 			break;
 		}	
@@ -456,12 +500,14 @@ public class ComparePanel extends JPanel  {
 		// Algorithm 1
 		lblAlgorithmName1.setText("Algorithm 1");
 		lblAlg1.setText("Algorithm 1");
+		lblTime1.setText("--");
 		lblKValue1.setText("--");
 		txtColourSeq1.setText("");
 		
 		// Algorithm 2
 		lblAlgorithmName2.setText("Algorithm 2");
 		lblAlg2.setText("Algorithm 2");
+		lblTime2.setText("--");
 		lblKValue2.setText("--");
 		txtColourSeq2.setText("");
 	}

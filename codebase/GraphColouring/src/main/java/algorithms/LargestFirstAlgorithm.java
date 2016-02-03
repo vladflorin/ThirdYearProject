@@ -16,11 +16,15 @@ public class LargestFirstAlgorithm implements Algorithm{
 	int k;
 	long time;
 	
+	long startTime;
+
 	List<Node> largestFirstList;
 	
 	String script = "";
 
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
@@ -37,8 +41,6 @@ public class LargestFirstAlgorithm implements Algorithm{
 	}
 
 	public void compute() {
-		long startTime = System.nanoTime();
-				
 		for (Node currentNode : largestFirstList) {
 			if (currentNode != null) {
 				currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));

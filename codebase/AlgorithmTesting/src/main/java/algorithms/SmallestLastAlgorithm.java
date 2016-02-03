@@ -17,9 +17,14 @@ public class SmallestLastAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
+	
+	long startTime;
+
 	List<Integer> smallestLastSeq;
 	
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
@@ -37,9 +42,7 @@ public class SmallestLastAlgorithm implements Algorithm{
 		}
 	}
 
-	public void compute() {
-		long startTime = System.nanoTime();
-		
+	public void compute() {		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
 			Node currentNode = graph.getNode(smallestLastSeq.get(index));				
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));

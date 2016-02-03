@@ -30,6 +30,8 @@ public class Constants {
 
 	public final static String[] ALGORITHMS = {GREEDY, RANDOM_SEQ, LARGEST_FIRST, SMALLEST_LAST, CONNECTED_SEQ, SATURATION_LF};
 	
+	public final static String[] ALGORITHMS_TUTORIAL = {GREEDY, RANDOM_SEQ, LARGEST_FIRST, SMALLEST_LAST, CONNECTED_SEQ};
+	
 	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Orange", "Pink",
 		"Yellow", "Olive", "Beige", "Bisque", "BlueViolet", "CadetBlue", 
 		"Chartreuse", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", 

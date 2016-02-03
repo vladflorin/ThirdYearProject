@@ -56,8 +56,12 @@ public class AlgorithmPanel extends JPanel  {
 	// Single algorithm mode
 	JComboBox comboBox;
 	JButton btnColourGraph;
-	JButton btnTutorial;
 	JLabel singleAlgErrorLabel;
+	
+	// Tutorial mode
+	JComboBox comboBox_1;
+	JLabel lblErrorTutorial;
+	JButton btnTutorial;
 	
 	// Compare algorithms mode
 	JComboBox comboBoxCompare2;
@@ -94,43 +98,33 @@ public class AlgorithmPanel extends JPanel  {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(222, 184, 135), 3, true));
-		panel_1.setBounds(928, 30, 248, 220);
+		panel_1.setBounds(928, 30, 248, 126);
 		panel_1.setBackground(new Color(250, 240, 230));
 		add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel selectSingleAlgLabel = new JLabel("Select algorithm");
-		selectSingleAlgLabel.setBounds(70, 33, 106, 16);
+		selectSingleAlgLabel.setBounds(71, 16, 106, 16);
 		panel_1.add(selectSingleAlgLabel);
 		
 		singleAlgErrorLabel = new JLabel("Please select an algorithm.");
 		singleAlgErrorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 9));
 		singleAlgErrorLabel.setForeground(Color.RED);
-		singleAlgErrorLabel.setBounds(61, 78, 132, 16);
+		singleAlgErrorLabel.setBounds(57, 60, 132, 16);
 		singleAlgErrorLabel.setVisible(false);
 		panel_1.add(singleAlgErrorLabel);
 		
 		comboBox = new JComboBox(Constants.ALGORITHMS);
 		comboBox.setSelectedIndex(-1);
-		comboBox.setBounds(21, 52, 202, 27);
+		comboBox.setBounds(20, 32, 202, 27);
 		comboBox.addActionListener(new SingleGraphColouringComboboxActionListener());
 		panel_1.add(comboBox);
 		
 		btnColourGraph = new JButton("Colour graph");
 		btnColourGraph.setForeground(Color.BLACK);
-		btnColourGraph.setBounds(57, 117, 132, 35);
+		btnColourGraph.setBounds(57, 78, 132, 35);
 		btnColourGraph.addActionListener(new SingleGraphColouringActionListener());
 		panel_1.add(btnColourGraph);
-		
-		btnTutorial = new JButton("Tutorial");
-		btnTutorial.setForeground(Color.BLACK);
-		btnTutorial.setBounds(57, 164, 132, 35);
-		btnTutorial.setEnabled(false);
-		panel_1.add(btnTutorial);
-		
-		JLabel lblNewLabel_1 = new JLabel("--------  or  --------");
-		lblNewLabel_1.setBounds(47, 149, 157, 16);
-		panel_1.add(lblNewLabel_1);
 				
 		JPanel navigationPanel = new JPanel();
 		navigationPanel.setLayout(null);
@@ -154,41 +148,70 @@ public class AlgorithmPanel extends JPanel  {
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(255, 127, 80), 3, true));
 		panel.setBackground(new Color(255, 228, 225));
-		panel.setBounds(928, 262, 248, 260);
+		panel.setBounds(928, 308, 248, 214);
 		add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblSelectAlgorithm = new JLabel("Select algorithm 1");
-		lblSelectAlgorithm.setBounds(67, 29, 114, 16);
+		lblSelectAlgorithm.setBounds(71, 19, 114, 16);
 		panel.add(lblSelectAlgorithm);
 		
 		compareAlgErrorLabel = new JLabel("Please select two algorithms.");
 		compareAlgErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		compareAlgErrorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 9));
 		compareAlgErrorLabel.setForeground(Color.RED);
-		compareAlgErrorLabel.setBounds(47, 143, 154, 16);
+		compareAlgErrorLabel.setBounds(45, 128, 154, 16);
 		compareAlgErrorLabel.setVisible(false);
 		panel.add(compareAlgErrorLabel);
 		
 		comboBoxCompare1 = new JComboBox(Constants.ALGORITHMS);
 		comboBoxCompare1.setSelectedIndex(-1);
-		comboBoxCompare1.setBounds(23, 48, 202, 27);
+		comboBoxCompare1.setBounds(20, 35, 202, 27);
 		panel.add(comboBoxCompare1);
 		
 		JLabel lblSelectAlgorithm_1 = new JLabel("Select algorithm 2");
-		lblSelectAlgorithm_1.setBounds(67, 97, 114, 16);
+		lblSelectAlgorithm_1.setBounds(71, 74, 114, 16);
 		panel.add(lblSelectAlgorithm_1);
 		
 		comboBoxCompare2 = new JComboBox(Constants.ALGORITHMS);
 		comboBoxCompare2.setSelectedIndex(-1);
-		comboBoxCompare2.setBounds(23, 115, 202, 27);
+		comboBoxCompare2.setBounds(20, 89, 202, 27);
 		panel.add(comboBoxCompare2);
 		
 		btnCompareAlgorithms = new JButton("Compare algorithms");
 		btnCompareAlgorithms.setForeground(Color.BLACK);
-		btnCompareAlgorithms.setBounds(47, 192, 154, 35);
+		btnCompareAlgorithms.setBounds(45, 160, 154, 35);
 		btnCompareAlgorithms.addActionListener(new CompareAlgorithmsActionListener());
 		panel.add(btnCompareAlgorithms);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(224, 255, 255));
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 139), 3, true));
+		panel_2.setBounds(928, 168, 248, 128);
+		add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel label = new JLabel("Select algorithm");
+		label.setBounds(71, 16, 102, 16);
+		panel_2.add(label);
+		
+		comboBox_1 = new JComboBox(Constants.ALGORITHMS_TUTORIAL);
+		comboBox_1.setSelectedIndex(-1);
+		comboBox_1.setBounds(20, 34, 202, 27);
+		panel_2.add(comboBox_1);
+		
+		lblErrorTutorial = new JLabel("Please select an algorithm.");
+		lblErrorTutorial.setForeground(new Color(255, 0, 0));
+		lblErrorTutorial.setFont(new Font("Lucida Grande", Font.BOLD, 9));
+		lblErrorTutorial.setBounds(57, 62, 130, 16);
+		lblErrorTutorial.setVisible(false);
+		panel_2.add(lblErrorTutorial);
+		
+		btnTutorial = new JButton("Tutorial");
+		btnTutorial.setForeground(Color.BLACK);
+		btnTutorial.setBounds(57, 79, 132, 35);
+		btnTutorial.addActionListener(new TutorialActionListener());
+		panel_2.add(btnTutorial);
 	}
 
 	public Graph getGraph() {
@@ -206,6 +229,10 @@ public class AlgorithmPanel extends JPanel  {
 	public void clear() {
 		singleAlgErrorLabel.setVisible(false);
 		comboBox.setSelectedIndex(-1);
+		
+		lblErrorTutorial.setVisible(false);
+		comboBox_1.setSelectedIndex(-1);
+		
 		comboBoxCompare1.setSelectedIndex(-1);
 		comboBoxCompare2.setSelectedIndex(-1);
 		compareAlgErrorLabel.setVisible(false);
@@ -244,6 +271,32 @@ public class AlgorithmPanel extends JPanel  {
 			logger.info("END: Change AlgorithmPanel to ColouringPanel");
 		}
 	}
+	
+	class TutorialActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (comboBox_1.getSelectedIndex() == -1) {
+				lblErrorTutorial.setVisible(true);
+			} else {
+				String selectedAlgorithm = (String) comboBox_1.getSelectedItem();
+				lblErrorTutorial.setVisible(false);
+				logger.info("Selected algorithm: " + selectedAlgorithm);
+				displayTutorialPanel(selectedAlgorithm);
+			}
+		}
+		
+		public void displayTutorialPanel(String algorithm) {
+			logger.info("START: Change AlgorithmPanel to TutorialPanel");
+			// TODO: Switch to tutorialPanel
+			/*container.getColouringPanel().clear(); 
+			container.getColouringPanel().setGraph(graph);
+			container.getColouringPanel().setAlgorithm(algorithm);
+			container.getColouringPanel().colourGraph();
+			container.getCardLayout().show(container, "colouringPanel"); */
+			logger.info("END: Change AlgorithmPanel to TutorialPanel");
+		}
+	}
+	
 
 	class WelcomePanelActionListener implements ActionListener {
 		@Override

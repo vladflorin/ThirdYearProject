@@ -73,6 +73,7 @@ public class ColouringPanel extends JPanel  {
 	// Results UI
 	JLabel lblAlgorithmName;
 	JLabel lblKValue;
+	JLabel lblTime;
 	JTextPane txtColourSeq;
 	JTextPane panelColour;
 	JTextPane txtPaneScript;
@@ -158,7 +159,7 @@ public class ColouringPanel extends JPanel  {
 		lblChromaticNumber.setText("Chromatic number:");
 		lblChromaticNumber.setForeground(Color.BLACK);
 		lblChromaticNumber.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-		lblChromaticNumber.setBounds(19, 92, 135, 27);
+		lblChromaticNumber.setBounds(19, 58, 135, 27);
 		resultPanel.add(lblChromaticNumber);
 		
 		lblKValue = new JLabel();
@@ -166,7 +167,7 @@ public class ColouringPanel extends JPanel  {
 		lblKValue.setText("--");
 		lblKValue.setForeground(Color.BLUE);
 		lblKValue.setFont(new Font("Lucida Grande", Font.BOLD, 17));
-		lblKValue.setBounds(144, 92, 63, 27);
+		lblKValue.setBounds(156, 58, 63, 27);
 		resultPanel.add(lblKValue);
 		
 		JLabel lblColouringSeq = new JLabel();
@@ -219,6 +220,21 @@ public class ColouringPanel extends JPanel  {
 		slider2.setBounds(19, 279, 213, 190);
 		slider2.setBorder(null);
 		resultPanel.add(slider2);
+		
+		JLabel lblExTime = new JLabel();
+		lblExTime.setText("Execution time (ms):");
+		lblExTime.setForeground(Color.BLACK);
+		lblExTime.setFont(new Font("Lucida Grande", Font.BOLD, 13));
+		lblExTime.setBounds(19, 86, 148, 27);
+		resultPanel.add(lblExTime);
+		
+		lblTime = new JLabel();
+		lblTime.setText("--");
+		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTime.setForeground(new Color(34, 139, 34));
+		lblTime.setFont(new Font("Lucida Grande", Font.BOLD, 17));
+		lblTime.setBounds(156, 86, 63, 27);
+		resultPanel.add(lblTime);
 	}
 
 	public void colourGraph() {
@@ -232,6 +248,7 @@ public class ColouringPanel extends JPanel  {
 			greedyAlgorithm.init(graph);
 			greedyAlgorithm.compute();
 			lblKValue.setText(Integer.toString(greedyAlgorithm.getK()));
+			lblTime.setText(String.valueOf((float) (greedyAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq.setText(greedyAlgorithm.getNodeIdSequence().toString());
 			txtPaneScript.setText(greedyAlgorithm.getScript());			
 			break;
@@ -241,6 +258,7 @@ public class ColouringPanel extends JPanel  {
 			randomSequentialAlgorithm.init(graph);
 			randomSequentialAlgorithm.compute();
 			lblKValue.setText(Integer.toString(randomSequentialAlgorithm.getK()));
+			lblTime.setText(String.valueOf((float) (randomSequentialAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq.setText(randomSequentialAlgorithm.getNodeIdSequence().toString());
 			txtPaneScript.setText(randomSequentialAlgorithm.getScript());
 			break;
@@ -250,6 +268,7 @@ public class ColouringPanel extends JPanel  {
 			largestFirstAlgorithm.init(graph);
 			largestFirstAlgorithm.compute();
 			lblKValue.setText(Integer.toString(largestFirstAlgorithm.getK()));
+			lblTime.setText(String.valueOf((float) (largestFirstAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq.setText(largestFirstAlgorithm.getNodeIdSequence().toString());
 			txtPaneScript.setText(largestFirstAlgorithm.getScript());
 			break;
@@ -259,6 +278,7 @@ public class ColouringPanel extends JPanel  {
 			smallestLastAlgorithm.init(graph);
 			smallestLastAlgorithm.compute();
 			lblKValue.setText(Integer.toString(smallestLastAlgorithm.getK()));
+			lblTime.setText(String.valueOf((float) (smallestLastAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq.setText(smallestLastAlgorithm.getNodeIdSequence().toString());
 			txtPaneScript.setText(smallestLastAlgorithm.getScript());
 			break;
@@ -268,6 +288,7 @@ public class ColouringPanel extends JPanel  {
 			connectedSequentialAlgorithm.init(graph);
 			connectedSequentialAlgorithm.compute();
 			lblKValue.setText(Integer.toString(connectedSequentialAlgorithm.getK()));
+			lblTime.setText(String.valueOf((float) (connectedSequentialAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq.setText(connectedSequentialAlgorithm.getNodeIdSequence().toString());
 			txtPaneScript.setText(connectedSequentialAlgorithm.getScript());
 			break;
@@ -277,6 +298,7 @@ public class ColouringPanel extends JPanel  {
 			saturationLargestFirstAlgorithm.init(graph);
 			saturationLargestFirstAlgorithm.compute();
 			lblKValue.setText(Integer.toString(saturationLargestFirstAlgorithm.getK()));
+			lblTime.setText(String.valueOf((float) (saturationLargestFirstAlgorithm.getTime() / 1000000.0)));
 			txtColourSeq.setText(saturationLargestFirstAlgorithm.getNodeIdSequence().toString());
 			txtPaneScript.setText(saturationLargestFirstAlgorithm.getScript());
 			break;
@@ -316,6 +338,7 @@ public class ColouringPanel extends JPanel  {
 	
 	public void clear() {
 		lblAlgorithmName.setText("Algorithm");
+		lblTime.setText("--");
 		lblKValue.setText("--");
 		txtColourSeq.setText("");
 		panelColour.setBackground(new Color(255, 250, 240));

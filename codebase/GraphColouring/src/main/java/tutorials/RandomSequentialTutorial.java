@@ -1,4 +1,4 @@
-package main.java.algorithms;
+package main.java.tutorials;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import org.graphstream.algorithm.Algorithm;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-public class RandomSequentialAlgorithm implements Algorithm{
+public class RandomSequentialTutorial implements Algorithm{
 
 	Graph graph;
 	int k;

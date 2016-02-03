@@ -16,11 +16,16 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
-	List<Node> seq;
 	
+	long startTime;
+
+	List<Node> seq;
+		
 	String script = "";
 
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+		
 		graph = givenGraph;
 		
 		// Initialise the color of each node with zero
@@ -36,9 +41,7 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 		script = script + "Step 2: Colour the nodes\n";
 	}
 
-	public void compute() {
-		long startTime = System.nanoTime();
-		
+	public void compute() {		
 		for (Node currentNode : seq) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");		

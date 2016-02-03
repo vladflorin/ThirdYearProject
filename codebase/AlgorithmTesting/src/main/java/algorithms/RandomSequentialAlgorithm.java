@@ -16,9 +16,14 @@ public class RandomSequentialAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
+	
+	long startTime;
+
 	List<Integer> randomSeq;
 	
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
@@ -31,9 +36,7 @@ public class RandomSequentialAlgorithm implements Algorithm{
 		randomSeq = generateRandomSequence(graph.getNodeCount());
 	}
 
-	public void compute() {
-		long startTime = System.nanoTime();
-		
+	public void compute() {		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
 			Node currentNode = graph.getNode(randomSeq.get(index));				
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));

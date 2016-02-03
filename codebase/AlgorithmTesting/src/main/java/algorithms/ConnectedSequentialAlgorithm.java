@@ -15,9 +15,14 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 	Graph graph;
 	int k;
 	long time;
+	
+	long startTime;
+
 	List<Integer> seq;
 	
 	public void init(Graph givenGraph) {
+		startTime = System.nanoTime();
+
 		graph = givenGraph;	
 		
 		// Initialise the color of each node with zero
@@ -30,9 +35,7 @@ public class ConnectedSequentialAlgorithm implements Algorithm{
 		seq = generateBfsSequence(graph);
 	}
 
-	public void compute() {
-		long startTime = System.nanoTime();
-		
+	public void compute() {		
 		for (int index = 0; index < graph.getNodeCount(); index++) {
 			Node currentNode = graph.getNode(seq.get(index));				
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
