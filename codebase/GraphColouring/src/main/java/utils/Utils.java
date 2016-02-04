@@ -17,19 +17,5 @@ public class Utils {
 	    }
 	    return true;	    
 	}
-	
-	public static boolean printOK(int size) {
-		for (int index = 0; index <= size; index++) {
-			System.out.println(index);
-		}
-		return true;
-	}
-	
-	public static boolean printNOK(int size) {
-		for (int index = 0; index <= size; index++) {
-			System.out.println(index);
-		}
-		return false;
-	}
 	 
 }

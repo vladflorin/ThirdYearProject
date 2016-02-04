@@ -43,6 +43,8 @@ public class GenerateReportPanel extends JPanel {
 	JLabel lblTrue;
 	JLabel lblFalse;
 	
+	JButton btnNewButton;
+	
 	public GenerateReportPanel() {
 		
 	}
@@ -75,7 +77,7 @@ public class GenerateReportPanel extends JPanel {
 		txtFieldSizeGraphs.setBounds(281, 120, 141, 31);
 		add(txtFieldSizeGraphs);
 		
-		JButton btnNewButton = new JButton("Generate Report");
+		btnNewButton = new JButton("Generate Report");
 		btnNewButton.setToolTipText("The generated report will be saved on the Desktop.");
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		btnNewButton.setBounds(208, 181, 160, 37);
@@ -127,9 +129,10 @@ public class GenerateReportPanel extends JPanel {
 				result = algTesting.createReport(noOfGraphs, sizeGraphs);
 			} catch (Exception exception) {
 				logger.error("Something went wrong: " + exception);
-				lblSpinner.setVisible(true);
+				lblSpinner.setVisible(false);
 				lblTrue.setVisible(false);
         		lblFalse.setVisible(true);
+	        	btnNewButton.setEnabled(true);
 			}
 	        return result;
 	    }
@@ -148,6 +151,7 @@ public class GenerateReportPanel extends JPanel {
 	        		lblFalse.setVisible(true);
 	        	}
 	        	
+	        	btnNewButton.setEnabled(true);
 	        	lblSpinner.setVisible(false);
 	        }
 	        catch (Exception e)
@@ -183,11 +187,12 @@ public class GenerateReportPanel extends JPanel {
 			lblFalse.setVisible(false);
 			
 			if (validateInputLabels()) {
+				btnNewButton.setEnabled(false);
 				lblErrorMessage.setVisible(false);
 				
 				logger.info("START: Generate Report");
 				lblSpinner.setVisible(true);
-				
+			
 				new ReportGenerator().execute();
 				
 				logger.info("END: Generate Report");

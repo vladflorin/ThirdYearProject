@@ -287,12 +287,10 @@ public class AlgorithmPanel extends JPanel  {
 		
 		public void displayTutorialPanel(String algorithm) {
 			logger.info("START: Change AlgorithmPanel to TutorialPanel");
-			// TODO: Switch to tutorialPanel
-			/*container.getColouringPanel().clear(); 
-			container.getColouringPanel().setGraph(graph);
-			container.getColouringPanel().setAlgorithm(algorithm);
-			container.getColouringPanel().colourGraph();
-			container.getCardLayout().show(container, "colouringPanel"); */
+			container.getTutorialPanel().clear(); 
+			container.getTutorialPanel().setGraph(graph);
+			container.getTutorialPanel().setAlgorithm(algorithm);
+			container.getCardLayout().show(container, "tutorialPanel");
 			logger.info("END: Change AlgorithmPanel to TutorialPanel");
 		}
 	}
