@@ -43,8 +43,10 @@ public class Tutorial implements Algorithm{
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
 			script = script + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
+			prevNodeList.add(currentNode);
 		}
-
+		
+		colouringSequence.clear();
 	}
 	
 	public void computeNextStep() {
@@ -150,4 +152,7 @@ public class Tutorial implements Algorithm{
 		return colouringSequence;
 	}
 
+	public List<Node> getPreviousNodesList() {
+		return prevNodeList;
+	}
 }
