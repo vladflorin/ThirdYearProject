@@ -241,6 +241,7 @@ public class TutorialPanel extends JPanel  {
 		btnPrevStep.setBounds(19, 320, 105, 38);
 		btnPrevStep.setOpaque(true);
 		btnPrevStep.setEnabled(false);
+		btnPrevStep.addActionListener(new ComputePrevStepActionListener());
 		mainPanel.add(btnPrevStep);
 		
 		btnNextStep = new JButton("Next Step");
@@ -334,6 +335,7 @@ public class TutorialPanel extends JPanel  {
 		txtColourSeq.setText("");
 		txtNodesToBeColoured.setText("");
 		txtNodesAlreadyColoured.setText("");
+		txtPaneAlgorithmsSteps.setText("");
 		btnGenerate.setEnabled(true);
 		
 		btnNextStep.setEnabled(false);
@@ -407,12 +409,28 @@ public class TutorialPanel extends JPanel  {
 		
 	}
 	
+	class ComputePrevStepActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (tutorial != null && tutorial.getPreviousNodesList().size() > 0) {
+				tutorial.computePreviousStep();
+			}
+			
+			updateTxtPanels();
+			updateButtons();
+		}
+		
+	}
+	
 	public void updateTxtPanels() {
 		txtNodesToBeColoured.setText(tutorial.getColouringSequence().toString());
 		txtNodesToBeColoured.setCaretPosition(0);
 		
 		txtNodesAlreadyColoured.setText(tutorial.getPreviousNodesList().toString());
-		txtNodesAlreadyColoured.setCaretPosition(0);	
+		txtNodesAlreadyColoured.setCaretPosition(0);
+		
+		txtPaneAlgorithmsSteps.setText(tutorial.getScript());
 	}
 	
 	public void updateButtons() {
