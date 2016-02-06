@@ -23,8 +23,11 @@ import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.algorithms.SaturationLargestFirstAlgorithm;
 import main.java.algorithms.SmallestLastAlgorithm;
+import main.java.tutorials.ConnectedSequentialTutorial;
 import main.java.tutorials.GreedyTutorial;
+import main.java.tutorials.LargestFirstTutorial;
 import main.java.tutorials.RandomSequentialTutorial;
+import main.java.tutorials.SmallestLastTutorial;
 import main.java.tutorials.Tutorial;
 import main.java.utils.Constants;
 import main.java.utils.NodeUtils;
@@ -44,6 +47,8 @@ import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
+
+import scala.collection.immutable.Stream.Cons;
 
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -318,6 +323,15 @@ public class TutorialPanel extends JPanel  {
 			break;
 		case Constants.GREEDY:
 			tutorial = new GreedyTutorial();
+			break;
+		case Constants.SMALLEST_LAST:
+			tutorial = new SmallestLastTutorial();
+			break;
+		case Constants.LARGEST_FIRST:
+			tutorial = new LargestFirstTutorial();
+			break;
+		case Constants.CONNECTED_SEQ:
+			tutorial = new ConnectedSequentialTutorial();
 			break;
 		}
 	}

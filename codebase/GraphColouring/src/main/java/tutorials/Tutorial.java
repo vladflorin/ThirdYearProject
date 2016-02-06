@@ -5,16 +5,20 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import main.java.ui.panels.ColouringPanel;
 import main.java.utils.Constants;
 import main.java.utils.NodeUtils;
 
+import org.apache.log4j.Logger;
 import org.graphstream.algorithm.Algorithm;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 public class Tutorial implements Algorithm{
 
-	protected Graph graph;
+	final static Logger logger = Logger.getLogger(ColouringPanel.class);
+
+	protected static Graph graph;
 	protected int k;
 	
 	List<Node> colouringSequence;
@@ -22,7 +26,7 @@ public class Tutorial implements Algorithm{
 	
 	private String script = "";
 
-	public void Tutorial() {	
+	public void Tutorial() {
 	}
 	
 	public void init(Graph givenGraph) {

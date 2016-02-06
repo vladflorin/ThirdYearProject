@@ -378,7 +378,12 @@ public class InputPanel extends JPanel implements ViewerListener  {
 						while (fs.nextEvents()) {
 						}
 					} catch (IOException e2) {
-						logger.error(e2);
+						graph.clear();
+						JOptionPane.showMessageDialog(null,
+							    "The selected file does not correctly define a graph.",
+							    "Warning",
+							    JOptionPane.WARNING_MESSAGE);						
+						logger.error("There was an error while upload the graph. " + e2);
 					}
 					
 					try {

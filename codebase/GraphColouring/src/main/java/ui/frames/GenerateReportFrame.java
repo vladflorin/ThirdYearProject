@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 public class GenerateReportFrame extends JFrame {
 	
 	public GenerateReportFrame() {
+		setResizable(false);
 		
 		GenerateReportPanel panel = new GenerateReportPanel(this);
 		panel.setBounds(0, 0, 545, 298);
