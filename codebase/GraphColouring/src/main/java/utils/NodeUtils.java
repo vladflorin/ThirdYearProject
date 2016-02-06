@@ -28,5 +28,4 @@ public class NodeUtils {
 		node.addAttribute("ui.style", "fill-color: green;");
 		return node;
 	}
-	
 }

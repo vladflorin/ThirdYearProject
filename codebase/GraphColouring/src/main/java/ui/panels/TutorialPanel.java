@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import main.java.algorithms.LargestFirstAlgorithm;
 import main.java.algorithms.RandomSequentialAlgorithm;
 import main.java.algorithms.SaturationLargestFirstAlgorithm;
 import main.java.algorithms.SmallestLastAlgorithm;
+import main.java.tutorials.GreedyTutorial;
 import main.java.tutorials.RandomSequentialTutorial;
 import main.java.tutorials.Tutorial;
 import main.java.utils.Constants;
@@ -33,6 +35,11 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.Graphs;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.FileSinkImages;
+import org.graphstream.stream.file.FileSinkImages.LayoutPolicy;
+import org.graphstream.stream.file.FileSinkImages.OutputType;
+import org.graphstream.stream.file.FileSinkImages.Quality;
+import org.graphstream.stream.file.FileSinkImages.Resolutions;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
@@ -57,11 +64,14 @@ import java.awt.Scrollbar;
 import javax.swing.JScrollBar;
 
 import java.awt.Panel;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class TutorialPanel extends JPanel  {
 	
 	final static Logger logger = Logger.getLogger(ColouringPanel.class);
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmss"); 
+
 
 	Container container;
 	
@@ -278,27 +288,22 @@ public class TutorialPanel extends JPanel  {
 		lblAlgorithmsSteps.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblAlgorithmsSteps.setBounds(19, 359, 132, 27);
 		mainPanel.add(lblAlgorithmsSteps);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(255, 215, 0), 3, true));
+		panel.setBackground(new Color(255, 255, 240));
+		panel.setBounds(791, 534, 125, 93);
+		add(panel);
+		panel.setLayout(null);
+		
+		JButton btnScreenshot = new JButton("");
+		btnScreenshot.setToolTipText("Take a screen shot of the graph.");
+		btnScreenshot.setIcon(new ImageIcon(getClass().getResource(Constants.CAMERA)));
+		btnScreenshot.setBounds(36, 20, 55, 55);
+		btnScreenshot.addActionListener(new ScreenShotActionListener());
+		panel.add(btnScreenshot);
 	}
 
-	public void colourGraph() {
-		if (algorithm == null) {
-			return;
-		}
-				
-		switch (algorithm) {
-		case Constants.RANDOM_SEQ:
-			randomSequentialAlgorithm = new RandomSequentialAlgorithm();
-			randomSequentialAlgorithm.init(graph);
-			randomSequentialAlgorithm.compute();
-			txtColourSeq.setText(randomSequentialAlgorithm.getNodeIdSequence().toString());
-			txtNodesToBeColoured.setText(randomSequentialAlgorithm.getScript());
-			break;
-		}
-		
-		txtNodesToBeColoured.setCaretPosition(0);
-		txtColourSeq.setCaretPosition(0);
-	}
-	
 	public String getAlgorithm() {
 		return algorithm;
 	}
@@ -310,6 +315,10 @@ public class TutorialPanel extends JPanel  {
 		switch (algorithm) {
 		case Constants.RANDOM_SEQ:
 			tutorial = new RandomSequentialTutorial();
+			break;
+		case Constants.GREEDY:
+			tutorial = new GreedyTutorial();
+			break;
 		}
 	}
 	
@@ -325,9 +334,7 @@ public class TutorialPanel extends JPanel  {
 		for (Node node : this.graph.getNodeSet()) {
 			NodeUtils.setInitialSize(node);
 			nodeList.add(Integer.parseInt(node.getId()));
-		}
-		
-		Integer[] array = nodeList.toArray(new Integer[nodeList.size()]);
+		}		
 	}
 	
 	public void clear() {
@@ -379,7 +386,7 @@ public class TutorialPanel extends JPanel  {
 			updateTxtPanels();
 			
 			txtColourSeq.setText(tutorial.getColouringSequence().toString());
-			txtColourSeq.setCaretPosition(0);
+			txtColourSeq.setCaretPosition(0);			
 		}	
 	}
 	
@@ -423,6 +430,24 @@ public class TutorialPanel extends JPanel  {
 		
 	}
 	
+	class ScreenShotActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
+			pic.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+			pic.setQuality(Quality.HIGH);
+			try {
+				pic.writeAll(graph, System.getProperty("user.home") + "/Desktop/Graph " + dateFormat.format(new Date()) + ".png");			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				logger.error("Something went wrong while taking screen short");			
+			}
+			
+		}
+		
+	}
+	
 	public void updateTxtPanels() {
 		txtNodesToBeColoured.setText(tutorial.getColouringSequence().toString());
 		txtNodesToBeColoured.setCaretPosition(0);
@@ -447,6 +472,5 @@ public class TutorialPanel extends JPanel  {
 		} else {
 			btnPrevStep.setEnabled(false);
 		}
-		
 	}
 }

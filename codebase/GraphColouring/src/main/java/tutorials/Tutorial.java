@@ -155,4 +155,5 @@ public class Tutorial implements Algorithm{
 	public List<Node> getPreviousNodesList() {
 		return prevNodeList;
 	}
+
 }
