@@ -134,16 +134,25 @@ public class AlgorithmPanel extends JPanel  {
 		add(navigationPanel);
 		
 		btnHomePanel = new JButton("");
+		btnHomePanel.setToolTipText("Home screen");
 		btnHomePanel.setIcon(new ImageIcon(getClass().getResource(Constants.HOME_ICON_PATH)));
 		btnHomePanel.setBounds(96, 20, 55, 55);
 		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
 		
 		btnPreviousPanel = new JButton("");
+		btnPreviousPanel.setToolTipText("Previous step");
 		btnPreviousPanel.setIcon(new ImageIcon(getClass().getResource(Constants.LEFT_ICON_PATH)));
 		btnPreviousPanel.setBounds(29, 20, 55, 55);
 		btnPreviousPanel.addActionListener(new PreviousPanelActionListener());
 		navigationPanel.add(btnPreviousPanel);
+		
+		JButton btnDocumentationPanel = new JButton("");
+		btnDocumentationPanel.setIcon(new ImageIcon(getClass().getResource(Constants.DOCUMENT_ICON_PATH)));
+		btnDocumentationPanel.setToolTipText("Home screen");
+		btnDocumentationPanel.setBounds(163, 20, 55, 55);
+		navigationPanel.add(btnDocumentationPanel);
+		btnDocumentationPanel.addActionListener(new DocumentationPanelActionListener());
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(255, 127, 80), 3, true));
@@ -309,6 +318,17 @@ public class AlgorithmPanel extends JPanel  {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			singleAlgErrorLabel.setVisible(false);
+		}
+	}
+	
+	class DocumentationPanelActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			logger.info("START: Change AlgorithmPanel to DocumentationPanel");
+			container.getDocumentationPanel().clear();
+			container.getCardLayout().show(container, "documentationPanel");
+			logger.info("END: Change AlgorithmPanel to DocumentationPanel");
 		}
 	}
 	

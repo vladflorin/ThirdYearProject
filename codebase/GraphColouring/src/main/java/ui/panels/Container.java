@@ -26,6 +26,7 @@ public class Container extends JPanel {
 	private ColouringPanel colouringPanel;
 	private ComparePanel comparePanel;
 	private TutorialPanel tutorialPanel;
+	private DocumentationPanel documentationPanel;
 		
 	public Container() {
 		setupPanel();
@@ -44,6 +45,7 @@ public class Container extends JPanel {
 		colouringPanel = new ColouringPanel(this);
 		comparePanel = new ComparePanel(this);
 		tutorialPanel = new TutorialPanel(this);
+		documentationPanel = new DocumentationPanel(this);
 		
 		this.add(welcomePanel, "welcomePanel");
 		this.add(inputPanel, "inputPanel");
@@ -51,6 +53,7 @@ public class Container extends JPanel {
 		this.add(colouringPanel, "colouringPanel");
 		this.add(comparePanel, "comparePanel");
 		this.add(tutorialPanel, "tutorialPanel");
+		this.add(documentationPanel, "documentationPanel");
 	}
 	
 	public void clearAllPanels() {
@@ -100,6 +103,14 @@ public class Container extends JPanel {
 
 	public void setTutorialPanel(TutorialPanel tutorialPanel) {
 		this.tutorialPanel = tutorialPanel;
+	}
+	
+	public DocumentationPanel getDocumentationPanel() {
+		return documentationPanel;
+	}
+
+	public void setDocumentationPanel(DocumentationPanel documentationPanel) {
+		this.documentationPanel = documentationPanel;
 	}
 
 }

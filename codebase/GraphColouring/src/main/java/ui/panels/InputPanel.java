@@ -188,12 +188,14 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		navigationPanel.setLayout(null);
 		
 		btnNextPanel = new JButton("");
+		btnNextPanel.setToolTipText("Next step");
 		btnNextPanel.setIcon(new ImageIcon(getClass().getResource(Constants.RIGHT_ICON_PATH)));
 		btnNextPanel.setBounds(163, 20, 55, 55);
 		btnNextPanel.addActionListener(new NextPanelActionListener());
 		navigationPanel.add(btnNextPanel);
 		
 		btnHomePanel = new JButton("");
+		btnHomePanel.setToolTipText("Home screen");
 		btnHomePanel.setIcon(new ImageIcon(getClass().getResource(Constants.HOME_ICON_PATH)));
 		btnHomePanel.setBounds(96, 20, 55, 55);
 		btnHomePanel.addActionListener(new WelcomePanelActionListener());
@@ -383,7 +385,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 							    "The selected file does not correctly define a graph.",
 							    "Warning",
 							    JOptionPane.WARNING_MESSAGE);						
-						logger.error("There was an error while upload the graph. " + e2);
+						logger.error("There was an error while uploading the graph. " + e2.getStackTrace());
 					}
 					
 					try {

@@ -51,6 +51,8 @@ public class Tutorial implements Algorithm{
 		}
 		
 		colouringSequence.clear();
+		
+		script = script + "Coloured the graph using " + k + " colours.\n";
 	}
 	
 	public void computeNextStep() {
@@ -69,6 +71,10 @@ public class Tutorial implements Algorithm{
 
 		// Remove the node from the colouring sequence
 		colouringSequence.remove(node);
+		
+		if (colouringSequence.size() == 0) {
+			script = script + "Coloured the graph using " + k + " colours.\n";	
+		}
 		
 		// Add node to previousNodesList
 		prevNodeList.add(node);

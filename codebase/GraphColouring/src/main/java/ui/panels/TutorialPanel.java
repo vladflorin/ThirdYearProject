@@ -154,12 +154,14 @@ public class TutorialPanel extends JPanel  {
 		add(navigationPanel);
 		
 		btnHomePanel = new JButton("");
+		btnHomePanel.setToolTipText("Home screen");
 		btnHomePanel.setIcon(new ImageIcon(getClass().getResource(Constants.HOME_ICON_PATH)));
 		btnHomePanel.setBounds(96, 20, 55, 55);
 		btnHomePanel.addActionListener(new WelcomePanelActionListener());
 		navigationPanel.add(btnHomePanel);
 		
 		btnPreviousPanel = new JButton("");
+		btnPreviousPanel.setToolTipText("Previous step");
 		btnPreviousPanel.setIcon(new ImageIcon(getClass().getResource(Constants.LEFT_ICON_PATH)));
 		btnPreviousPanel.setBounds(29, 20, 55, 55);
 		btnPreviousPanel.addActionListener(new PreviousPanelActionListener());
@@ -448,7 +450,7 @@ public class TutorialPanel extends JPanel  {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.VGA);
+			FileSinkImages pic = new FileSinkImages(OutputType.PNG, Resolutions.HD720);
 			pic.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
 			pic.setQuality(Quality.HIGH);
 			try {

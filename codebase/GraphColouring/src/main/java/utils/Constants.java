@@ -23,6 +23,8 @@ public class Constants {
 	public final static String REPORT_SPINNER = "/images/spinner.gif";
 	public final static String REPORT_SPINNER2 = "/images/spinner2.gif";
 	
+	public final static String DOCUMENT_ICON_PATH = "/images/document.png";
+	
 	public final static String GREEDY = "Greedy";
 	public final static String RANDOM_SEQ = "Random Sequential";
 	public final static String LARGEST_FIRST = "Largest First";
@@ -35,7 +37,7 @@ public class Constants {
 	public final static String[] ALGORITHMS_TUTORIAL = {GREEDY, RANDOM_SEQ, LARGEST_FIRST, SMALLEST_LAST, CONNECTED_SEQ};
 	
 	public final static String[] COLOURS =  {"Blue", "Red", "Green", "Orange", "Pink",
-		"Yellow", "Olive", "Beige", "Bisque", "BlueViolet", "CadetBlue", 
+		"Yellow", "Beige", "Bisque", "BlueViolet", "CadetBlue", 
 		"Chartreuse", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", 
 		"DarkGoldenRod", "DarkGray", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", 
 		"Darkorange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", 
