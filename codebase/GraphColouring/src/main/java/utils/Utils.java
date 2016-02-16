@@ -1,6 +1,7 @@
 package main.java.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class Utils {
 		
 		String fileString = "";
 		
-		BufferedReader br = new BufferedReader(new FileReader(filePath));
+		BufferedReader br = new BufferedReader(new FileReader(new File("").getAbsolutePath().concat(filePath)));
 		
 		try {
 			StringBuilder sb = new StringBuilder();

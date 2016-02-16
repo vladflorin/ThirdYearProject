@@ -1,0 +1,13 @@
+The SLF method is not based on a typical sequential algorithm, but on the principle of dynamic vertex ordering. It was first presented under the name DSATUR or "saturatation LF" (SLF). It may be regarded as a sensible modification to the LF method based on the observation that the constraints in colour assignment do not directly result from the degree of the coloured vertex, but from the number of its uniquely coloured neighbours. 
+
+
+algorithm SLF-Colour(G);
+begin
+	while not all vertices of G
+	have been coloured do begin
+		v = vertex with the highest 
+		saturation degree in G;
+		
+		assign the smallest possible colour to v;
+	end
+end;

@@ -67,6 +67,8 @@ public class DocumentationPanel extends JPanel  {
 	
 	JButton btnRS, btnLF, btnSL, btnCS, btnSLF;
 	
+	JLabel lblAlgorithm;
+	
 	public DocumentationPanel(Container currentContainer) {
 		this.container = currentContainer;
 		setupPanel();
@@ -187,8 +189,18 @@ public class DocumentationPanel extends JPanel  {
 		add(panelAlgDesription);
 		
 		textArea = new JTextArea();
-		textArea.setBounds(6, 6, 399, 480);
+		textArea.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(true);
+		textArea.setTabSize(2);
+		textArea.setBounds(18, 60, 368, 426);
 		panelAlgDesription.add(textArea);
+		
+		lblAlgorithm = new JLabel("Algorithm");
+		lblAlgorithm.setForeground(Color.BLUE);
+		lblAlgorithm.setFont(new Font("Lucida Grande", Font.BOLD, 14));
+		lblAlgorithm.setBounds(18, 19, 260, 29);
+		panelAlgDesription.add(lblAlgorithm);
 		
 		JPanel panelRef = new JPanel();
 		panelRef.setLayout(null);
@@ -256,6 +268,9 @@ public class DocumentationPanel extends JPanel  {
 	class RSActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			lblAlgorithm.setText(Constants.RANDOM_SEQ);
+			
 			setForegroundBlackAllButtons();
 			btnRS.setForeground(Color.RED);
 
@@ -267,11 +282,10 @@ public class DocumentationPanel extends JPanel  {
 			rsTutorial.init(outputGraph);
 			rsTutorial.compute();
 			
-			// TODO: display algorithm's steps
 			try {
-				textArea.setText(Utils.readAlgorithmDescription("/algorithms/rs.txt"));
+				textArea.setText(Utils.readAlgorithmDescription(Constants.RS_PATH));
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+				textArea.setText("");
 				logger.info("Something went wrong while reading the file: " + e1.getMessage());
 			}
 		}	
@@ -280,6 +294,8 @@ public class DocumentationPanel extends JPanel  {
 	class LFActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			lblAlgorithm.setText(Constants.LARGEST_FIRST);
+
 			setForegroundBlackAllButtons();
 			btnLF.setForeground(Color.RED);
 
@@ -291,13 +307,20 @@ public class DocumentationPanel extends JPanel  {
 			lfTutorial.init(outputGraph);
 			lfTutorial.compute();
 			
-			// TODO: display algorithm's steps		
-		}	
+			try {
+				textArea.setText(Utils.readAlgorithmDescription(Constants.LF_PATH));
+			} catch (IOException e1) {
+				textArea.setText("");
+				logger.info("Something went wrong while reading the file: " + e1.getMessage());
+			}
+		}
 	}
 	
 	class SLActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			lblAlgorithm.setText(Constants.SMALLEST_LAST);
+
 			setForegroundBlackAllButtons();
 			btnSL.setForeground(Color.RED);
 
@@ -309,13 +332,20 @@ public class DocumentationPanel extends JPanel  {
 			slTutorial.init(outputGraph);
 			slTutorial.compute();
 			
-			// TODO: display algorithm's steps		
+			try {
+				textArea.setText(Utils.readAlgorithmDescription(Constants.SL_PATH));
+			} catch (IOException e1) {
+				textArea.setText("");
+				logger.info("Something went wrong while reading the file: " + e1.getMessage());
+			}		
 		}		
 	}
 	
 	class CSActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			lblAlgorithm.setText(Constants.CONNECTED_SEQ);
+
 			setForegroundBlackAllButtons();
 			btnCS.setForeground(Color.RED);
 
@@ -327,13 +357,20 @@ public class DocumentationPanel extends JPanel  {
 			csTutorial.init(outputGraph);
 			csTutorial.compute();
 			
-			// TODO: display algorithm's steps		
+			try {
+				textArea.setText(Utils.readAlgorithmDescription(Constants.CS_PATH));
+			} catch (IOException e1) {
+				textArea.setText("");
+				logger.info("Something went wrong while reading the file: " + e1.getMessage());
+			}
 		}		
 	}
 	
 	class SLFActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			lblAlgorithm.setText(Constants.SATURATION_LF);
+
 			setForegroundBlackAllButtons();
 			btnSLF.setForeground(Color.RED);
 
@@ -344,8 +381,13 @@ public class DocumentationPanel extends JPanel  {
 			SaturationLargestFirstAlgorithm slfTutorial = new SaturationLargestFirstAlgorithm();
 			slfTutorial.init(outputGraph);
 			slfTutorial.compute();
-			
-			// TODO: display algorithm's steps		
+
+			try {
+				textArea.setText(Utils.readAlgorithmDescription(Constants.SLF_PATH));
+			} catch (IOException e1) {
+				textArea.setText("");
+				logger.info("Something went wrong while reading the file: " + e1.getMessage());
+			}
 		}		
 	}
 	

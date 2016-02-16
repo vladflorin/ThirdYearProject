@@ -45,7 +45,7 @@ public class WelcomePanel extends JPanel {
 		JTextPane version = new JTextPane();
 		version.setEditable(false);
 		version.setFont(new Font("Candara", Font.PLAIN, 11));
-		version.setText("V2.2");
+		version.setText("V4.1");
 		version.setBounds(6, 661, 36, 16);
 		add(version);
 		

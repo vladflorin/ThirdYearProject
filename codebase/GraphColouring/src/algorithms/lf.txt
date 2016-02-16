@@ -1,0 +1,11 @@
+LF method, whose name is derived from the words "largest-first" (LF), was first put forward by Welsh and Powell. It is one of the oldest and simplest sequential methods. The LF method is based on the observation that vertices of low degree usually alow for a more flexible choice of color. Therefore it is natural to colour the other vertices (i.e. vertices of high degree) in first priority.
+
+
+algorithm LF-Colour(G);
+begin
+	K = vertices of G arranged in non-increasing 
+		order of degree;
+
+	for each vertex v in K
+		give vertex v the smallest possible colour;
+end;

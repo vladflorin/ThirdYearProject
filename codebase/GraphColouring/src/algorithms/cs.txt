@@ -1,0 +1,12 @@
+The CS method is a typical example of a sequential colouring algorithm. It is based on the observation that in each iteration of the algorithm only vertices adjacent to those already coloured should be regarded as candidates for colouring (hence the method's full name - connected sequential).
+
+
+algorithm CS-Colour(G);
+begin
+	K = vertices of G ordered in such a way that each 
+	vertex (except the first one) has at least one 
+	neighbour in the preceding part of the sequence;
+
+	for each vertex v in K
+		give vertex v the smallest possible colour;
+end;

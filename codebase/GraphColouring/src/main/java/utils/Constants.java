@@ -25,6 +25,12 @@ public class Constants {
 	
 	public final static String DOCUMENT_ICON_PATH = "/images/document.png";
 	
+	public final static String RS_PATH = "/src/algorithms/rs.txt";
+	public final static String LF_PATH = "/src/algorithms/lf.txt";
+	public final static String SL_PATH = "/src/algorithms/sl.txt";
+	public final static String CS_PATH = "/src/algorithms/cs.txt";
+	public final static String SLF_PATH = "/src/algorithms/slf.txt";
+
 	public final static String GREEDY = "Greedy";
 	public final static String RANDOM_SEQ = "Random Sequential";
 	public final static String LARGEST_FIRST = "Largest First";

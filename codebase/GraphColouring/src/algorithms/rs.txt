@@ -4,6 +4,7 @@ The RS method, also known as the naive method, is a sequential colouring approac
 algorithm RS-Color(G);
 begin
 	K = a random sequence of vertices of graph G;
+	
 	for each vertex v in K
 		give vertex v the smallest possible colour;
 end;
