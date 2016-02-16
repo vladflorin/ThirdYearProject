@@ -19,6 +19,7 @@ import main.java.tutorials.SmallestLastTutorial;
 import main.java.utils.Constants;
 import main.java.utils.GraphGenerator;
 import main.java.utils.NodeUtils;
+import main.java.utils.Utils;
 
 import org.apache.log4j.Logger;
 import org.graphstream.graph.Graph;
@@ -38,8 +39,10 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 
 import java.awt.Button;
+import java.io.IOException;
 
 import javax.swing.SwingConstants;
+import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class DocumentationPanel extends JPanel  {
@@ -53,6 +56,7 @@ public class DocumentationPanel extends JPanel  {
 	Graph inputGraph = new SingleGraph("inputGraph" + new Date());
 	Graph outputGraph = new SingleGraph("outputGraph" + new Date());
 
+	JTextArea textArea;
 	
 	Viewer inputViewer, outputViewer;
 	View inputView, outputView;
@@ -182,6 +186,10 @@ public class DocumentationPanel extends JPanel  {
 		panelAlgDesription.setBounds(494, 30, 411, 492);
 		add(panelAlgDesription);
 		
+		textArea = new JTextArea();
+		textArea.setBounds(6, 6, 399, 480);
+		panelAlgDesription.add(textArea);
+		
 		JPanel panelRef = new JPanel();
 		panelRef.setLayout(null);
 		panelRef.setBorder(new LineBorder(new Color(0, 0, 153), 3, true));
@@ -260,6 +268,12 @@ public class DocumentationPanel extends JPanel  {
 			rsTutorial.compute();
 			
 			// TODO: display algorithm's steps
+			try {
+				textArea.setText(Utils.readAlgorithmDescription("/algorithms/rs.txt"));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				logger.info("Something went wrong while reading the file: " + e1.getMessage());
+			}
 		}	
 	}
 	

@@ -1,5 +1,10 @@
 package main.java.utils;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Utils {
 
 	public static boolean isInteger(String s) {
@@ -16,6 +21,30 @@ public class Utils {
 	        if(Character.digit(s.charAt(i),radix) < 0) return false;
 	    }
 	    return true;	    
+	}
+	
+	public static String readAlgorithmDescription(String filePath) throws IOException {
+		
+		String fileString = "";
+		
+		BufferedReader br = new BufferedReader(new FileReader(filePath));
+		
+		try {
+			StringBuilder sb = new StringBuilder();
+		    String line = br.readLine();
+		
+		    while (line != null) {
+		        sb.append(line);
+		        sb.append(System.lineSeparator());
+		        line = br.readLine();
+		    }
+		    fileString = sb.toString();
+		} finally {
+		    br.close();
+		}
+		
+		return fileString;
+		
 	}
 	 
 }
