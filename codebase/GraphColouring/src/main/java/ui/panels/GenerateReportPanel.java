@@ -122,7 +122,6 @@ public class GenerateReportPanel extends JPanel {
 	    protected Boolean doInBackground() throws Exception
 	    {
 	    	parent.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-	    	// GENERATE REPORT TODO
 	    	AlgorithmsTestingUI algTesting = new AlgorithmsTestingUI();
 	    	boolean result = false;
 	    	try {

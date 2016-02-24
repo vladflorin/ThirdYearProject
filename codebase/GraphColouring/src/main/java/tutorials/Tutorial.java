@@ -25,6 +25,9 @@ public class Tutorial implements Algorithm{
 	private List<Node> prevNodeList = new ArrayList<Node>();
 	
 	private String script = "";
+	
+	private String lastScript = "";
+	private String finalScript = "";
 
 	public void Tutorial() {
 	}
@@ -43,19 +46,27 @@ public class Tutorial implements Algorithm{
 	}
 
 	public void compute() {
+		lastScript = "";
+		finalScript = "";
+		
 		for (Node currentNode : colouringSequence) {
 			currentNode.setAttribute("colour", (int) findSmallestPossibleColour(currentNode));
 			currentNode.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + ";");
-			script = script + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
+			lastScript = lastScript + "Assign node " + currentNode.getId() + " colour " + Constants.COLOURS[(int) currentNode.getAttribute("colour")] + "\n";
 			prevNodeList.add(currentNode);
 		}
+		script += lastScript;
 		
 		colouringSequence.clear();
 		
-		script = script + "Coloured the graph using " + k + " colours.\n";
+		finalScript = "Coloured the graph using " + k + " colours.\n";
+		script += finalScript;
 	}
 	
 	public void computeNextStep() {
+		finalScript = "";
+		lastScript = "";
+		
 		if (colouringSequence.get(0) == null) { 
 			return;
 		}
@@ -67,13 +78,15 @@ public class Tutorial implements Algorithm{
 		node.setAttribute("colour", (int) findSmallestPossibleColour(node));
 		node.addAttribute("ui.style", "fill-color: " + Constants.COLOURS[(int) node.getAttribute("colour")] + ";");
 		
-		script = script + "Assign node " + node.getId() + " colour " + Constants.COLOURS[(int) node.getAttribute("colour")] + "\n";	
-
+		lastScript = "Assign node " + node.getId() + " colour " + Constants.COLOURS[(int) node.getAttribute("colour")] + "\n";
+		script += lastScript;
+		
 		// Remove the node from the colouring sequence
 		colouringSequence.remove(node);
 		
 		if (colouringSequence.size() == 0) {
-			script = script + "Coloured the graph using " + k + " colours.\n";	
+			finalScript = "Coloured the graph using " + k + " colours.\n";
+			script = script + finalScript;
 		}
 		
 		// Add node to previousNodesList
@@ -81,6 +94,9 @@ public class Tutorial implements Algorithm{
 	}
 	
 	public void computePreviousStep() {
+		finalScript = "";
+		lastScript = "";
+		
 		if (prevNodeList.size() == 0) {
 			return;
 		}
@@ -92,7 +108,8 @@ public class Tutorial implements Algorithm{
 		node.setAttribute("colour", -1);
 		NodeUtils.setColourBlack(node);
 		
-		script = script + "Undo the colouring of node " + node.getId() + "\n";	
+		lastScript = "Undo the colouring of node " + node.getId() + "\n";
+		script = script + lastScript;	
 
 		// Remove from previousNodesList
 		prevNodeList.remove(node);
@@ -166,4 +183,11 @@ public class Tutorial implements Algorithm{
 		return prevNodeList;
 	}
 
+	public String getLastScript() {
+		return lastScript;
+	}
+	
+	public String getFinalScript() {
+		return finalScript;
+	}
 }

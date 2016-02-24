@@ -52,6 +52,10 @@ import scala.collection.immutable.Stream.Cons;
 
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.JButton;
 
 import java.awt.Font;
@@ -76,7 +80,6 @@ public class TutorialPanel extends JPanel  {
 	
 	final static Logger logger = Logger.getLogger(ColouringPanel.class);
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmss"); 
-
 
 	Container container;
 	
@@ -118,6 +121,9 @@ public class TutorialPanel extends JPanel  {
 	private JButton btnColourGraph;
 	private JTextPane txtPaneAlgorithmsSteps;
 	private JLabel lblAlgorithmsSteps;
+	
+	StyledDocument doc;
+	Style style;
 	
 	public TutorialPanel(Container currentContainer) {
 		this.container = currentContainer;
@@ -278,7 +284,9 @@ public class TutorialPanel extends JPanel  {
 		mainPanel.add(btnColourGraph);
 		
 		txtPaneAlgorithmsSteps = new JTextPane();
-		txtPaneAlgorithmsSteps.setForeground(new Color(0, 0, 255));
+		doc = txtPaneAlgorithmsSteps.getStyledDocument();	
+		style = txtPaneAlgorithmsSteps.addStyle("style", null);
+	    StyleConstants.setForeground(style, Color.BLACK);      
 		txtPaneAlgorithmsSteps.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		txtPaneAlgorithmsSteps.setEditable(false);
 		txtPaneAlgorithmsSteps.setBackground(new Color(224, 255, 255));
@@ -412,7 +420,16 @@ public class TutorialPanel extends JPanel  {
 			if (tutorial != null && tutorial.getColouringSequence().size() > 0) {
 				tutorial.compute();
 			}
-			
+	
+			try {
+				StyleConstants.setForeground(style, Color.BLUE); 
+				doc.insertString(doc.getLength(), tutorial.getLastScript(), style);
+				StyleConstants.setForeground(style, new Color(50, 205, 50));
+				doc.insertString(doc.getLength(), tutorial.getFinalScript(), style);
+			} catch (BadLocationException exception) {
+				logger.info("Something went wrong while modifying the scriptTextPane: " + exception.getMessage());
+			}
+			 
 			updateTxtPanels();
 			updateButtons();
 		}
@@ -424,6 +441,15 @@ public class TutorialPanel extends JPanel  {
 		public void actionPerformed(ActionEvent e) {
 			if (tutorial != null && tutorial.getColouringSequence().size() > 0) {
 				tutorial.computeNextStep();
+			}
+			
+			try {
+				StyleConstants.setForeground(style, Color.BLUE); 
+				doc.insertString(doc.getLength(), tutorial.getLastScript(), style);
+				StyleConstants.setForeground(style, new Color(50, 205, 50));
+				doc.insertString(doc.getLength(), tutorial.getFinalScript(), style);
+			} catch (BadLocationException exception) {
+				logger.info("Something went wrong while modifying the scriptTextPane: " + exception.getMessage());
 			}
 			
 			updateTxtPanels();
@@ -438,6 +464,14 @@ public class TutorialPanel extends JPanel  {
 		public void actionPerformed(ActionEvent e) {
 			if (tutorial != null && tutorial.getPreviousNodesList().size() > 0) {
 				tutorial.computePreviousStep();
+			}
+			
+			
+			try {
+				StyleConstants.setForeground(style, Color.RED); 
+				doc.insertString(doc.getLength(), tutorial.getLastScript(), style);
+			} catch (BadLocationException exception) {
+				logger.info("Something went wrong while modifying the scriptTextPane: " + exception.getMessage());
 			}
 			
 			updateTxtPanels();
@@ -456,7 +490,6 @@ public class TutorialPanel extends JPanel  {
 			try {
 				pic.writeAll(graph, System.getProperty("user.home") + "/Desktop/Graph " + dateFormat.format(new Date()) + ".png");			
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				logger.error("Something went wrong while taking screen short");			
 			}
 			
@@ -470,8 +503,7 @@ public class TutorialPanel extends JPanel  {
 		
 		txtNodesAlreadyColoured.setText(tutorial.getPreviousNodesList().toString());
 		txtNodesAlreadyColoured.setCaretPosition(0);
-		
-		txtPaneAlgorithmsSteps.setText(tutorial.getScript());
+
 	}
 	
 	public void updateButtons() {

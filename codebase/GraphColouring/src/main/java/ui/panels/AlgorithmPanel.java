@@ -149,7 +149,7 @@ public class AlgorithmPanel extends JPanel  {
 		
 		JButton btnDocumentationPanel = new JButton("");
 		btnDocumentationPanel.setIcon(new ImageIcon(getClass().getResource(Constants.DOCUMENT_ICON_PATH)));
-		btnDocumentationPanel.setToolTipText("Home screen");
+		btnDocumentationPanel.setToolTipText("Documentation");
 		btnDocumentationPanel.setBounds(163, 20, 55, 55);
 		navigationPanel.add(btnDocumentationPanel);
 		btnDocumentationPanel.addActionListener(new DocumentationPanelActionListener());
