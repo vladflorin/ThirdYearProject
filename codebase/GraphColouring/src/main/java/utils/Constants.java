@@ -12,6 +12,8 @@ public class Constants {
 	public final static String LOGO_PATH_S = "/images/logo-small.png";
 	
 	public final static String CAMERA = "/images/camera.png";
+	public final static String INFO_ICON_PATH = "/images/info2.png";
+
 	
 	public final static String LEFT_ICON_PATH = "/images/left_arrow.png";
 
@@ -61,4 +63,10 @@ public class Constants {
 		"Silver", "SkyBlue", "SlateBlue", "SlateGray", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", 
 		"Thistle", "Tomato", "Turquoise", "Wheat", "White", "WhiteSmoke", "YellowGreen"};
 	
+	public final static String RS_TOOLTIP = "<html>The vertices of the graph are <br> randomly ordered for colouring.</html>";
+	public final static String LF_TOOLTIP = "<html>The vertices of high degree <br> are prioritised for colouring.</html>";
+	public final static String GREEDY_TOOLTIP = "<html>The vertices of the graph are <br> ordered for colouring <br> based on their indexes.</html>";
+	public final static String SL_TOOLTIP = "<html>Vertices with few neighbours <br> ought to be coloured as <br> late as possible.</html>";
+	public final static String CS_TOOLTIP = "<html>Vertices adjacent to those already <br> coloured should be regarded as <br> candidates for colouring.</html>";
+
 }

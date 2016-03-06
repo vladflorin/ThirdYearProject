@@ -236,6 +236,7 @@ public class AlgorithmPanel extends JPanel  {
 	}
 	
 	public void clear() {
+		this.repaint();
 		singleAlgErrorLabel.setVisible(false);
 		comboBox.setSelectedIndex(-1);
 		

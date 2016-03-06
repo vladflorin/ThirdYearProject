@@ -28,7 +28,7 @@ public class WelcomePanel extends JPanel {
 		this.container = container;
 	}
 
-	JButton startButton;
+	public JButton startButton;
 	
 	private void setupPanel(){
 		setBackground(Color.WHITE);
@@ -50,6 +50,7 @@ public class WelcomePanel extends JPanel {
 		add(version);
 		
 		startButton = new JButton("START");
+		startButton.setName("startButton");
 		startButton.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		startButton.setForeground(Color.BLACK);
 		startButton.setBounds(512, 420, 196, 48);

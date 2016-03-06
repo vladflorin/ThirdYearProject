@@ -78,7 +78,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	JButton btnReport;
 	
 	// Draw graph UI
-	JButton btnAddNode;
+	public JButton btnAddNode;
 	
 	JButton btnAddEdge;
 	Boolean btnAddEdgePressed = false;
@@ -234,6 +234,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		drawGraphPanel.setLayout(null);
 		
 		btnAddNode = new JButton("NODE");
+		btnAddNode.setName("addNode");
 		btnAddNode.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		btnAddNode.setBounds(27, 40, 83, 41);
 		btnAddNode.addActionListener(new AddNodeActionListener());

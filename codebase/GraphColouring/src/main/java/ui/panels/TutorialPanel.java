@@ -125,6 +125,8 @@ public class TutorialPanel extends JPanel  {
 	StyledDocument doc;
 	Style style;
 	
+	JLabel lblInfo;
+	
 	public TutorialPanel(Container currentContainer) {
 		this.container = currentContainer;
 		setupPanel();
@@ -304,6 +306,12 @@ public class TutorialPanel extends JPanel  {
 		lblAlgorithmsSteps.setBounds(19, 359, 132, 27);
 		mainPanel.add(lblAlgorithmsSteps);
 		
+		lblInfo = new JLabel("");
+		lblInfo.setToolTipText("Generate colouring sequence.");
+		lblInfo.setIcon(new ImageIcon(getClass().getResource(Constants.INFO_ICON_PATH)));
+		lblInfo.setBounds(103, 125, 29, 24);
+		mainPanel.add(lblInfo);
+		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(255, 215, 0), 3, true));
 		panel.setBackground(new Color(255, 255, 240));
@@ -342,6 +350,29 @@ public class TutorialPanel extends JPanel  {
 			break;
 		case Constants.CONNECTED_SEQ:
 			tutorial = new ConnectedSequentialTutorial();
+			break;
+		}
+		
+		setToolTip(algorithm);
+		
+	}
+	
+	public void setToolTip(String algorithm) {
+		switch (algorithm) {
+		case Constants.RANDOM_SEQ:
+			lblInfo.setToolTipText(Constants.RS_TOOLTIP);
+			break;
+		case Constants.GREEDY:
+			lblInfo.setToolTipText(Constants.GREEDY_TOOLTIP);
+			break;
+		case Constants.SMALLEST_LAST:
+			lblInfo.setToolTipText(Constants.SL_TOOLTIP);
+			break;
+		case Constants.LARGEST_FIRST:
+			lblInfo.setToolTipText(Constants.LF_TOOLTIP);
+			break;
+		case Constants.CONNECTED_SEQ:
+			lblInfo.setToolTipText(Constants.CS_TOOLTIP);
 			break;
 		}
 	}
