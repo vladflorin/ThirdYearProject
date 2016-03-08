@@ -3,6 +3,9 @@ package main.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Assert;
+import main.java.utils.Utils;
+
 import org.junit.Test;
 
 public class UtilsTest {
@@ -30,5 +33,13 @@ public class UtilsTest {
 		list.remove(0);
 		
 		System.out.println(list.toString());
+	}
+	
+	@Test
+	public void isInteger() {
+		Assert.assertEquals(Utils.isInteger("A"), false);
+		Assert.assertEquals(Utils.isInteger(""), false);
+		Assert.assertEquals(Utils.isInteger("01"), true);
+		Assert.assertEquals(Utils.isInteger("1"), true);
 	}
 }

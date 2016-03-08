@@ -96,7 +96,7 @@ public class SmallestLastAlgorithm implements Algorithm{
 	public int findSmallestPossibleColour(Node currentNode) {
 		int[] usedColours  = initialiseUsedColours(k);
 
-		// Get all the nodes linked tocurrentNode
+		// Get all the nodes linked to currentNode
 		Iterator<Node> connectedNodesIterator = currentNode.getNeighborNodeIterator();			
 		while (connectedNodesIterator.hasNext()){
 			Node currentLinkedNode = connectedNodesIterator.next();

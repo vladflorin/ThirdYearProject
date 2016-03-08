@@ -60,10 +60,10 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	ViewerPipe fromViewer;
 	
 	// Random Graph Generator UI
-	JButton btnGenerateRandomGraph;
-	private JTextField noOfNodesTextField;
+	public JButton btnGenerateRandomGraph;
+	public JTextField noOfNodesTextField;
 	int noOfNodes;
-	private JTextField avgDegreeTextField;
+	public JTextField avgDegreeTextField;
 	int avgDegree;
 	JLabel generateRandomGraphErrorLabel;
 	
@@ -72,7 +72,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	JButton btnUploadGraph;
 	
 	// Navigation panel UI
-	JButton btnNextPanel;
+	public JButton btnNextPanel;
 	JButton btnHomePanel;
 	JLabel nextPanelErrorLabel;
 	JButton btnReport;
@@ -93,7 +93,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 	Node currentNode = null;
 	
 	// Remove graph UI
-	JButton btnClearGraph;
+	public JButton btnClearGraph;
 	
 	public InputPanel(Container currentContainer) {
 		this.container = currentContainer;
@@ -142,6 +142,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		add(randomGeneratePanel);
 		
 		btnGenerateRandomGraph = new JButton("Random Graph");
+		btnGenerateRandomGraph.setName("btnGenerateRandomGraph");
 		btnGenerateRandomGraph.setBounds(57, 83, 135, 40);
 		btnGenerateRandomGraph.addActionListener(new GenerateGraphActionListener());
 		randomGeneratePanel.setLayout(null);
@@ -153,6 +154,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		randomGeneratePanel.add(numberOfNodesLabel);
 		
 		noOfNodesTextField = new JTextField();
+		noOfNodesTextField.setName("noOfNodesField");
 		noOfNodesTextField.setBounds(152, 10, 67, 28);
 		randomGeneratePanel.add(noOfNodesTextField);
 		noOfNodesTextField.setColumns(10);
@@ -162,11 +164,13 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		randomGeneratePanel.add(avgDegreeLabel);
 		
 		avgDegreeTextField = new JTextField();
+		avgDegreeTextField.setName("avgDegreeField");
 		avgDegreeTextField.setColumns(10);
 		avgDegreeTextField.setBounds(152, 38, 67, 28);
 		randomGeneratePanel.add(avgDegreeTextField);
 		
 		generateRandomGraphErrorLabel = new JLabel("Please provide only valid integer values.");
+		generateRandomGraphErrorLabel.setName("generateRandomGraphErrorLabel");
 		generateRandomGraphErrorLabel.setForeground(Color.RED);
 		generateRandomGraphErrorLabel.setFont(new java.awt.Font("Lucida Grande", java.awt.Font.BOLD, 9));
 		generateRandomGraphErrorLabel.setBounds(26, 65, 193, 16);
@@ -283,6 +287,7 @@ public class InputPanel extends JPanel implements ViewerListener  {
 		add(panel);
 		
 		btnClearGraph = new JButton("Clear Graph");
+		btnClearGraph.setName("clearGraph");
 		btnClearGraph.setBounds(57, 17, 135, 36);
 		btnClearGraph.addActionListener(new ClearGraphActionListener());
 		panel.add(btnClearGraph);
